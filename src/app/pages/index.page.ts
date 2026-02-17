@@ -4,6 +4,9 @@ import { load } from './index.server';
 import { injectLoad } from '@analogjs/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 
+/**
+ * Esta es la página de index, si us
+ */
 @Component({
   selector: 'app-home',
   standalone: true,
@@ -28,7 +31,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export default class Home {
   /**
-   * Se necesita usar injectLoad para la función load para que se recuperen los datos
+   *   Se necesita usar injectLoad para la función load para que se recuperen los datos
    * en la generación SSG, la conversión toSignal es necesaria debido a que el framework
    * está devolviendo un observable y se requiere de un signal para usar computed para obtener el valor
    * de la promesa
