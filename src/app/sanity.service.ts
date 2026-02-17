@@ -12,7 +12,7 @@ export class SanityService {
     apiVersion: '2024-01-01',
   });
 
-  async getExtraescolares() {
+  async getExtraescolares(): Promise<any[]> {
     const query = `*[_type == "extraescolar"]{
       nombre,
       precio,

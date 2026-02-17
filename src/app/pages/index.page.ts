@@ -1,6 +1,8 @@
-import { Component, inject, signal } from '@angular/core';
-import { SanityService } from '../sanity.service';
+import { Component, computed, Signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { load } from './index.server';
+import { injectLoad } from '@analogjs/router';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 @Component({
   selector: 'app-home',
@@ -25,15 +27,20 @@ import { CommonModule } from '@angular/common';
   `,
 })
 export default class Home {
-  private sanityService = inject(SanityService);
-  actividades = signal<any[]>([]);
+  /**
+   * Se necesita usar injectLoad para la función load para que se recuperen los datos
+   * en la generación SSG, la conversión toSignal es necesaria debido a que el framework
+   * está devolviendo un observable y se requiere de un signal para usar computed para obtener el valor
+   * de la promesa
+   */
+  private readonly data = toSignal(injectLoad<typeof load>(), {
+    initialValue: { actividades: [] }
+  });
 
-  constructor() {
-    this.loadData();
-  }
-
-  async loadData() {
-    const data = await this.sanityService.getExtraescolares();
-    this.actividades.set(data);
-  }
+  /**
+   * Usamos el método computed para que el valor se obtenga una única vez en lugar de calcularlo cada vez que
+   * se accede al valor de la variable
+   */
+  readonly actividades = computed(() => this.data().actividades);
 }
+
