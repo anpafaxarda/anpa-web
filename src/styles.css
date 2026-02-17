@@ -100,4 +100,37 @@ button:focus-visible {
     @apply bg-blue-600 text-white px-4 py-2 rounded-lg font-medium
            hover:bg-blue-700 active:scale-95 transition-all;
   }
+
+  /* ... tus otros estilos ... */
+
+  .programa-content {
+    /* Forzamos la alineación a la izquierda y quitamos el centrado de Tailwind */
+    @apply text-left text-slate-600 leading-relaxed;
+    text-align: left !important;
+  }
+
+  .programa-content p {
+    @apply mb-4;
+    text-align: left !important;
+  }
+
+  .programa-content ul {
+    /* list-disc pone los puntos, ml-6 les da espacio desde la izquierda */
+    @apply list-disc ml-6 mb-4 space-y-1;
+    display: block !important;
+    list-style-position: outside !important;
+  }
+
+  .programa-content li {
+    /* Aseguramos que el texto de la lista también vaya a la izquierda */
+    @apply pl-2;
+    text-align: left !important;
+    display: list-item !important;
+  }
+
+  .programa-content strong {
+    @apply font-bold text-slate-900;
+  }
 }
+
+
