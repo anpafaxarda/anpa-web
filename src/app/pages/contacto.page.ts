@@ -8,7 +8,10 @@ import { CommonModule } from '@angular/common';
     <section class="bg-surface-50 min-h-screen pb-20">
       <div class="bg-surface-900 py-16">
         <div class="container mx-auto px-4 text-center">
-          <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">Contacta con nosotros</h1>
+          <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
+            Contacta
+            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-cyan-300">con nosotros</span>
+          </h1>
           <p class="text-surface-400 max-w-2xl mx-auto">Estamos aquí para ayudarte. Escríbenos, llámanos o ven a visitarnos a nuestro local en el colegio.</p>
         </div>
       </div>

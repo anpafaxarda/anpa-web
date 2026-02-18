@@ -1,8 +1,9 @@
 export interface Actividad {
-  nombre: string;
-  imagenUrl: string;
-  precio: string;
-  horario: string;
-  contactoMonitor: string;
-  programa: any[];
+  name: string;
+  imageUrl?: string;
+  price: string;
+  classDuration: string;
+  enrollmentPeriod: string;
+  coursePeriod: string;
+  description?: any[];
 }
