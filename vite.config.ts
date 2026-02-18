@@ -16,7 +16,17 @@ export default defineConfig(({ mode }) => ({
     analog({
       prerender: {
         routes: [
-          '/'
+          '/',
+          '/asambleas',
+          '/beneficios',
+          '/colaboradores',
+          '/contacto',
+          '/directiva',
+          '/eventos',
+          '/extraescolares',
+          '/iniciativas',
+          '/labor-anpa',
+          '/quenes-somos',
         ],
       },
     }),
