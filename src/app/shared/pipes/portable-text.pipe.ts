@@ -9,9 +9,6 @@ export class PortableTextPipe implements PipeTransform {
   transform(value: any[] | undefined): string {
     if (!value) return '';
 
-    // toHTML convierte el JSON estructurado en etiquetas HTML reales
-    return toHTML(value, {
-      /* Aquí podrías añadir configuraciones para imágenes personalizadas */
-    });
+    return toHTML(value, {});
   }
 }
