@@ -87,7 +87,7 @@ export default class ColaboradoresPage {
 
   readonly colaboradores = computed(() => this.data()?.colaboradores ?? []);
 
-    constructor() {
+  constructor() {
     effect(() => {
       console.debug('directiva.length', this.colaboradores.length);
       console.debug('Directiva data:', this.data());
