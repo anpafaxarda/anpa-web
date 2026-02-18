@@ -1,16 +1,19 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { NavbarComponent } from "./shared/components/navbar.component";
+import { FooterComponent } from "./shared/components/footer.component";
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
-  template: `<router-outlet />`,
+  imports: [RouterOutlet, NavbarComponent, FooterComponent],
+  template: `
+  <app-navbar></app-navbar>
+    <router-outlet />
+  <app-footer></app-footer>
+  `,
   styles: `
     :host {
-      max-width: 1280px;
-      margin: 0 auto;
-      padding: 2rem;
-      text-align: center;
+      display: block;
     }
   `,
 })
