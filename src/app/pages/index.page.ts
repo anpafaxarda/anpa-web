@@ -10,14 +10,14 @@ import { load } from './index.server';
   standalone: true,
   imports: [RouterLink],
   template: `
-    <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900">
+    <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
       <div class="absolute inset-0 z-0">
         <img
           src="assets/colegio-image-bg.webp"
           alt="Comunidad ANPA"
           class="w-full h-full object-cover opacity-60 animate-slow-zoom"
         >
-        <div class="absolute inset-0 bg-gradient-to-b from-slate-900/40 via-slate-900/60 to-slate-900"></div>
+        <div class="absolute inset-0 bg-gradient-to-b from-surface-900/40 via-surface-900/60 to-surface-900"></div>
       </div>
 
       <div class="relative z-10 container mx-auto px-4 text-center">
@@ -32,7 +32,7 @@ import { load } from './index.server';
           </span>
         </h1>
 
-        <p class="text-lg md:text-xl text-slate-300 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up-delayed">
+        <p class="text-lg md:text-xl text-surface-300 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up-delayed">
           La asociación de familias dedicada a mejorar el día a día del colegio.
           Información, actividades y comunidad en un solo lugar.
         </p>
@@ -87,7 +87,7 @@ export default class IndexPage {
 //             <img [src]="actividad.imagenUrl" class="w-full h-48 object-cover rounded">
 
 //             <div class="p-4">
-//               <h3 class="text-xl font-bold text-slate-900 mb-2">{{ actividad.nombre }}</h3>
+//               <h3 class="text-xl font-bold text-surface-900 mb-2">{{ actividad.nombre }}</h3>
 
 //               <div class="programa-content" [innerHTML]="actividad.programa | portableText"></div>
 

@@ -4,21 +4,24 @@
 @tailwind components;
 @tailwind utilities;
 
-@import "tailwindcss";
-
-@import "tailwindcss";
-
 @theme {
-  /* Escala de verdes ANPA A Faxarda */
+  --color-surface-50:  rgb(248, 250, 247);
+  --color-surface-100: rgb(238, 243, 237);
+  --color-surface-200: rgb(220, 229, 218);
+  --color-surface-400: rgb(148, 163, 145);
+  --color-surface-500: rgb(107, 122, 104);
+  --color-surface-600: rgb(71, 85, 69);
+  --color-surface-700: rgb(51, 65, 49);
+  --color-surface-800: rgb(30, 39, 29);
+  --color-surface-900: rgb(15, 23, 14);
+  --color-surface-950: rgb(8, 12, 7);
+
   --color-primary-100: rgb(220, 239, 219);
   --color-primary-200: rgb(185, 224, 182);
   --color-primary-400: rgb(110, 195, 105);
   --color-primary-500: rgb(92, 185, 87);
-
-  /* El 600 es tu color base RGB(72, 159, 67) */
   --color-primary-600: rgb(72, 159, 67);
   --color-primary: rgb(72, 159, 67);
-
   --color-primary-700: rgb(55, 125, 52);
 }
 
@@ -30,7 +33,7 @@
 
 @layer components {
   .programa-content {
-    @apply text-left text-slate-600 leading-relaxed;
+    @apply text-left text-surface-600 leading-relaxed;
     text-align: left !important;
   }
 
@@ -52,7 +55,7 @@
   }
 
   .programa-content strong {
-    @apply font-bold text-slate-900;
+    @apply font-bold text-surface-900;
   }
 }
 

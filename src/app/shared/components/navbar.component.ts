@@ -7,12 +7,12 @@ import { CommonModule } from '@angular/common';
   standalone: true,
   imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
-    <nav class="bg-white border-b border-slate-200 sticky top-0 z-50">
+    <nav class="bg-white border-b border-surface-200 sticky top-0 z-50">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-20">
 
           <a routerLink="/" class="flex items-center gap-3 group">
-   <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-slate-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
+   <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-surface-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
 
     <img
       src="/favicon.ico"
@@ -37,7 +37,7 @@ import { CommonModule } from '@angular/common';
               <a [routerLink]="item.path"
                  routerLinkActive="text-primary-600 bg-primary-50"
                  [routerLinkActiveOptions]="{exact: true}"
-                 class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all">
+                 class="px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:text-primary-600 hover:bg-surface-50 transition-all">
                 {{ item.label }}
               </a>
             }
@@ -46,7 +46,7 @@ import { CommonModule } from '@angular/common';
               <button
                 (click)="toggleDropdown()"
                 (mouseenter)="isDropdownOpen.set(true)"
-                class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:bg-slate-50 transition-all">
+                class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all">
                 Sobre el ANPA
                 <svg class="w-4 h-4 transition-transform" [class.rotate-180]="isDropdownOpen()" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
               </button>
@@ -54,10 +54,10 @@ import { CommonModule } from '@angular/common';
               @if (isDropdownOpen()) {
                 <div
                   (mouseleave)="isDropdownOpen.set(false)"
-                  class="absolute right-0 mt-2 w-56 bg-white border border-slate-100 rounded-xl shadow-xl py-2 animate-in fade-in zoom-in duration-150">
+                  class="absolute right-0 mt-2 w-56 bg-white border border-surface-100 rounded-xl shadow-xl py-2 animate-in fade-in zoom-in duration-150">
                   @for (sub of dropdownItems; track sub.path) {
                     <a [routerLink]="sub.path"
-                       class="block px-4 py-2.5 text-sm text-slate-600 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                       class="block px-4 py-2.5 text-sm text-surface-600 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                       {{ sub.label }}
                     </a>
                   }
@@ -68,13 +68,13 @@ import { CommonModule } from '@angular/common';
             <a href="https://tu-blog.blogger.com"
                target="_blank"
                rel="noopener noreferrer"
-               class="ml-4 px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2">
+               class="ml-4 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2">
               Blog
               <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
             </a>
           </div>
 
-          <button (click)="isMobileMenuOpen.set(!isMobileMenuOpen())" class="lg:hidden p-2 text-slate-600">
+          <button (click)="isMobileMenuOpen.set(!isMobileMenuOpen())" class="lg:hidden p-2 text-surface-600">
              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path [class.hidden]="isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                <path [class.hidden]="!isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -84,9 +84,9 @@ import { CommonModule } from '@angular/common';
       </div>
 
       @if (isMobileMenuOpen()) {
-        <div class="lg:hidden bg-white border-t border-slate-100 px-4 py-6 space-y-4 shadow-inner">
+        <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-4 shadow-inner">
           @for (item of [...mainItems, ...dropdownItems]; track item.path) {
-            <a [routerLink]="item.path" (click)="isMobileMenuOpen.set(false)" class="block text-lg font-medium text-slate-700">{{item.label}}</a>
+            <a [routerLink]="item.path" (click)="isMobileMenuOpen.set(false)" class="block text-lg font-medium text-surface-700">{{item.label}}</a>
           }
           <a href="https://blog.com" target="_blank" class="block text-lg font-bold text-primary-600">Blog Externo ↗</a>
         </div>
