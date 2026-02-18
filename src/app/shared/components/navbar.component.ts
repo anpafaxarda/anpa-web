@@ -12,24 +12,32 @@ import { CommonModule } from '@angular/common';
         <div class="flex justify-between items-center h-20">
 
           <a routerLink="/" class="flex items-center gap-3 group">
-            <div class="relative flex items-center justify-center w-12 h-12 bg-gradient-to-br from-blue-600 to-blue-700 rounded-xl shadow-lg shadow-blue-200 group-hover:rotate-6 transition-transform duration-300">
-              <svg class="w-7 h-7 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-              </svg>
-            </div>
-            <div class="flex flex-col">
-              <span class="font-black text-xl leading-none tracking-tighter text-slate-800">ANPA A Faxarda</span>
-              <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-blue-600">CEIP Gregorio Sanz de Ribadeo</span>
-            </div>
+   <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-slate-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
+
+    <img
+      src="/favicon.ico"
+      alt="ANPA A Faxarda"
+      class="w-8 h-8 object-contain"
+    >
+
+  </div>
+<div class="flex flex-col">
+    <span class="font-black text-xl leading-none tracking-tighter text-[rgb(72,159,67)]">
+      ANPA A Faxarda
+    </span>
+    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-black">
+      CEIP Gregorio Sanz de Ribadeo
+    </span>
+  </div>
           </a>
 
           <div class="hidden lg:flex items-center gap-1">
 
             @for (item of mainItems; track item.path) {
               <a [routerLink]="item.path"
-                 routerLinkActive="text-blue-600 bg-blue-50"
+                 routerLinkActive="text-primary-600 bg-primary-50"
                  [routerLinkActiveOptions]="{exact: true}"
-                 class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-blue-600 hover:bg-slate-50 transition-all">
+                 class="px-4 py-2 rounded-lg text-sm font-medium text-slate-600 hover:text-primary-600 hover:bg-slate-50 transition-all">
                 {{ item.label }}
               </a>
             }
@@ -49,7 +57,7 @@ import { CommonModule } from '@angular/common';
                   class="absolute right-0 mt-2 w-56 bg-white border border-slate-100 rounded-xl shadow-xl py-2 animate-in fade-in zoom-in duration-150">
                   @for (sub of dropdownItems; track sub.path) {
                     <a [routerLink]="sub.path"
-                       class="block px-4 py-2.5 text-sm text-slate-600 hover:bg-blue-50 hover:text-blue-600 transition-colors">
+                       class="block px-4 py-2.5 text-sm text-slate-600 hover:bg-primary-50 hover:text-primary-600 transition-colors">
                       {{ sub.label }}
                     </a>
                   }
@@ -60,7 +68,7 @@ import { CommonModule } from '@angular/common';
             <a href="https://tu-blog.blogger.com"
                target="_blank"
                rel="noopener noreferrer"
-               class="ml-4 px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-full hover:bg-blue-600 transition-all flex items-center gap-2">
+               class="ml-4 px-5 py-2.5 bg-slate-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2">
               Blog
               <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
             </a>
@@ -80,7 +88,7 @@ import { CommonModule } from '@angular/common';
           @for (item of [...mainItems, ...dropdownItems]; track item.path) {
             <a [routerLink]="item.path" (click)="isMobileMenuOpen.set(false)" class="block text-lg font-medium text-slate-700">{{item.label}}</a>
           }
-          <a href="https://blog.com" target="_blank" class="block text-lg font-bold text-blue-600">Blog Externo ↗</a>
+          <a href="https://blog.com" target="_blank" class="block text-lg font-bold text-primary-600">Blog Externo ↗</a>
         </div>
       }
     </nav>
