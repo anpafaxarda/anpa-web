@@ -90,7 +90,6 @@ export class NavbarComponent {
   isDropdownOpen = signal(false);
   isMobileMenuOpen = signal(false);
 
-  // Enlaces que siempre se ven
   mainItems = [
     { label: 'Quiénes somos', path: '/quienes-somos' },
     { label: 'Extraescolares', path: '/extraescolares' },
@@ -98,13 +97,13 @@ export class NavbarComponent {
     { label: 'Contacto', path: '/contacto' },
   ];
 
-  // Enlaces agrupados en el Dropdown
   dropdownItems = [
+    { label: 'La Junta Directiva', path: '/directiva' },
     { label: 'La labor del ANPA', path: '/labor-anpa' },
     { label: 'Beneficios del socio', path: '/beneficios' },
     { label: 'Asambleas', path: '/asambleas' },
     { label: 'Iniciativas', path: '/iniciativas' },
-    { label: 'Locales colaboradores', path: '/locales' },
+    { label: 'Locales colaboradores', path: '/colaboradores' },
   ];
 
   toggleDropdown() {

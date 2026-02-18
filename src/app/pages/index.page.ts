@@ -1,6 +1,10 @@
-// src/app/pages/index.page.ts
-import { Component } from '@angular/core';
+import { Component, computed, effect } from '@angular/core';
+import { injectLoad } from '@analogjs/router';
 import { RouterLink } from '@angular/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { Actividad } from '../domain/actividades/actividades.model';
+import { load } from './index.server';
+// import { PortableTextPipe } from "../../shared/pipes/portable-text.pipe";
 
 @Component({
   standalone: true,
@@ -9,7 +13,7 @@ import { RouterLink } from '@angular/router';
     <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-slate-900">
       <div class="absolute inset-0 z-0">
         <img
-          src="assets/hero-bg.jpg"
+          src="assets/colegio-image-bg.webp"
           alt="Comunidad ANPA"
           class="w-full h-full object-cover opacity-60 animate-slow-zoom"
         >
@@ -37,7 +41,7 @@ import { RouterLink } from '@angular/router';
           <a routerLink="/beneficios" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-600/30 hover:-translate-y-1 active:scale-95">
             Hacerse Socio
           </a>
-          <a href="https://anpafaxarda.blogspot.com/" target="_blank" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/30 transition-all backdrop-blur-sm hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
+          <a href="https://tu-blog.blogger.com" target="_blank" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/30 transition-all backdrop-blur-sm hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
             Ver el Blog
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
           </a>
@@ -46,7 +50,6 @@ import { RouterLink } from '@angular/router';
     </header>
   `,
   styles: [`
-    /* Definimos las animaciones directamente para no depender de plugins externos */
     .animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
     .animate-fade-in-up { animation: fadeInUp 0.8s ease-out 0.2s forwards; opacity: 0; }
     .animate-fade-in-up-delayed { animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
@@ -67,4 +70,48 @@ import { RouterLink } from '@angular/router';
     }
   `]
 })
-export default class IndexPage {}
+export default class IndexPage {
+  private readonly load$ = injectLoad<typeof load>();
+
+  /**
+   *  Se necesita usar injectLoad para la función load para que se recuperen los datos
+   * en la generación SSG, la conversión toSignal es necesaria debido a que el framework
+   * está devolviendo un observable y se requiere de un signal para usar computed para obtener el valor
+   * de la promesa
+   * // <main class="container mx-auto p-8">
+//       <h1 class="text-3xl font-bold mb-6">Extraescolares del ANPA</h1>
+
+//       <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+//         @for (actividad of actividades(); track $index) {
+//           <div class="bg-white border p-4 rounded shadow">
+//             <img [src]="actividad.imagenUrl" class="w-full h-48 object-cover rounded">
+
+//             <div class="p-4">
+//               <h3 class="text-xl font-bold text-slate-900 mb-2">{{ actividad.nombre }}</h3>
+
+//               <div class="programa-content" [innerHTML]="actividad.programa | portableText"></div>
+
+//               <span class="badge-precio mt-4 inline-block">{{ actividad.precio }}</span>
+//             </div>
+//           </div>
+//         }
+//       </div>
+
+//     </main>
+   */
+  private readonly data = toSignal(this.load$, {
+    initialValue: { actividades: [] as Actividad[] }
+  });
+
+  /**
+   * Usamos el método computed para que el valor se obtenga una única vez en lugar de calcularlo cada vez que
+   * se accede al valor de la variable
+   */
+  readonly actividades = computed(() => this.data()?.actividades ?? []);
+
+  constructor() {
+    effect(() => {
+      console.debug('Actividades data:', this.data());
+    });
+  }
+}
