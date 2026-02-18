@@ -34,7 +34,7 @@ import { CommonModule } from '@angular/common';
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border border-slate-100">
               <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 bg-blue-100 text-blue-600 rounded-lg flex items-center justify-center">
+                <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
                   <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
                 </div>
                 <h3 class="font-bold text-slate-800">Correo Electrónico</h3>
@@ -66,16 +66,16 @@ import { CommonModule } from '@angular/common';
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Nombre</label>
-                    <input type="text" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all">
+                    <input type="text" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all">
                   </div>
                   <div>
                     <label class="block text-sm font-semibold text-slate-700 mb-2">Email</label>
-                    <input type="email" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all">
+                    <input type="email" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all">
                   </div>
                 </div>
                 <div>
                   <label class="block text-sm font-semibold text-slate-700 mb-2">Asunto</label>
-                  <select class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all">
+                  <select class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all">
                     <option>Consulta general</option>
                     <option>Alta de socio</option>
                     <option>Incidencia extraescolares</option>
@@ -84,9 +84,9 @@ import { CommonModule } from '@angular/common';
                 </div>
                 <div>
                   <label class="block text-sm font-semibold text-slate-700 mb-2">Mensaje</label>
-                  <textarea rows="5" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-blue-500 focus:outline-none transition-all"></textarea>
+                  <textarea rows="5" class="w-full px-4 py-3 bg-slate-50 border border-slate-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all"></textarea>
                 </div>
-                <button type="button" class="w-full py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl shadow-lg shadow-blue-200 transition-all transform active:scale-[0.98]">
+                <button type="button" class="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-lg shadow-primary-200 transition-all transform active:scale-[0.98]">
                   Enviar Mensaje
                 </button>
               </form>

@@ -4,6 +4,30 @@
 @tailwind components;
 @tailwind utilities;
 
+@import "tailwindcss";
+
+@import "tailwindcss";
+
+@theme {
+  /* Escala de verdes ANPA A Faxarda */
+  --color-primary-100: rgb(220, 239, 219);
+  --color-primary-200: rgb(185, 224, 182);
+  --color-primary-400: rgb(110, 195, 105);
+  --color-primary-500: rgb(92, 185, 87);
+
+  /* El 600 es tu color base RGB(72, 159, 67) */
+  --color-primary-600: rgb(72, 159, 67);
+  --color-primary: rgb(72, 159, 67);
+
+  --color-primary-700: rgb(55, 125, 52);
+}
+
+@keyframes slowZoom {
+  from { transform: scale(1); }
+  to { transform: scale(1.1); }
+}
+
+
 @layer components {
   .programa-content {
     @apply text-left text-slate-600 leading-relaxed;

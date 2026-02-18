@@ -21,13 +21,13 @@ import { load } from './index.server';
       </div>
 
       <div class="relative z-10 container mx-auto px-4 text-center">
-        <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wider text-blue-400 uppercase bg-blue-400/10 rounded-full border border-blue-400/20 animate-fade-in-down">
+        <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wider text-primary-400 uppercase bg-primary-400/10 rounded-full border border-primary-400/20 animate-fade-in-down">
           Unidos por la educación
         </span>
 
         <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-[1.1] animate-fade-in-up">
           Construyendo juntos el <br>
-          <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">
+          <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-cyan-300">
             futuro de nuestros hijos
           </span>
         </h1>
@@ -38,7 +38,7 @@ import { load } from './index.server';
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up-more-delayed">
-          <a routerLink="/beneficios" class="px-8 py-4 bg-blue-600 hover:bg-blue-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-blue-600/30 hover:-translate-y-1 active:scale-95">
+          <a routerLink="/beneficios" class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary-600/30 hover:-translate-y-1 active:scale-95">
             Hacerse Socio
           </a>
           <a href="https://tu-blog.blogger.com" target="_blank" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/30 transition-all backdrop-blur-sm hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
