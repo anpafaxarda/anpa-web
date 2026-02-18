@@ -32,8 +32,8 @@ import { Member } from '../domain/members/member.model';
             @for (miembro of directiva(); track miembro.name) {
               <div class="bg-white rounded-2xl shadow-xl shadow-surface-200/60 border border-surface-100 overflow-hidden hover:-translate-y-2 transition-all duration-300 group">
                 <div class="relative h-64 overflow-hidden bg-surface-200">
-                  @if (miembro.image) {
-                    <img [src]="miembro.image" [alt]="miembro.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
+                  @if (miembro.imageUrl) {
+                    <img [src]="miembro.imageUrl" [alt]="miembro.name" class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500">
                   } @else {
                     <div class="w-full h-full flex items-center justify-center bg-primary-50">
                       <svg class="w-20 h-20 text-primary-200" fill="currentColor" viewBox="0 0 24 24"><path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/></svg>
