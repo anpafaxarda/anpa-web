@@ -3,4 +3,5 @@ export interface Member {
   role: string;
   imageUrl: string;
   bio: string;
+  email?: string;
 }

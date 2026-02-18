@@ -1,27 +1,25 @@
 import { Component } from '@angular/core';
+import { PageComponent } from '../shared/components/page.component';
 
 @Component({
   standalone: true,
+  imports: [PageComponent],
   template: `
-    <header class="bg-surface-900 pt-32 pb-20 px-4">
-        <div class="container mx-auto text-center">
-          <!-- <span class="inline-block px-4 py-1.5 mb-4 text-sm font-semibold tracking-wider text-primary-400 uppercase bg-primary-400/10 rounded-full border border-primary-400/20">
-            Nuestro equipo
-          </span> -->
-          <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-6">
-            {{ title }}
-          </h1>
-          <!-- <p class="text-surface-400 max-w-2xl mx-auto text-lg">
-            Madres y padres voluntarios que dedicamos nuestro tiempo para que el
-            <strong>CEIP Gregorio Sanz</strong> sea un lugar mejor para nuestros hijos.
-          </p> -->
+    <app-page-component
+      [title]="title"
+    >
+      <div class="container mx-auto px-4 -mt-10">
+        <div class="grid grid-cols-1 lg:grid-cols-1 gap-8">
+          <div class="lg:col-span-1 space-y-6">
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-surface-100 group">
+              <div class="flex items-center gap-4 mb-4">
+                <p class="text-surface-400 mx-auto">Página en construcción para la sección de {{ title }}.</p>
+              </div>
+            </div>
+          </div>
         </div>
-    </header>
-    <main class="bg-surface-50 pb-20 pt-20">
-      <section class="container mx-auto px-4 -mt-10">
-        <p class="text-surface-400 max-w-2xl mx-auto">Página en construcción para la sección de {{ title }}.</p>
-      </section>
-    </main>
+      </div>
+    </app-page-component>
   `,
 })
 export default class QuienesSomosPage {
