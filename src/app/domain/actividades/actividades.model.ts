@@ -6,4 +6,7 @@ export interface Actividad {
   enrollmentPeriod: string;
   coursePeriod: string;
   description?: any[];
+  diaSemana: 'Luns' | 'Martes' | 'Mércores' | 'Xoves' | 'Venres';
+  horaInicio: string;
+  horaFin: string;
 }
