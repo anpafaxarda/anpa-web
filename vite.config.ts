@@ -26,7 +26,7 @@ export default defineConfig(({ mode }) => ({
           '/extraescolares',
           '/iniciativas',
           '/labor-anpa',
-          '/quenes-somos',
+          '/quienes-somos',
         ],
       },
     }),
