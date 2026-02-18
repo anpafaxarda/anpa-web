@@ -4,11 +4,12 @@ import { RouterLink } from '@angular/router';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Actividad } from '../domain/actividades/actividades.model';
 import { load } from './index.server';
+import { CommonModule } from '@angular/common';
 // import { PortableTextPipe } from "../../shared/pipes/portable-text.pipe";
 
 @Component({
   standalone: true,
-  imports: [RouterLink],
+  imports: [RouterLink, CommonModule],
   template: `
     <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
       <div class="absolute inset-0 z-0">
