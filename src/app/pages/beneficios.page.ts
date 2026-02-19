@@ -1,5 +1,5 @@
 import { CategoriaResumen, Categorias } from './../domain/colaboradores/colaborador.model';
-import { Component, computed, effect } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectLoad } from '@analogjs/router';
 import { PageComponent } from '../shared/components/page.component';

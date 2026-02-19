@@ -1,6 +1,6 @@
 import { injectLoad } from '@analogjs/router';
 import { CommonModule } from '@angular/common';
-import { Component, computed, effect } from '@angular/core';
+import { Component, computed } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { Colaborador } from '../domain/colaboradores/colaborador.model';
 import { load } from './colaboradores.server';
@@ -76,11 +76,4 @@ export default class ColaboradoresPage {
   });
 
   readonly colaboradores = computed(() => this.data()?.colaboradores ?? []);
-
-  constructor() {
-    effect(() => {
-      console.debug('colaboradores.length', this.colaboradores.length);
-      console.debug('colaboradores data:', this.data());
-    });
-  }
 }

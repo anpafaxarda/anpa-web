@@ -99,19 +99,17 @@ export class NavbarComponent {
   isMobileMenuOpen = signal(false);
 
   mainItems = [
-    { label: 'Quiénes somos', path: '/quienes-somos' },
+    { label: 'La labor del ANPA', path: '/labor-anpa' },
+    { label: 'Iniciativas', path: '/iniciativas' },
     { label: 'Extraescolares', path: '/extraescolares' },
-    { label: 'Eventos', path: '/eventos' },
-    { label: 'Contacto', path: '/contacto' },
+    { label: 'Locales colaboradores', path: '/colaboradores' },
   ];
 
   dropdownItems = [
-    { label: 'La Junta Directiva', path: '/directiva' },
-    { label: 'La labor del ANPA', path: '/labor-anpa' },
     { label: 'Beneficios del socio', path: '/beneficios' },
+    { label: 'La Junta Directiva', path: '/directiva' },
     { label: 'Asambleas', path: '/asambleas' },
-    { label: 'Iniciativas', path: '/iniciativas' },
-    { label: 'Locales colaboradores', path: '/colaboradores' },
+    { label: 'Contacto', path: '/contacto' },
   ];
 
   toggleDropdown() {

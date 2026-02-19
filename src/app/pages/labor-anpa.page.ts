@@ -1,10 +1,11 @@
 import { Component } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-labor-anpa-page',
   standalone: true,
-  imports: [PageComponent],
+  imports: [PageComponent, CommonModule],
   template: `
      <app-page-component
       [title]="title"
