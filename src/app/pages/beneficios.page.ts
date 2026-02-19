@@ -1,4 +1,4 @@
-import { CategoriaResumen } from './../domain/colaboradores/colaborador.model';
+import { CategoriaResumen, Categorias } from './../domain/colaboradores/colaborador.model';
 import { Component, computed, effect } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { injectLoad } from '@analogjs/router';
@@ -50,9 +50,17 @@ import { CommonModule } from '@angular/common';
           </div>
         </div>
 
-        <div class="text-center pt-4">
-          <a href="/colaboradores" class="text-surface-400 hover:text-primary-500 text-sm font-medium underline underline-offset-4">
-            Ver todos los locales colaboradores
+        <div class="pt-4">
+          <a href="/colaboradores"
+            class="group relative block overflow-hidden rounded-2xl bg-primary-600 p-8 text-center shadow-md hover:shadow-xl transition-all">
+            <div class="relative z-10">
+              <h4 class="text-xl font-bold text-white mb-2">¿Buscas un comercio específico?</h4>
+              <p class="text-primary-100 mb-4 text-sm">Explora el listado completo con más de {{ totalComercios() }} establecimientos con ventajas para socios.</p>
+              <span class="inline-flex items-center gap-2 bg-white text-primary-600 px-6 py-2 rounded-full font-bold group-hover:scale-105 transition-transform">
+                Ver listado completo
+              </span>
+            </div>
+            <div class="absolute -right-8 -bottom-8 h-32 w-32 rounded-full bg-primary-500 opacity-50 transition-transform group-hover:scale-150"></div>
           </a>
         </div>
       </div>
@@ -63,15 +71,13 @@ export default class BeneficiosPage {
   title = 'Beneficios';
   private readonly load$ = injectLoad<typeof load>();
   private readonly data = toSignal(this.load$, {
-    initialValue: { categorias: [] as CategoriaResumen[] }
+    initialValue: { categorias: [] as CategoriaResumen[], total: 0 } as Categorias
   });
 
   readonly categorias = computed(() => this.data()?.categorias ?? []);
+  readonly totalComercios = computed(() => {
+    const total = this.data()?.total ?? 0;
 
-  constructor() {
-    effect(() => {
-      console.debug('categorias.length', this.categorias.length);
-      console.debug('categorias data:', this.data());
-    });
-  }
+    return Math.floor(total * 0.75);
+  });
 }
