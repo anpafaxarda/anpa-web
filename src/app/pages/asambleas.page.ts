@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 
 @Component({
+  selector: 'app-asambleas-page',
   standalone: true,
   imports: [PageComponent],
   template: `

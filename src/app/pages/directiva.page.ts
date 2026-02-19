@@ -7,7 +7,7 @@ import { Member } from '../domain/members/member.model';
 import { PageComponent } from '../shared/components/page.component';
 
 @Component({
-  selector: 'app-directiva',
+  selector: 'app-directiva-page',
   standalone: true,
   imports: [CommonModule, PageComponent],
   template: `

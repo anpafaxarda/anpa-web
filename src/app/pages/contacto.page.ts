@@ -1,21 +1,16 @@
 import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { PageComponent } from '../shared/components/page.component';
 
 @Component({
+  selector: 'app-contacto-page',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, PageComponent],
   template: `
-    <section class="bg-surface-50 min-h-screen pb-20">
-      <div class="bg-surface-900 py-16">
-        <div class="container mx-auto px-4 text-center">
-          <h1 class="text-4xl md:text-5xl font-extrabold text-white mb-4">
-            Contacta
-            <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-cyan-300">con nosotros</span>
-          </h1>
-          <p class="text-surface-400 max-w-2xl mx-auto">Estamos aquí para ayudarte. Escríbenos, llámanos o ven a visitarnos a nuestro local en el colegio.</p>
-        </div>
-      </div>
-
+   <app-page-component
+      [title]="'Contacta con nosotros'"
+      [subTitle]="'Estamos aquí para ayudarte. Escríbenos, llámanos o ven a visitarnos a nuestro local en el colegio.'"
+    >
       <div class="container mx-auto px-4 -mt-10">
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
 
@@ -98,7 +93,7 @@ import { CommonModule } from '@angular/common';
 
         </div>
       </div>
-    </section>
+    </app-page-component>
   `,
 })
 export default class ContactoPage {}

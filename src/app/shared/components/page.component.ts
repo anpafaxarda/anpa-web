@@ -39,8 +39,13 @@ export class PageComponent implements OnInit {
 
   ngOnInit(): void {
     const fullTitle = this.title;
-    const cutIndex = Math.floor(this.title.length / 2);
-    this.firstString = fullTitle.substring(0, cutIndex);
-    this.secondString = fullTitle.substring(cutIndex);
+    const words = fullTitle.split(' ');
+    if (words.length > 1) {
+      const lastIndex = words.length - 1;
+      this.secondString = words[lastIndex];
+      this.firstString = words.filter((value, index) => index < lastIndex).join(' ').concat(' ');
+    } else {
+      this.secondString = words[0];
+    }
   }
 }
