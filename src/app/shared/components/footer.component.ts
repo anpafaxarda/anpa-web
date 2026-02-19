@@ -26,7 +26,6 @@ import { Component } from '@angular/core';
           <div>
             <h4 class="font-bold text-lg mb-6 text-primary-400">Navegación</h4>
             <ul class="grid grid-cols-2 gap-2 text-surface-400 text-sm">
-              <li><a href="/quienes-somos" class="hover:text-white transition-colors">Quiénes somos</a></li>
               <li><a href="/extraescolares" class="hover:text-white transition-colors">Extraescolares</a></li>
               <li><a href="https://afaxarda.wordpress.com/" target="_blank"  class="hover:text-white transition-colors">Blog</a></li>
               <li><a href="/contacto" class="hover:text-white transition-colors">Contacto</a></li>
@@ -38,8 +37,9 @@ import { Component } from '@angular/core';
             <p class="text-surface-400 text-sm mb-2">Local ANPA - Planta Baja</p>
             <p class="text-surface-400 text-sm mb-4">anpa&#64;colegio.com</p>
             <div class="flex flex-col gap-2 text-xs text-surface-500">
-              <a href="/legal" class="hover:underline">Aviso Legal</a>
+              <a href="/aviso-legal" class="hover:underline">Aviso Legal</a>
               <a href="/privacidad" class="hover:underline">Privacidad</a>
+              <a href="/politica-cookies" class="hover:underline">Cookies</a>
             </div>
           </div>
         </div>

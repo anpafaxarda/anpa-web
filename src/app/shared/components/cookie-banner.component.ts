@@ -1,0 +1,79 @@
+import { Component, signal, OnInit, inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
+import { ANALYTICS_CONFIG } from '../../core/config/analytics.config';
+
+@Component({
+  selector: 'app-cookie-banner',
+  standalone: true,
+  template: `
+    @if (isVisible()) {
+      <div class="fixed bottom-6 left-6 right-6 md:right-10 md:w-96 z-[100] bg-surface-900 text-white p-6 rounded-3xl shadow-2xl border border-white/10">
+        <div class="space-y-4">
+          <div class="flex items-center gap-3">
+            <span class="text-2xl">🍪</span>
+            <h3 class="font-bold text-lg leading-none">Aviso de privacidad</h3>
+          </div>
+          <p class="text-surface-400 text-sm leading-relaxed">
+            Utilizamos cookies para entender cómo navegas por la web del ANPA y mejorar tu experiencia.
+            Puedes leer nuestra <a href="/politica-cookies" class="underline hover:text-primary-400">política de cookies</a>.
+          </p>
+          <div class="flex gap-3">
+            <button (click)="accept()"
+                    class="flex-1 bg-primary-500 hover:bg-primary-400 text-white font-bold py-2.5 rounded-xl transition-all active:scale-95">
+              Aceptar
+            </button>
+            <button (click)="decline()"
+                    class="flex-1 bg-surface-800 hover:bg-surface-700 text-surface-300 py-2.5 rounded-xl transition-all">
+              Rechazar
+            </button>
+          </div>
+        </div>
+      </div>
+    }
+  `
+})
+export class CookieBannerComponent implements OnInit {
+  private platformId = inject(PLATFORM_ID);
+  isVisible = signal(false);
+
+  ngOnInit() {
+    if (isPlatformBrowser(this.platformId)) {
+      const consent = localStorage.getItem('cookie-consent');
+      if (!consent) {
+        this.isVisible.set(true);
+      } else if (consent === 'accepted') {
+        this.initGoogleAnalytics();
+      }
+    }
+  }
+
+  accept() {
+    localStorage.setItem('cookie-consent', 'accepted');
+    this.isVisible.set(false);
+    this.initGoogleAnalytics();
+  }
+
+  decline() {
+    localStorage.setItem('cookie-consent', 'declined');
+    this.isVisible.set(false);
+  }
+
+  private initGoogleAnalytics() {
+    const id = ANALYTICS_CONFIG.id;
+
+    const gScript = document.createElement('script');
+    gScript.async = true;
+    gScript.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+    document.head.appendChild(gScript);
+
+    (window as any).dataLayer = (window as any).dataLayer || [];
+    function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+
+    gtag('js', new Date());
+    gtag('config', id);
+
+    gtag('consent', 'update', {
+      'analytics_storage': 'granted'
+    });
+  }
+}
