@@ -1,8 +1,9 @@
 import { fetchCategorias } from '../domain/colaboradores/categorias.action';
+import { Categorias } from '../domain/colaboradores/colaborador.model';
 
 export const load = async () => {
-  const categorias = await fetchCategorias();
+  const data = await fetchCategorias();
   return {
-    categorias: categorias
-  };
+    categorias: data.categorias, total: data.total
+  } as Categorias;
 };

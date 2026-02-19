@@ -1,14 +1,13 @@
 import { sanityClient } from '../../core/api/sanity.client';
-import { CategoriaResumen } from "./colaborador.model";
+import { Categorias } from "./colaborador.model";
 
-export async function fetchCategorias(): Promise<CategoriaResumen[]> {
-  const query = `*[_type == "colaborador" && defined(category)] {
-    category,
-    discountValue
+export async function fetchCategorias(): Promise<Categorias> {
+  const query = `{
+    "colaboradores": *[_type == "colaborador" && defined(category)] { category, discountValue },
+    "total": count(*[_type == "colaborador"])
   }`;
 
-  const colaboradores = await sanityClient.fetch(query);
-  if (!colaboradores || colaboradores.length === 0) return [];
+  const { colaboradores, total } = await sanityClient.fetch(query);
 
   const mapaConfig: Record<string, { nombre: string, icono: string }> = {
     alimentacion: { nombre: 'Alimentación', icono: '🍎' },
@@ -22,17 +21,16 @@ export async function fetchCategorias(): Promise<CategoriaResumen[]> {
   const agrupados = colaboradores.reduce((acc: any, item: any) => {
     const cat = item.category;
     const val = item.discountValue || 0;
-    if (!acc[cat] || val > acc[cat]) {
-      acc[cat] = val;
-    }
+    if (!acc[cat] || val > acc[cat]) acc[cat] = val;
     return acc;
   }, {});
 
-  // AQUÍ: Devolvemos directamente el Array (CategoriaResumen[])
-  return Object.keys(agrupados).map(key => ({
+  const categorias = Object.keys(agrupados).map(key => ({
     id: key,
     nombre: mapaConfig[key]?.nombre || key,
     icono: mapaConfig[key]?.icono || '🏪',
     maxDescuento: agrupados[key]
   }));
+
+  return { categorias, total } as Categorias;
 }
