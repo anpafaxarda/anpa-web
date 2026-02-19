@@ -79,8 +79,8 @@ export default class ColaboradoresPage {
 
   constructor() {
     effect(() => {
-      console.debug('directiva.length', this.colaboradores.length);
-      console.debug('Directiva data:', this.data());
+      console.debug('colaboradores.length', this.colaboradores.length);
+      console.debug('colaboradores data:', this.data());
     });
   }
 }
