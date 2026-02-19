@@ -3,6 +3,7 @@ import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 @Component({
+  selector: 'app-home-page',
   standalone: true,
   imports: [RouterLink, CommonModule],
   template: `
@@ -28,7 +29,7 @@ import { CommonModule } from '@angular/common';
           </span>
         </h1>
 
-        <p class="text-lg md:text-xl text-surface-300 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up-delayed">
+        <p class="text-lg md:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up-delayed">
           La asociación de familias dedicada a mejorar el día a día del colegio.
           Información, actividades y comunidad en un solo lugar.
         </p>
@@ -37,7 +38,7 @@ import { CommonModule } from '@angular/common';
           <a routerLink="/beneficios" class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary-600/30 hover:-translate-y-1 active:scale-95">
             Hacerse Socio
           </a>
-          <a href="https://tu-blog.blogger.com" target="_blank" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/30 transition-all backdrop-blur-sm hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
+          <a href="https://afaxarda.wordpress.com/" target="_blank" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/30 transition-all backdrop-blur-sm hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
             Ver el Blog
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path></svg>
           </a>

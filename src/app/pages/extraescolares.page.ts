@@ -8,6 +8,7 @@ import { Actividad } from '../domain/actividades/actividades.model';
 import { PageComponent } from '../shared/components/page.component';
 
 @Component({
+  selector: 'app-extraescolares-page',
   standalone: true,
   imports: [CommonModule, PortableTextPipe, PageComponent],
   template: `

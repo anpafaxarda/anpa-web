@@ -65,7 +65,7 @@ import { CommonModule } from '@angular/common';
               }
             </div>
 
-            <a href="https://tu-blog.blogger.com"
+            <a href="https://afaxarda.wordpress.com/"
                target="_blank"
                rel="noopener noreferrer"
                class="ml-4 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2">
@@ -88,7 +88,7 @@ import { CommonModule } from '@angular/common';
           @for (item of [...mainItems, ...dropdownItems]; track item.path) {
             <a [routerLink]="item.path" (click)="isMobileMenuOpen.set(false)" class="block text-lg font-medium text-surface-700">{{item.label}}</a>
           }
-          <a href="https://blog.com" target="_blank" class="block text-lg font-bold text-primary-600">Blog Externo ↗</a>
+          <a href="https://afaxarda.wordpress.com/" target="_blank" class="block text-lg font-bold text-primary-600">Blog Externo ↗</a>
         </div>
       }
     </nav>

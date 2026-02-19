@@ -28,7 +28,7 @@ import { Component } from '@angular/core';
             <ul class="grid grid-cols-2 gap-2 text-surface-400 text-sm">
               <li><a href="/quienes-somos" class="hover:text-white transition-colors">Quiénes somos</a></li>
               <li><a href="/extraescolares" class="hover:text-white transition-colors">Extraescolares</a></li>
-              <li><a href="/blog" class="hover:text-white transition-colors">Blog</a></li>
+              <li><a href="https://afaxarda.wordpress.com/" target="_blank"  class="hover:text-white transition-colors">Blog</a></li>
               <li><a href="/contacto" class="hover:text-white transition-colors">Contacto</a></li>
             </ul>
           </div>
