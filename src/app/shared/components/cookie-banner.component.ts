@@ -42,7 +42,6 @@ export class CookieBannerComponent implements OnInit {
       if (!consent) {
         this.isVisible.set(true);
       } else if (consent === 'accepted') {
-        // Pequeño delay para asegurar que el DOM y el index.html están listos
         setTimeout(() => this.initGoogleAnalytics(), 1000);
       }
     }
@@ -64,7 +63,6 @@ export class CookieBannerComponent implements OnInit {
 
     const id = ANALYTICS_CONFIG.id;
 
-    // 1. Inyectar el script de Google solo si no existe ya
     if (!document.getElementById('google-analytics-script')) {
       const gScript = document.createElement('script');
       gScript.id = 'google-analytics-script';
@@ -73,11 +71,9 @@ export class CookieBannerComponent implements OnInit {
       document.head.appendChild(gScript);
     }
 
-    // 2. Usar la función global gtag que definimos en index.html
     const gtag = (window as any).gtag;
 
     if (typeof gtag === 'function') {
-      // 3. Actualizar consentimientos (Obligatorio Consent Mode v2)
       gtag('consent', 'update', {
         'analytics_storage': 'granted',
         'ad_storage': 'granted',
@@ -85,7 +81,6 @@ export class CookieBannerComponent implements OnInit {
         'ad_ads_personalization': 'granted'
       });
 
-      // 4. Inicializar y enviar vista de página
       gtag('js', new Date());
       gtag('config', id, {
         page_path: window.location.pathname,
