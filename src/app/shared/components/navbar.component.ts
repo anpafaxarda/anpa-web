@@ -12,23 +12,13 @@ import { CommonModule } from '@angular/common';
         <div class="flex justify-between items-center h-20">
 
           <a routerLink="/" class="flex items-center gap-3 group">
-   <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-surface-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
-
-    <img
-      src="/favicon.ico"
-      alt="ANPA A Faxarda"
-      class="w-8 h-8 object-contain"
-    >
-
-  </div>
-<div class="flex flex-col">
-    <span class="font-black text-xl leading-none tracking-tighter text-[rgb(72,159,67)]">
-      ANPA A Faxarda
-    </span>
-    <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-black">
-      CEIP Gregorio Sanz de Ribadeo
-    </span>
-  </div>
+            <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-surface-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
+              <img src="/favicon.ico" alt="ANPA A Faxarda" class="w-8 h-8 object-contain">
+            </div>
+            <div class="flex flex-col">
+              <span class="font-black text-xl leading-none tracking-tighter text-[rgb(72,159,67)]">ANPA A Faxarda</span>
+              <span class="text-[10px] uppercase tracking-[0.2em] font-bold text-black">CEIP Gregorio Sanz de Ribadeo</span>
+            </div>
           </a>
 
           <div class="hidden lg:flex items-center gap-1">
@@ -42,35 +32,64 @@ import { CommonModule } from '@angular/common';
               </a>
             }
 
-            <div class="relative ml-2">
+            <div class="relative ml-2"
+                 (mouseenter)="openDropdown('servicios')"
+                 (mouseleave)="closeDropdownWithDelay()">
               <button
-                (click)="toggleDropdown()"
-                (mouseenter)="isDropdownOpen.set(true)"
-                class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all">
-                Sobre el ANPA
-                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="isDropdownOpen()" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all"
+                [class.text-primary-600]="activeDropdown() === 'servicios'">
+                Servicios
+                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="activeDropdown() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
               </button>
 
-              @if (isDropdownOpen()) {
-                <div
-                  (mouseleave)="isDropdownOpen.set(false)"
-                  class="absolute right-0 mt-2 w-56 bg-white border border-surface-100 rounded-xl shadow-xl py-2 animate-in fade-in zoom-in duration-150">
-                  @for (sub of dropdownItems; track sub.path) {
-                    <a [routerLink]="sub.path"
-                       class="block px-4 py-2.5 text-sm text-surface-600 hover:bg-primary-50 hover:text-primary-600 transition-colors">
-                      {{ sub.label }}
-                    </a>
-                  }
+              @if (activeDropdown() === 'servicios') {
+                <div class="absolute right-0 pt-2 w-56 z-[60] animate-in fade-in zoom-in-95 duration-150">
+                  <div class="bg-white border border-surface-100 rounded-xl shadow-xl py-2">
+                    @for (sub of serviciosItems; track sub.path) {
+                      <a [routerLink]="sub.path" (click)="forceClose()"
+                         class="block px-4 py-2.5 text-sm text-surface-600 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                        {{ sub.label }}
+                      </a>
+                    }
+                  </div>
                 </div>
               }
             </div>
 
-            <a href="https://afaxarda.wordpress.com/"
-               target="_blank"
-               rel="noopener noreferrer"
+            <div class="relative ml-2"
+                 (mouseenter)="openDropdown('anpa')"
+                 (mouseleave)="closeDropdownWithDelay()">
+              <button
+                class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all"
+                [class.text-primary-600]="activeDropdown() === 'anpa'">
+                Sobre el ANPA
+                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="activeDropdown() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                </svg>
+              </button>
+
+              @if (activeDropdown() === 'anpa') {
+                <div class="absolute right-0 pt-2 w-56 z-[60] animate-in fade-in zoom-in-95 duration-150">
+                  <div class="bg-white border border-surface-100 rounded-xl shadow-xl py-2">
+                    @for (sub of anpaItems; track sub.path) {
+                      <a [routerLink]="sub.path" (click)="forceClose()"
+                         class="block px-4 py-2.5 text-sm text-surface-600 hover:bg-primary-50 hover:text-primary-600 transition-colors">
+                        {{ sub.label }}
+                      </a>
+                    }
+                  </div>
+                </div>
+              }
+            </div>
+
+            <a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener noreferrer"
                class="ml-4 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2">
               Blog
-              <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
+              <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path>
+              </svg>
             </a>
           </div>
 
@@ -84,35 +103,86 @@ import { CommonModule } from '@angular/common';
       </div>
 
       @if (isMobileMenuOpen()) {
-        <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-4 shadow-inner">
-          @for (item of [...mainItems, ...dropdownItems]; track item.path) {
-            <a [routerLink]="item.path" (click)="isMobileMenuOpen.set(false)" class="block text-lg font-medium text-surface-700">{{item.label}}</a>
+        <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-2 shadow-inner overflow-y-auto max-h-[80vh]">
+          @for (item of mainItems; track item.path) {
+            <a [routerLink]="item.path" (click)="isMobileMenuOpen.set(false)" class="block py-3 px-4 text-lg font-medium text-surface-700">{{item.label}}</a>
           }
-          <a href="https://afaxarda.wordpress.com/" target="_blank" class="block text-lg font-bold text-primary-600">Blog Externo ↗</a>
+
+          <div class="border-t border-surface-50 pt-2">
+            <button (click)="toggleMobileGroup('servicios')" class="w-full flex justify-between items-center py-3 px-4 text-lg font-bold text-primary-600">
+              Servicios
+              <svg class="w-5 h-5 transition-transform" [class.rotate-180]="mobileGroupOpen() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            @if (mobileGroupOpen() === 'servicios') {
+              <div class="pl-6 space-y-1 bg-surface-50 rounded-xl py-2">
+                @for (sub of serviciosItems; track sub.path) {
+                  <a [routerLink]="sub.path" (click)="isMobileMenuOpen.set(false)" class="block py-2.5 px-4 text-surface-600">{{sub.label}}</a>
+                }
+              </div>
+            }
+          </div>
+
+          <div class="border-t border-surface-50 pt-2">
+            <button (click)="toggleMobileGroup('anpa')" class="w-full flex justify-between items-center py-3 px-4 text-lg font-bold text-primary-600">
+              Sobre el ANPA
+              <svg class="w-5 h-5 transition-transform" [class.rotate-180]="mobileGroupOpen() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            @if (mobileGroupOpen() === 'anpa') {
+              <div class="pl-6 space-y-1 bg-surface-50 rounded-xl py-2">
+                @for (sub of anpaItems; track sub.path) {
+                  <a [routerLink]="sub.path" (click)="isMobileMenuOpen.set(false)" class="block py-2.5 px-4 text-surface-600">{{sub.label}}</a>
+                }
+              </div>
+            }
+          </div>
         </div>
       }
     </nav>
   `
 })
 export class NavbarComponent {
-  isDropdownOpen = signal(false);
+  activeDropdown = signal<string | null>(null);
+  mobileGroupOpen = signal<string | null>(null);
   isMobileMenuOpen = signal(false);
+  private closeTimeout: any;
 
   mainItems = [
-    { label: 'La labor del ANPA', path: '/labor-anpa' },
+    { label: 'Labor ANPA', path: '/labor-anpa' },
     { label: 'Iniciativas', path: '/iniciativas' },
-    { label: 'Extraescolares', path: '/extraescolares' },
-    { label: 'Locales colaboradores', path: '/colaboradores' },
+    { label: 'Colaboradores', path: '/colaboradores' },
   ];
 
-  dropdownItems = [
-    { label: 'Beneficios del socio', path: '/beneficios' },
-    { label: 'La Junta Directiva', path: '/directiva' },
+  serviciosItems = [
+    { label: 'Extraescolares', path: '/extraescolares' },
+    { label: 'Bus Escolar', path: '/bus-escolar' },
+    { label: 'Bos días / Tardes', path: '/bos-dias-tardes' },
+  ];
+
+  anpaItems = [
+    { label: 'Beneficios', path: '/beneficios' },
+    { label: 'Directiva', path: '/directiva' },
     { label: 'Asambleas', path: '/asambleas' },
     { label: 'Contacto', path: '/contacto' },
   ];
 
-  toggleDropdown() {
-    this.isDropdownOpen.update(v => !v);
+  openDropdown(name: string) {
+    if (this.closeTimeout) clearTimeout(this.closeTimeout);
+    this.activeDropdown.set(name);
+  }
+
+  closeDropdownWithDelay() {
+    // Damos 150ms de margen para que el ratón cruce el espacio entre botón y menú
+    this.closeTimeout = setTimeout(() => {
+      this.activeDropdown.set(null);
+    }, 150);
+  }
+
+  forceClose() {
+    this.activeDropdown.set(null);
+    this.isMobileMenuOpen.set(false);
+  }
+
+  toggleMobileGroup(group: string) {
+    this.mobileGroupOpen.update(current => current === group ? null : group);
   }
 }
