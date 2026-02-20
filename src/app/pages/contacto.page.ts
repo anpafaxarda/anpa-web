@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageComponent } from '../shared/components/page.component';
+import { SeoService } from '../core/services/seo.service';
 
 @Component({
   selector: 'app-contacto-page',
@@ -8,7 +9,7 @@ import { PageComponent } from '../shared/components/page.component';
   imports: [CommonModule, PageComponent],
   template: `
    <app-page-component
-      [title]="'Contacta con nosotros'"
+      [title]="title"
       [subTitle]="'Estamos aquí para ayudarte. Escríbenos, llámanos o ven a visitarnos a nuestro local en el colegio.'"
     >
       <div class="container mx-auto px-4 -mt-10">
@@ -96,4 +97,14 @@ import { PageComponent } from '../shared/components/page.component';
     </app-page-component>
   `,
 })
-export default class ContactoPage {}
+export default class ContactoPage {
+  title = 'Contacta con nosotros'
+  private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta(
+      this.title,
+      '¿Tienes dudas o sugerencias? Ponte en contacto con el ANPA A Faxarda a través de nuestro formulario, email o redes sociales.'
+    );
+  }
+}

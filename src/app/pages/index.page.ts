@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';;
+import { Component, inject } from '@angular/core';;
 import { RouterLink } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { SeoService } from '../core/services/seo.service';
 
 @Component({
   selector: 'app-home-page',
@@ -67,4 +68,14 @@ import { CommonModule } from '@angular/common';
     }
   `],
 })
-export default class IndexPage {}
+export default class IndexPage {
+  title = 'index'
+  private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta(
+      this.title,
+      'Proyectos, mejoras en el centro y campañas promovidas por el ANPA para enriquecer la experiencia escolar de nuestros hijos e hijas.'
+    );
+  }
+}

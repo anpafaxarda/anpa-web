@@ -1,11 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
+import { SeoService } from '../core/services/seo.service';
 
 @Component({
   standalone: true,
   imports: [PageComponent],
   template: `
-    <app-page-component title="Política de Cookies" category="Legal">
+    <app-page-component [title]="title" category="Legal">
       <div class="container mx-auto px-4 -mt-10 mb-20">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-surface-100 max-w-4xl mx-auto">
           <div class="prose prose-slate max-w-none">
@@ -29,6 +30,16 @@ import { PageComponent } from '../shared/components/page.component';
   `
 })
 export default class PoliticaCookiesPage {
+  title = 'Política de Cookies'
+  private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta(
+      this.title,
+      'Detalle del uso de cookies en nuestra web: qué son, para qué las utilizamos y cómo puedes configurar tus preferencias de navegación.'
+    );
+  }
+
   reset() {
     localStorage.removeItem('cookie-consent');
     window.location.reload();

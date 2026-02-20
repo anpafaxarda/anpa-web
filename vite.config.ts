@@ -18,6 +18,7 @@ export default defineConfig(({ mode }) => ({
         routes: [
           '/',
           '/asambleas',
+          '/politica-cookies',
           '/beneficios',
           '/colaboradores',
           '/contacto',
