@@ -20,11 +20,11 @@ import { ANALYTICS_CONFIG } from '../../core/config/analytics.config';
           <div class="flex gap-3">
             <button (click)="accept()"
                     class="flex-1 bg-primary-500 hover:bg-primary-400 text-white font-bold py-2.5 rounded-xl transition-all active:scale-95">
-              Aceptar
+              Aceptar todas
             </button>
             <button (click)="decline()"
                     class="flex-1 bg-surface-800 hover:bg-surface-700 text-surface-300 py-2.5 rounded-xl transition-all">
-              Rechazar
+              Solo técnicas
             </button>
           </div>
         </div>
@@ -42,7 +42,7 @@ export class CookieBannerComponent implements OnInit {
       if (!consent) {
         this.isVisible.set(true);
       } else if (consent === 'accepted') {
-        this.initGoogleAnalytics();
+        setTimeout(() => this.initGoogleAnalytics(), 1000);
       }
     }
   }
@@ -59,21 +59,37 @@ export class CookieBannerComponent implements OnInit {
   }
 
   private initGoogleAnalytics() {
+    if (!isPlatformBrowser(this.platformId)) return;
+
     const id = ANALYTICS_CONFIG.id;
 
-    const gScript = document.createElement('script');
-    gScript.async = true;
-    gScript.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
-    document.head.appendChild(gScript);
+    if (!document.getElementById('google-analytics-script')) {
+      const gScript = document.createElement('script');
+      gScript.id = 'google-analytics-script';
+      gScript.async = true;
+      gScript.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
+      document.head.appendChild(gScript);
+    }
 
-    (window as any).dataLayer = (window as any).dataLayer || [];
-    function gtag(...args: any[]) { (window as any).dataLayer.push(args); }
+    const gtag = (window as any).gtag;
 
-    gtag('js', new Date());
-    gtag('config', id);
+    if (typeof gtag === 'function') {
+      gtag('consent', 'update', {
+        'analytics_storage': 'granted',
+        'ad_storage': 'granted',
+        'ad_user_data': 'granted',
+        'ad_ads_personalization': 'granted'
+      });
 
-    gtag('consent', 'update', {
-      'analytics_storage': 'granted'
-    });
+      gtag('js', new Date());
+      gtag('config', id, {
+        page_path: window.location.pathname,
+        send_page_view: true
+      });
+
+      console.log('📊 Google Analytics: Consentimiento actualizado y tracking enviado.');
+    } else {
+      console.error('❌ Error: gtag no encontrado. Revisa el index.html');
+    }
   }
 }
