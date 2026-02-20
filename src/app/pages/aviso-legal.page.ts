@@ -1,13 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
+import { SeoService } from '../core/services/seo.service';
 
 @Component({
   selector: 'app-aviso-legal-page',
   standalone: true,
   imports: [PageComponent, CommonModule],
   template: `
-    <app-page-component title="Aviso Legal" category="Legal">
+    <app-page-component [title]="title" category="Legal">
       <div class="container mx-auto px-4 -mt-10 mb-20">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-surface-100 max-w-4xl mx-auto prose prose-slate">
 
@@ -47,5 +48,13 @@ import { CommonModule } from '@angular/common';
   `,
 })
 export default class AvisoLegalPage {
-  title = 'Aviso Legal'
+  title = 'Aviso Legal';
+  private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta(
+      this.title,
+      'Información detallada sobre cómo protegemos y gestionamos los datos personales de las familias y socios siguiendo la normativa vigente del RGPD.'
+    );
+  }
 }

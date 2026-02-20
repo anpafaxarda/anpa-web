@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
+import { SeoService } from '../core/services/seo.service';
 
 @Component({
   selector: 'app-labor-anpa-page',
@@ -25,5 +26,14 @@ import { CommonModule } from '@angular/common';
   `,
 })
 export default class LaborAnpaPage {
-  title = 'Labor del ANPA'
+  title = 'Labor del ANPA';
+
+  private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta(
+      this.title,
+      'Descubre qué hacemos en el ANPA A Faxarda: representamos a las familias, gestionamos servicios y trabajamos por la mejora de la comunidad educativa.'
+    );
+  }
 }

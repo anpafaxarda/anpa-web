@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
+import { SeoService } from '../core/services/seo.service';
 
 @Component({
   selector: 'app-asambleas-page',
@@ -25,5 +26,13 @@ import { CommonModule } from '@angular/common';
   `,
 })
 export default class AsambleasPage {
-  title = 'Asambleas'
+  title = 'Asambleas';
+  private seo = inject(SeoService);
+
+  ngOnInit() {
+    this.seo.setPageMeta(
+      this.title,
+      'Espacio de transparencia para socios. Consulta las próximas convocatorias, actas de reuniones y decisiones tomadas en asamblea.'
+    );
+  }
 }
