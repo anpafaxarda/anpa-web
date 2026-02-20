@@ -28,6 +28,8 @@ export default defineConfig(({ mode }) => ({
           '/labor-anpa',
           '/aviso-legal',
           '/privacidad',
+          '/bos-dias-tardes',
+          '/bus-escolar',
         ],
       },
     }),
