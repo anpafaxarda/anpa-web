@@ -1,29 +1,107 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
+import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
+import { injectLoad } from '@analogjs/router';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { load } from './bus-escolar.server';
 
 @Component({
+  selector: 'app-bus-page',
   standalone: true,
-  imports: [CommonModule, PageComponent],
+  imports: [PageComponent, CommonModule],
   template: `
-    <app-page-component title="Bus Escolar" category="Servicios">
-      <div class="container mx-auto px-4 -mt-10 space-y-10">
-        <div class="bg-white p-8 rounded-3xl shadow-sm border border-surface-100">
-          <h2 class="text-2xl font-bold mb-4">Rutas y Horarios</h2>
+    <app-page-component
+      [category]="'Servizos'"
+      [title]="title"
+      [subTitle]="'Consulta as rutas, paradas e horarios do transporte escolar do CEIP Gregorio Sanz.'"
+    >
+      <div class="max-w-5xl mx-auto px-4">
+
+        <div class="bg-blue-50 border border-blue-100 p-6 rounded-3xl mb-12 flex items-start gap-4">
+          <span class="text-2xl">🚌</span>
+          <div>
+            <h3 class="text-blue-900 font-bold mb-1">Información de interese</h3>
+            <p class="text-blue-700 text-sm">O servizo de bus escolar está xestionado en colaboración coa Xunta e o centro. Recoméndase estar na parada 5 minutos antes da hora sinalada.</p>
           </div>
+        </div>
+
+        <div class="space-y-12 mb-20">
+          @for (ruta of rutas(); track ruta._id) {
+            <div class="bg-white rounded-3xl border border-surface-100 overflow-hidden shadow-sm">
+              <div class="bg-surface-900 p-6 text-white flex justify-between items-center">
+                <h3 class="text-xl font-black">{{ ruta.nombreRuta }}</h3>
+                @if (ruta.conductor) {
+                  <span class="text-xs bg-white/20 px-3 py-1 rounded-full italic">Cond.: {{ ruta.conductor }}</span>
+                }
+              </div>
+
+              <div class="overflow-x-auto">
+                <table class="w-full text-left border-collapse">
+                  <thead>
+                    <tr class="bg-surface-50 border-b border-surface-100">
+                      <th class="p-4 text-xs font-black uppercase text-surface-500">Parada</th>
+                      <th class="p-4 text-xs font-black uppercase text-surface-500 text-center">Recollida</th>
+                      <th class="p-4 text-xs font-black uppercase text-surface-500 text-center">Regreso</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    @for (parada of ruta.paradas; track parada.nombre) {
+                      <tr class="border-b border-surface-50 hover:bg-surface-50/50 transition-colors">
+                        <td class="p-4 text-surface-900 font-bold">{{ parada.nombre }}</td>
+                        <td class="p-4 text-center">
+                          <span class="bg-green-50 text-green-700 px-3 py-1 rounded-lg text-sm font-mono font-bold">
+                            {{ parada.horaRecogida }}
+                          </span>
+                        </td>
+                        <td class="p-4 text-center">
+                          <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-lg text-sm font-mono font-bold">
+                            {{ parada.horaRegreso }}
+                          </span>
+                        </td>
+                      </tr>
+                    }
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          } @empty {
+             <div class="text-center py-20 bg-surface-50 rounded-3xl border border-dashed border-surface-200">
+              <p class="text-surface-400 italic">Cargando rutas de transporte...</p>
+            </div>
+          }
+        </div>
+
+        <div class="pt-4">
+          <div class="group relative overflow-hidden rounded-[2.5rem] bg-primary-600 p-8 md:p-12 text-center shadow-md">
+            <div class="relative z-10 max-w-3xl mx-auto">
+              <h2 class="text-2xl font-black text-white mb-4">Avisos ou Incidencias?</h2>
+              <p class="text-primary-100 mb-8">Se tes algunha dúbida sobre as rutas ou necesitas notificar unha incidencia no transporte, contacta coa xestión do ANPA.</p>
+              <a href="/contacto" class="inline-flex bg-white text-primary-600 px-8 py-3 rounded-full font-bold hover:scale-105 transition-transform">
+                Contactar co ANPA
+              </a>
+            </div>
+            <div class="absolute -right-8 -bottom-8 h-48 w-48 rounded-full bg-primary-500 opacity-50 transition-transform group-hover:scale-125"></div>
+          </div>
+        </div>
       </div>
     </app-page-component>
-  `
+  `,
 })
-export default class BusEscolarPage {
-  title = 'Bus escolar'
+export default class BusPage {
+title = 'Transporte Escolar';
+
+  private readonly load$ = injectLoad<typeof load>();
+  readonly data = toSignal(this.load$);
+
+  readonly rutas = computed(() => this.data()?.rutas ?? []);
+
   private seo = inject(SeoService);
 
   ngOnInit() {
     this.seo.setPageMeta(
       this.title,
-      'Listado de establecimientos locales que colaboran con el ANPA A Faxarda ofreciendo condiciones especiales a nuestros socios.'
+      'Horarios e paradas do bus escolar do CEIP Gregorio Sanz.'
     );
   }
 }

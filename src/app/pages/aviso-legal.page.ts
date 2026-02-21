@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-aviso-legal-page',
@@ -15,32 +16,32 @@ import { SeoService } from '../core/services/seo.service';
           <section class="mb-8">
             <h2 class="text-2xl font-bold text-surface-900 mb-4">1. Datos Identificativos</h2>
             <p class="text-surface-600">
-              En cumplimiento con el deber de información recogido en artículo 10 de la Ley 34/2002, de 11 de julio, de Servicios de la Sociedad de la Información y del Comercio Electrónico, a continuación se reflejan los siguientes datos:
+              En cumprimento co deber de información recollido no artigo 10 da Lei 34/2002, do 11 de xullo, de Servizos da Sociedade da Información e do Comercio Electrónico, a continuación reflíctense os seguintes datos:
             </p>
             <ul class="list-disc ml-6 mt-4 text-surface-600">
-              <li><strong>Titular:</strong> ANPA [Nombre de tu ANPA]</li>
+              <li><strong>Titular:</strong> ANPA A Faxarda</li>
               <li><strong>NIF:</strong> [GXXXXXXXX]</li>
-              <li><strong>Domicilio:</strong> [Dirección del Colegio/Local]</li>
-              <li><strong>Correo electrónico:</strong> [email@ejemplo.com]</li>
+              <li><strong>Domicilio:</strong> CEIP Gregorio Sanz, planta baixa (Ribadeo)</li>
+              <li><strong>Correo electrónico:</strong> anpafaxarda&#64;gmail.com</li>
             </ul>
           </section>
 
           <section class="mb-8">
             <h2 class="text-2xl font-bold text-surface-900 mb-4">2. Usuarios</h2>
             <p class="text-surface-600">
-              El acceso y/o uso de este portal atribuye la condición de USUARIO, que acepta, desde dicho acceso y/o uso, las Condiciones Generales de Uso aquí reflejadas.
+              O acceso e/ou uso deste portal atribúe a condición de USUARIO, que acepta, desde dito acceso e/ou uso, as Condicións Xerais de Uso aquí reflectidas.
             </p>
           </section>
 
           <section class="mb-8">
-            <h2 class="text-2xl font-bold text-surface-900 mb-4">3. Propiedad Intelectual</h2>
+            <h2 class="text-2xl font-bold text-surface-900 mb-4">3. Propiedade Intelectual</h2>
             <p class="text-surface-600">
-              El diseño del portal y sus códigos fuente, así como los logos, marcas y demás signos distintivos que aparecen en el mismo pertenecen al ANPA y están protegidos por los correspondientes derechos de propiedad intelectual e industrial.
+              O deseño do portal e os seus códigos fonte, así como os logos, marcas e demais signos distintivos que aparecen no mesmo pertencen ao ANPA e están protexidos polos correspondentes dereitos de propiedade intelectual e industrial.
             </p>
           </section>
 
           <div class="mt-12 pt-8 border-t border-surface-100 text-center">
-            <a href="/" class="text-primary-600 font-bold hover:underline">← Volver al inicio</a>
+            <a (click)="goHome()" class="text-primary-600 font-bold hover:underline cursor-pointer">← Volver ao inicio</a>
           </div>
         </div>
       </div>
@@ -50,11 +51,16 @@ import { SeoService } from '../core/services/seo.service';
 export default class AvisoLegalPage {
   title = 'Aviso Legal';
   private seo = inject(SeoService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.seo.setPageMeta(
       this.title,
-      'Información detallada sobre cómo protegemos y gestionamos los datos personales de las familias y socios siguiendo la normativa vigente del RGPD.'
+      'Información detallada sobre como protexemos e xestionamos os datos persoais das familias e socios seguindo a normativa vixente do RGPD.'
     );
+  }
+
+  goHome() {
+    this.router.navigate(['/']);
   }
 }
