@@ -22,7 +22,7 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([
         (req, next) => {
           if (typeof window !== 'undefined' && req.url.includes('_analog/pages')) {
-            console.log('Petición interceptada:', req.url);
+            console.log('Navegación SPA detectada hacia:', req.url);
           }
           return next(req);
         },
