@@ -1,5 +1,9 @@
 {
   "version": 2,
-  "outputDirectory": "dist/analog/public",
-  "cleanUrls": true
+  "outputDirectory": ".vercel/output",
+  "cleanUrls": true,
+  "routes": [
+    { "handle": "filesystem" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
 }
