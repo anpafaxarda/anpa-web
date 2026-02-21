@@ -1,146 +1,145 @@
 import { injectLoad } from '@analogjs/router';
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { load } from './extraescolares.server';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule } from '@angular/common';
 import { Actividad } from '../domain/actividades/actividades.model';
 import { PageComponent } from '../shared/components/page.component';
-import { SeoService } from '../core/services/seo.service';
-import { SkeletonComponent } from '../shared/components/skeleton.component';
 
 @Component({
-  selector: 'app-extraescolares-page',
   standalone: true,
-  imports: [CommonModule, PortableTextPipe, PageComponent, SkeletonComponent],
+  imports: [CommonModule, PortableTextPipe, PageComponent],
   template: `
     <app-page-component
         [category]="'Labor do ANPA'"
-        [title]="title"
+        [title]="'Actividades Extraescolares'"
         [subTitle]="'Organizadas polo ANPA A Faxarda en colaboración co colexio CEIP Gregorio Sanz.'"
     >
-      @if (this.isLoading()) {
-        <app-skeleton-component />
-      } @else {
-        <div class="flex justify-center mb-10">
-          <div class="inline-flex p-1 bg-surface-100 rounded-2xl shadow-inner relative">
-            <button (click)="view.set('cards')"
-              [class]="view() === 'cards' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
-              class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2">
-              <span>🎴</span> Lista
-            </button>
-            <button (click)="view.set('calendar')"
-              [class]="view() === 'calendar' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
-              class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2">
-              <span>📅</span> Horario
-            </button>
-          </div>
+
+      <div class="flex justify-center mb-10">
+        <div class="inline-flex p-1 bg-surface-100 rounded-2xl shadow-inner relative">
+          <button (click)="view.set('cards')"
+            [class]="view() === 'cards' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
+            class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2">
+            <span>🎴</span> Lista
+          </button>
+          <button (click)="view.set('calendar')"
+            [class]="view() === 'calendar' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
+            class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2">
+            <span>📅</span> Horario
+          </button>
         </div>
+      </div>
 
-        <div class="relative min-h-[600px]">
+      <div class="relative min-h-[600px]">
 
-          @if (view() === 'cards') {
-            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-slide-in-left">
-              @for (actividad of actividades(); track actividad.name) {
-                <div class="bg-white rounded-3xl shadow-xl border border-surface-100 overflow-hidden flex flex-col md:flex-row group transition-all duration-500 hover:border-primary-200">
-                  <div class="md:w-1/3 relative h-48 md:h-auto bg-surface-100 overflow-hidden">
-                    @if (actividad.imageUrl) {
-                      <img [src]="actividad.imageUrl" [alt]="actividad.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
-                    }
-                    <div class="absolute inset-0 bg-gradient-to-t from-surface-900/60 to-transparent"></div>
-                    <div class="absolute bottom-4 left-4 text-white font-black text-lg">{{ actividad.price }}</div>
+        @if (view() === 'cards') {
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-slide-in-left">
+            @for (actividad of actividades(); track actividad.name) {
+              <div class="bg-white rounded-3xl shadow-xl border border-surface-100 overflow-hidden flex flex-col md:flex-row group transition-all duration-500 hover:border-primary-200">
+                <div class="md:w-1/3 relative h-48 md:h-auto bg-surface-100 overflow-hidden">
+                  @if (actividad.imageUrl) {
+                    <img [src]="actividad.imageUrl" [alt]="actividad.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                  }
+                  <div class="absolute inset-0 bg-gradient-to-t from-surface-900/60 to-transparent"></div>
+                  <div class="absolute bottom-4 left-4 text-white font-black text-lg">{{ actividad.price }}</div>
+                </div>
+                <div class="md:w-2/3 p-8 flex flex-col">
+                  <h3 class="text-2xl font-black text-surface-900 mb-2 leading-tight">{{ actividad.name }}</h3>
+                  <div class="portable-text text-surface-600 text-sm mb-6 flex-grow line-clamp-3" [innerHTML]="actividad.description | portableText"></div>
+                  <div class="pt-4 border-t border-surface-50 text-xs font-bold text-surface-700 flex items-center gap-2">
+                    <span class="text-primary-600">🕒</span> {{ actividad.classDuration }}
                   </div>
-                  <div class="md:w-2/3 p-8 flex flex-col">
-                    <h3 class="text-2xl font-black text-surface-900 mb-2 leading-tight">{{ actividad.name }}</h3>
-                    <div class="portable-text text-surface-600 text-sm mb-6 flex-grow line-clamp-3" [innerHTML]="actividad.description | portableText"></div>
-                    <div class="pt-4 border-t border-surface-50 text-xs font-bold text-surface-700 flex items-center gap-2">
-                      <span class="text-primary-600">🕒</span> {{ actividad.classDuration }}
-                    </div>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (view() === 'calendar') {
+          <div class="animate-slide-in-right">
+
+            <div class="lg:hidden space-y-8">
+              @for (dia of dias; track dia) {
+                <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
+                  <h3 class="flex items-center gap-3 text-sm font-black uppercase tracking-widest text-primary-600 mb-4">
+                    <span class="h-px flex-grow bg-primary-100"></span>
+                    {{ dia }}
+                    <span class="h-px flex-grow bg-primary-100"></span>
+                  </h3>
+                  <div class="grid gap-3">
+                    @for (act of getActividadesOrdenadas(dia); track act.name) {
+                      <div class="bg-white p-5 rounded-3xl border border-surface-100 shadow-sm flex items-center gap-4">
+                        <div class="flex-shrink-0 text-center py-2 px-3 rounded-2xl border-2 min-w-[80px]"
+                             [style.backgroundColor]="colorMap()[act.name].bg"
+                             [style.borderColor]="colorMap()[act.name].border">
+                          <p class="text-[9px] font-black uppercase leading-none" [style.color]="colorMap()[act.name].text">Inicio</p>
+                          <p class="text-sm font-black mt-1" [style.color]="colorMap()[act.name].text">{{ act.horaInicio }}</p>
+                        </div>
+                        <div class="flex-grow">
+                          <h4 class="text-base font-bold text-surface-900 leading-tight">{{ act.name }}</h4>
+                          <p class="text-[10px] text-surface-400 font-bold uppercase mt-1">Remata ás {{ act.horaFin }}</p>
+                        </div>
+                      </div>
+                    }
                   </div>
                 </div>
               }
             </div>
-          }
 
-          @if (view() === 'calendar') {
-            <div class="animate-slide-in-right">
+            <div class="hidden lg:block bg-white rounded-[2.5rem] shadow-2xl border border-surface-100 overflow-hidden">
+              <div class="overflow-x-auto">
+                <div class="min-w-[1000px]">
 
-              <div class="lg:hidden space-y-8">
-                @for (dia of dias; track dia) {
-                  <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
-                    <h3 class="flex items-center gap-3 text-sm font-black uppercase tracking-widest text-primary-600 mb-4">
-                      <span class="h-px flex-grow bg-primary-100"></span>
-                      {{ dia }}
-                      <span class="h-px flex-grow bg-primary-100"></span>
-                    </h3>
-                    <div class="grid gap-3">
-                      @for (act of getActividadesOrdenadas(dia); track act.name) {
-                        <div class="bg-white p-5 rounded-3xl border border-surface-100 shadow-sm flex items-center gap-4">
-                          <div class="flex-shrink-0 text-center py-2 px-3 bg-primary-50 rounded-2xl border border-primary-100 min-w-[75px]">
-                            <p class="text-[9px] font-black text-primary-400 uppercase leading-none">Inicio</p>
-                            <p class="text-sm font-black text-primary-700 mt-1">{{ act.horaInicio }}</p>
-                          </div>
-                          <div class="flex-grow">
-                            <h4 class="text-base font-bold text-surface-900 leading-tight">{{ act.name }}</h4>
-                            <p class="text-[10px] text-surface-400 font-bold uppercase mt-1">Remata ás {{ act.horaFin }}</p>
-                          </div>
-                        </div>
-                      } @empty {
-                        <div class="py-4 text-center border-2 border-dashed border-surface-100 rounded-3xl bg-surface-50/30 text-surface-400 text-xs italic">
-                          Sen actividades
+                  <div class="grid grid-cols-[160px_1fr] border-b border-surface-100">
+                    <div class="bg-surface-50/50 p-4 border-r border-surface-100"></div>
+                    <div class="relative h-12 flex items-center">
+                      @for (hora of horasDisponibles; track hora) {
+                        <div class="absolute text-[10px] font-black text-surface-300 uppercase tracking-tighter" [style.left.px]="getLeftOffset(hora)">
+                          {{ hora }}
                         </div>
                       }
                     </div>
                   </div>
-                }
-              </div>
 
-              <div class="hidden lg:block bg-white rounded-[2.5rem] shadow-2xl border border-surface-100 overflow-hidden">
-                <div class="overflow-x-auto">
-                  <div class="min-w-[1000px]">
+                  @for (dia of dias; track dia) {
+                    <div class="grid grid-cols-[160px_1fr] border-b border-surface-100 last:border-0 min-h-[100px]">
+                      <div class="bg-surface-50/30 p-4 border-r border-surface-100 flex items-center justify-center sticky left-0 z-20">
+                        <span class="text-xs font-black uppercase tracking-widest text-surface-900">{{ dia }}</span>
+                      </div>
 
-                    <div class="grid grid-cols-[160px_1fr] border-b border-surface-100">
-                      <div class="bg-surface-50/50 p-4 border-r border-surface-100"></div>
-                      <div class="relative h-12 flex items-center">
-                        @for (hora of horasDisponibles; track hora) {
-                          <div class="absolute text-[10px] font-black text-surface-300 uppercase" [style.left.px]="getLeftOffset(hora)">
-                            {{ hora }}
+                      <div class="relative py-4 bg-grid-lines-horizontal">
+                        @for (fila of getFilasDeActividades(dia); track $index) {
+                          <div class="relative h-14 mb-2 last:mb-0">
+                             @for (act of fila; track act.name) {
+                              <div class="absolute h-full p-1 transition-all duration-300 z-10 hover:z-20"
+                                   [style.left.px]="getLeftOffset(act.horaInicio)"
+                                   [style.width.px]="getWidthDuration(act.horaInicio, act.horaFin)">
+                                <div class="h-full w-full rounded-xl px-3 py-2 shadow-sm border-l-[6px] flex flex-col justify-center overflow-hidden transition-all hover:scale-[1.02] hover:shadow-md"
+                                     [style.backgroundColor]="colorMap()[act.name].bg"
+                                     [style.borderColor]="colorMap()[act.name].border">
+                                  <h4 class="text-[11px] font-black leading-tight uppercase truncate"
+                                      [style.color]="colorMap()[act.name].text">{{ act.name }}</h4>
+                                  <p class="text-[10px] font-bold opacity-90 mt-0.5"
+                                     [style.color]="colorMap()[act.name].text">{{ act.horaInicio }} - {{ act.horaFin }}</p>
+                                </div>
+                              </div>
+                             }
                           </div>
                         }
                       </div>
                     </div>
-
-                    @for (dia of dias; track dia) {
-                      <div class="grid grid-cols-[160px_1fr] border-b border-surface-100 last:border-0 group min-h-[100px]">
-                        <div class="bg-surface-50/30 p-4 border-r border-surface-100 flex items-center justify-center sticky left-0 z-20">
-                          <span class="text-xs font-black uppercase tracking-widest text-surface-900">{{ dia }}</span>
-                        </div>
-
-                        <div class="relative py-4 bg-grid-lines-horizontal">
-                          @for (fila of getFilasDeActividades(dia); track $index) {
-                            <div class="relative h-14 mb-2 last:mb-0">
-                              @for (act of fila; track act.name) {
-                                <div class="absolute h-full p-1 transition-all duration-300 z-10 hover:z-20"
-                                    [style.left.px]="getLeftOffset(act.horaInicio)"
-                                    [style.width.px]="getWidthDuration(act.horaInicio, act.horaFin)">
-                                  <div class="h-full w-full bg-primary-600 text-white rounded-xl px-3 py-2 shadow-sm border-l-4 border-primary-400 flex flex-col justify-center overflow-hidden transition-all hover:scale-[1.02]">
-                                    <h4 class="text-[10px] font-black leading-tight uppercase truncate">{{ act.name }}</h4>
-                                    <p class="text-[9px] font-bold opacity-80 mt-0.5">{{ act.horaInicio }} - {{ act.horaFin }}</p>
-                                  </div>
-                                </div>
-                              }
-                            </div>
-                          }
-                        </div>
-                      </div>
-                    }
-                  </div>
+                  }
                 </div>
               </div>
             </div>
-          }
-        </div>
-      }
+          </div>
+          <p class="hidden lg:block text-center text-surface-400 text-[10px] mt-6 italic font-medium">
+            * Podes desprazar o horario lateralmente para ver todas as franxas horarias
+          </p>
+        }
+      </div>
     </app-page-component>
   `,
   styles: [`
@@ -156,7 +155,6 @@ import { SkeletonComponent } from '../shared/components/skeleton.component';
   `]
 })
 export default class ExtraescolaresPage {
-  title = 'Actividades Extraescolares';
   private readonly load$ = injectLoad<typeof load>();
   private readonly data = toSignal(this.load$, { initialValue: { actividades: [] as Actividad[] } });
 
@@ -169,41 +167,53 @@ export default class ExtraescolaresPage {
   private readonly PIXELS_PER_HOUR = 150;
   private readonly START_HOUR = 16;
 
-  private seo = inject(SeoService);
+  // Paleta con colores de alto contraste
+  private readonly COLORS = [
+    { bg: '#d1e3ff', border: '#1967d2', text: '#0d47a1' }, // Azul
+    { bg: '#feeeb3', border: '#f29900', text: '#8a4b00' }, // Ámbar
+    { bg: '#c6f0d1', border: '#188038', text: '#0b5324' }, // Esmeralda
+    { bg: '#fad2cf', border: '#c5221f', text: '#8c1c1c' }, // Carmesí
+    { bg: '#f3d2f9', border: '#9333ea', text: '#6b21a8' }, // Violeta
+    { bg: '#c4f0f6', border: '#0891b2', text: '#164e63' }, // Turquesa
+    { bg: '#ffe4cc', border: '#ea580c', text: '#7c2d12' }, // Naranja
+    { bg: '#e2e8f0', border: '#475569', text: '#1e293b' }, // Pizarra
+    { bg: '#dcfce7', border: '#16a34a', text: '#14532d' }, // Verde Lima
+    { bg: '#fae8ff', border: '#c026d3', text: '#701a75' }, // Fucsia
+    { bg: '#ffedd5', border: '#f97316', text: '#7c2d12' }, // Naranja Intenso
+    { bg: '#ecfdf5', border: '#10b981', text: '#064e3b' }, // Menta
+    { bg: '#fff1f2', border: '#f43f5e', text: '#881337' }, // Rosa
+    { bg: '#fef9c3', border: '#ca8a04', text: '#713f12' }, // Amarillo
+    { bg: '#e0e7ff', border: '#4f46e5', text: '#312e81' }, // Índigo
+    { bg: '#ffecd2', border: '#fcb045', text: '#8a5a00' }, // Melocotón
+  ];
 
-  isLoading = signal(true);
+  /**
+   * ESTA ES LA CLAVE:
+   * Creamos un mapa de colores único para cada nombre de actividad diferente.
+   */
+  readonly colorMap = computed(() => {
+    const nombresUnicos = Array.from(new Set(this.actividades().map(a => a.name.trim())));
+    const map: Record<string, typeof this.COLORS[0]> = {};
 
-  constructor() {
-    effect(() => {
-        if (this.data()) {
-          this.isLoading.set(false);
-        }
-      }, { allowSignalWrites: true }
-    );
-  }
+    nombresUnicos.forEach((nombre, index) => {
+      // Asignamos el color por índice secuencial, evitando colisiones matemáticas
+      map[nombre] = this.COLORS[index % this.COLORS.length];
+    });
 
-  ngOnInit() {
-    this.seo.setPageMeta(
-      this.title,
-      'Información detallada sobre la oferta de actividades, horarios, inscripciones y gestión de las extraescolares para el presente curso.'
-    );
-  }
+    return map;
+  });
 
   getActividadesOrdenadas(dia: string) {
-    return this.actividades()
-      .filter(a => a.diaSemana === dia)
-      .sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
+    return this.actividades().filter(a => a.diaSemana === dia).sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
   }
 
   getFilasDeActividades(dia: string): Actividad[][] {
     const actividadesDelDia = this.actividades().filter(a => a.diaSemana === dia);
     const filas: Actividad[][] = [];
-
     actividadesDelDia.forEach(act => {
       let filaEncontrada = false;
       for (let fila of filas) {
-        const haySolapamiento = fila.some(a => (act.horaInicio < a.horaFin && act.horaFin > a.horaInicio));
-        if (!haySolapamiento) {
+        if (!fila.some(a => (act.horaInicio < a.horaFin && act.horaFin > a.horaInicio))) {
           fila.push(act);
           filaEncontrada = true;
           break;

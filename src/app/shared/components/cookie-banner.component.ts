@@ -1,30 +1,34 @@
 import { Component, signal, OnInit, inject, PLATFORM_ID } from '@angular/core';
-import { isPlatformBrowser } from '@angular/common';
+import { isPlatformBrowser, CommonModule } from '@angular/common';
+import { Router, NavigationEnd, RouterLink } from '@angular/router';
+import { filter } from 'rxjs/operators';
 import { ANALYTICS_CONFIG } from '../../core/config/analytics.config';
 
 @Component({
   selector: 'app-cookie-banner',
   standalone: true,
+  imports: [CommonModule, RouterLink],
   template: `
     @if (isVisible()) {
-      <div class="fixed bottom-6 left-6 right-6 md:right-10 md:w-96 z-[100] bg-surface-900 text-white p-6 rounded-3xl shadow-2xl border border-white/10">
+      <div (click)="$event.stopPropagation()"
+           class="fixed bottom-6 left-6 right-6 md:right-10 md:w-96 z-[100] bg-surface-900 text-white p-6 rounded-3xl shadow-2xl border border-white/10 animate-in slide-in-from-bottom-5 duration-300">
         <div class="space-y-4">
           <div class="flex items-center gap-3">
             <span class="text-2xl">🍪</span>
             <h3 class="font-bold text-lg leading-none">Aviso de privacidad</h3>
           </div>
           <p class="text-surface-400 text-sm leading-relaxed">
-            Utilizamos cookies para entender cómo navegas por la web del ANPA y mejorar tu experiencia.
-            Puedes leer nuestra <a href="/politica-cookies" class="underline hover:text-primary-400">política de cookies</a>.
+            Utilizamos cookies para mejorar tu experiencia.
+            Puedes leer nuestra <a routerLink="/politica-cookies" (click)="isVisible.set(false)" class="underline hover:text-primary-400 font-medium">política de cookies</a>.
           </p>
           <div class="flex gap-3">
             <button (click)="accept()"
-                    class="flex-1 bg-primary-500 hover:bg-primary-400 text-white font-bold py-2.5 rounded-xl transition-all active:scale-95">
-              Aceptar todas
+                    class="flex-1 bg-primary-500 hover:bg-primary-400 text-white font-bold py-2.5 rounded-xl transition-all active:scale-95 shadow-lg shadow-primary-500/20">
+              Aceptar
             </button>
             <button (click)="decline()"
                     class="flex-1 bg-surface-800 hover:bg-surface-700 text-surface-300 py-2.5 rounded-xl transition-all">
-              Solo técnicas
+              Rechazar
             </button>
           </div>
         </div>
@@ -34,6 +38,7 @@ import { ANALYTICS_CONFIG } from '../../core/config/analytics.config';
 })
 export class CookieBannerComponent implements OnInit {
   private platformId = inject(PLATFORM_ID);
+  private router = inject(Router);
   isVisible = signal(false);
 
   ngOnInit() {
@@ -42,7 +47,7 @@ export class CookieBannerComponent implements OnInit {
       if (!consent) {
         this.isVisible.set(true);
       } else if (consent === 'accepted') {
-        setTimeout(() => this.initGoogleAnalytics(), 1000);
+        this.initGoogleAnalytics();
       }
     }
   }
@@ -69,27 +74,22 @@ export class CookieBannerComponent implements OnInit {
       gScript.async = true;
       gScript.src = `https://www.googletagmanager.com/gtag/js?id=${id}`;
       document.head.appendChild(gScript);
+
+      (window as any).dataLayer = (window as any).dataLayer || [];
+      (window as any).gtag = function() { (window as any).dataLayer.push(arguments); };
+      (window as any).gtag('js', new Date());
+      (window as any).gtag('config', id);
     }
 
-    const gtag = (window as any).gtag;
-
-    if (typeof gtag === 'function') {
-      gtag('consent', 'update', {
-        'analytics_storage': 'granted',
-        'ad_storage': 'granted',
-        'ad_user_data': 'granted',
-        'ad_ads_personalization': 'granted'
-      });
-
-      gtag('js', new Date());
-      gtag('config', id, {
-        page_path: window.location.pathname,
-        send_page_view: true
-      });
-
-      console.log('📊 Google Analytics: Consentimiento actualizado y tracking enviado.');
-    } else {
-      console.error('❌ Error: gtag no encontrado. Revisa el index.html');
-    }
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe((event: any) => {
+      if ((window as any).gtag) {
+        (window as any).gtag('config', id, {
+          'page_path': event.urlAfterRedirects
+        });
+        console.log(`📈 Tracking ruta: ${event.urlAfterRedirects}`);
+      }
+    });
   }
 }

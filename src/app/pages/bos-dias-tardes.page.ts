@@ -2,20 +2,21 @@ import { Component, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
+import { Router } from '@angular/router';
 
 @Component({
   standalone: true,
   imports: [CommonModule, PageComponent],
   template: `
-    <app-page-component title="Bos días y Tardes" category="Servicios">
+    <app-page-component [title]="this.title" category="Servizos">
       <div class="container mx-auto px-4 -mt-10 space-y-10 animate-in fade-in duration-500">
 
         <div class="bg-white p-8 rounded-3xl shadow-sm border border-surface-100">
           <h2 class="text-2xl font-bold text-surface-900 mb-4">Conciliación Familiar</h2>
           <p class="text-surface-600 leading-relaxed">
-            El servicio de "Bos días" y "Tardes divertidas" está diseñado para ayudar a las familias
-            que necesitan ampliar el horario escolar por motivos laborales, ofreciendo un entorno
-            seguro y educativo para los niños fuera del horario lectivo.
+            O servizo de "Bos días" e "Tardes divertidas" está deseñado para axudar ás familias
+            que necesitan ampliar o horario escolar por motivos laborais, ofrecendo unha contorna
+            segura e educativa para os nenos e nenas fóra do horario lectivo.
           </p>
         </div>
 
@@ -28,11 +29,11 @@ import { SeoService } from '../core/services/seo.service';
             <ul class="space-y-4">
               <li class="flex justify-between items-center py-2 border-b border-surface-50">
                 <span class="text-surface-500 font-medium">Horario</span>
-                <span class="text-surface-900 font-bold">Desde las 07:30</span>
+                <span class="text-surface-900 font-bold">Desde as 07:30</span>
               </li>
               <li class="flex justify-between items-center py-2 border-b border-surface-50">
-                <span class="text-surface-500 font-medium">Incluye</span>
-                <span class="text-surface-900 font-bold">Desayuno opcional</span>
+                <span class="text-surface-500 font-medium">Inclúe</span>
+                <span class="text-surface-900 font-bold">Almorzo opcional</span>
               </li>
               <li class="flex justify-between items-center py-2 border-b border-surface-50">
                 <span class="text-surface-500 font-medium">Lugar</span>
@@ -49,15 +50,15 @@ import { SeoService } from '../core/services/seo.service';
             <ul class="space-y-4">
               <li class="flex justify-between items-center py-2 border-b border-surface-50">
                 <span class="text-surface-500 font-medium">Horario</span>
-                <span class="text-surface-900 font-bold">Hasta las 18:00</span>
+                <span class="text-surface-900 font-bold">Ata as 18:00</span>
               </li>
               <li class="flex justify-between items-center py-2 border-b border-surface-50">
-                <span class="text-surface-500 font-medium">Actividad</span>
-                <span class="text-surface-900 font-bold">Ocio y refuerzo</span>
+                <span class="text-surface-500 font-medium">Actividade</span>
+                <span class="text-surface-900 font-bold">Lecer e reforzo</span>
               </li>
               <li class="flex justify-between items-center py-2 border-b border-surface-50">
                 <span class="text-surface-500 font-medium">Frecuencia</span>
-                <span class="text-surface-900 font-bold">Días sueltos o mensual</span>
+                <span class="text-surface-900 font-bold">Días soltos ou mensual</span>
               </li>
             </ul>
           </div>
@@ -65,11 +66,11 @@ import { SeoService } from '../core/services/seo.service';
 
         <div class="bg-primary-600 rounded-3xl p-8 text-white flex flex-col md:flex-row items-center justify-between gap-6">
           <div>
-            <h4 class="text-xl font-bold mb-1">¿Necesitas inscribirte?</h4>
-            <p class="text-primary-100">Descarga el formulario y envíalo firmado al correo del ANPA.</p>
+            <h4 class="text-xl font-bold mb-1">Necesitas inscribirte?</h4>
+            <p class="text-primary-100">Descarga o formulario e envíao asinado ao correo do ANPA.</p>
           </div>
-          <a href="/contacto" class="px-8 py-3 bg-white text-primary-600 rounded-full font-bold hover:scale-105 transition-transform shadow-lg">
-            Solicitar plaza
+          <a (click)="navigateToContacto()" class="px-8 py-3 bg-white text-primary-600 rounded-full font-bold hover:scale-105 transition-transform shadow-lg cursor-pointer">
+            Solicitar praza
           </a>
         </div>
 
@@ -78,12 +79,18 @@ import { SeoService } from '../core/services/seo.service';
   `
 })
 export default class BosDiasTardesPage implements OnInit {
+  title = 'Bos días e Tardes';
   private seo = inject(SeoService);
+  private router = inject(Router);
 
   ngOnInit() {
     this.seo.setPageMeta(
-      'Bos días y Tardes',
-      'Servicios de conciliación familiar en el CEIP Gregorio Sanz: horarios de madrugadores y actividades de tarde.'
+      this.title,
+      'Servizos de conciliación familiar no CEIP Gregorio Sanz: horarios de madrugadores e actividades de tarde.'
     );
+  }
+
+  navigateToContacto() {
+    this.router.navigate(['/contacto']);
   }
 }

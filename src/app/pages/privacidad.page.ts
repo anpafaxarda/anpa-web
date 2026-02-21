@@ -14,28 +14,28 @@ import { SeoService } from '../core/services/seo.service';
 
           <div class="space-y-8 text-surface-600">
             <section>
-              <h2 class="text-2xl font-bold text-surface-900 mb-4">¿Quién es el responsable del tratamiento?</h2>
-              <p>El responsable es el ANPA [Nombre], con NIF [GXXXXXXXX] y contacto [email].</p>
+              <h2 class="text-2xl font-bold text-surface-900 mb-4">Quen é o responsable do tratamento?</h2>
+              <p>O responsable é o ANPA A Faxarda, con NIF [GXXXXXXXX] e contacto anpafaxarda&#64;gmail.com.</p>
             </section>
 
             <section>
-              <h2 class="text-2xl font-bold text-surface-900 mb-4">¿Con qué finalidad tratamos sus datos?</h2>
-              <p>Tratamos la información que nos facilitan los socios con el fin de gestionar la relación asociativa, organizar actividades extraescolares y enviar comunicaciones relevantes sobre la vida escolar.</p>
+              <h2 class="text-2xl font-bold text-surface-900 mb-4">Con que finalidade tratamos os seus datos?</h2>
+              <p>Tratamos a información que nos facilitan os socios e socias co fin de xestionar a relación asociativa, organizar actividades extraescolares e enviar comunicacións relevantes sobre a vida escolar.</p>
             </section>
 
             <section>
-              <h2 class="text-2xl font-bold text-surface-900 mb-4">¿Cuánto tiempo conservaremos sus datos?</h2>
-              <p>Los datos personales proporcionados se conservarán mientras se mantenga la condición de socio o durante los años necesarios para cumplir con las obligaciones legales.</p>
+              <h2 class="text-2xl font-bold text-surface-900 mb-4">Canto tempo conservaremos os seus datos?</h2>
+              <p>Os datos persoais proporcionados conservaranse mentres se manteña a condición de socio/a ou durante os anos necesarios para cumprir coas obrigas legais.</p>
             </section>
 
             <section class="bg-primary-50 p-6 rounded-2xl border border-primary-100 text-primary-900">
-              <h3 class="font-bold mb-2">Sus Derechos</h3>
-              <p class="text-sm">Tiene derecho a acceder, rectificar y suprimir los datos, así como otros derechos explicados en la información adicional, contactando con nosotros por email.</p>
+              <h3 class="font-bold mb-2">Os seus Dereitos</h3>
+              <p class="text-sm">Ten dereito a acceder, rectificar e suprimir os datos, así como outros dereitos explicados na información adicional, contactando con nós por correo electrónico.</p>
             </section>
           </div>
 
           <div class="mt-12 pt-8 border-t border-surface-100 text-center">
-            <a href="/" class="text-primary-600 font-bold hover:underline">← Volver al inicio</a>
+            <a href="/" class="text-primary-600 font-bold hover:underline">← Volver ao inicio</a>
           </div>
         </div>
       </div>
@@ -43,13 +43,13 @@ import { SeoService } from '../core/services/seo.service';
   `,
 })
 export default class PrivacidadPage {
-  title = 'Política de Privacidad'
+  title = 'Política de Privacidade'
   private seo = inject(SeoService);
 
   ngOnInit() {
     this.seo.setPageMeta(
       this.title,
-      'Información detallada sobre cómo protegemos y gestionamos los datos personales de las familias y socios siguiendo la normativa vigente del RGPD.'
+      'Información detallada sobre como protexemos e xestionamos os datos persoais das familias e socios seguindo a normativa vixente do RGPD.'
     );
   }
 }

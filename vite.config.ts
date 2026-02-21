@@ -9,11 +9,10 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: ['es2020'],
   },
-  resolve: {
-    mainFields: ['module'],
-  },
+  resolve: {},
   plugins: [
     analog({
+      static: true,
       prerender: {
         routes: [
           '/',
@@ -22,7 +21,7 @@ export default defineConfig(({ mode }) => ({
           '/beneficios',
           '/colaboradores',
           '/contacto',
-          '/directiva',
+          '/xunta-directiva',
           '/extraescolares',
           '/iniciativas',
           '/labor-anpa',
@@ -31,7 +30,11 @@ export default defineConfig(({ mode }) => ({
           '/bos-dias-tardes',
           '/bus-escolar',
         ],
+        sitemap: {
+          host: 'https://anpa-web.vercel.app'
+        }
       },
+
     }),
     tailwindcss()
   ],

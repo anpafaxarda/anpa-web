@@ -10,19 +10,19 @@ import { SeoService } from '../core/services/seo.service';
       <div class="container mx-auto px-4 -mt-10 mb-20">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-surface-100 max-w-4xl mx-auto">
           <div class="prose prose-slate max-w-none">
-            <h2 class="text-2xl font-bold text-surface-900 mb-4">¿Cómo utilizamos las cookies?</h2>
-            <p>Utilizamos cookies para personalizar el contenido y analizar nuestro tráfico. Compartimos información sobre el uso que hace del sitio web con nuestro partner de análisis: Google Analytics.</p>
+            <h2 class="text-2xl font-bold text-surface-900 mb-4">Como utilizamos as cookies?</h2>
+            <p>Utilizamos cookies para personalizar o contido e analizar o noso tráfico. Compartimos información sobre o uso que fai do sitio web co noso partner de análise: Google Analytics.</p>
 
             <div class="my-8 p-6 bg-surface-50 rounded-2xl border border-surface-100">
-              <h3 class="text-lg font-bold mb-4">Gestión de su consentimiento</h3>
-              <p class="text-sm mb-4">Si desea cambiar sus preferencias o retirar el consentimiento:</p>
-              <button (click)="reset()" class="bg-white border border-surface-200 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-surface-100 transition-colors">
+              <h3 class="text-lg font-bold mb-4">Xestión do seu consentimento</h3>
+              <p class="text-sm mb-4">Se desexa cambiar as súas preferencias ou retirar o consentimento:</p>
+              <button (click)="reset()" class="bg-white border border-surface-200 px-4 py-2 rounded-lg text-sm font-semibold hover:bg-surface-100 transition-colors cursor-pointer">
                 Borrar preferencias de cookies
               </button>
             </div>
 
             <h3 class="font-bold">Cookies analíticas (Google Analytics)</h3>
-            <p class="text-sm">Estas cookies nos permiten contar las visitas y fuentes de circulación para poder medir y mejorar el desempeño de nuestra web.</p>
+            <p class="text-sm">Estas cookies permítennos contar as visitas e fontes de circulación para poder medir e mellorar o rendemento da nosa web.</p>
           </div>
         </div>
       </div>
@@ -36,7 +36,7 @@ export default class PoliticaCookiesPage {
   ngOnInit() {
     this.seo.setPageMeta(
       this.title,
-      'Detalle del uso de cookies en nuestra web: qué son, para qué las utilizamos y cómo puedes configurar tus preferencias de navegación.'
+      'Detalle do uso de cookies na nosa web: que son, para que as utilizamos e como podes configurar as túas preferencias de navegación.'
     );
   }
 
