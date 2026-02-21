@@ -9,13 +9,11 @@ export default defineConfig(({ mode }) => ({
   build: {
     target: ['es2020'],
   },
-  resolve: {},
+  resolve: {
+    mainFields: ['module'],
+  },
   plugins: [
     analog({
-      static: true,
-      nitro: {
-        preset: 'vercel',
-      },
       prerender: {
         routes: [
           '/',
