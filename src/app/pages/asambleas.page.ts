@@ -2,9 +2,21 @@ import { Component, computed, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
-import { injectLoad } from '@analogjs/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { load } from './asambleas.server';
+import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
+import { fetchAsambleas } from "../domain/asambleas/asamblea.action"; // Importamos la acción directamente
+import { Asamblea } from '../domain/asambleas/asamblea.model';
+
+// 1. Definimos el Resolver (sustituye al server.ts)
+export const asambleasResolver: ResolveFn<any> = () => {
+  return fetchAsambleas();
+};
+
+// 2. Configuramos el Meta de la ruta para que Analog use el Resolver
+export const routeMeta = {
+  resolve: {
+    asambleasData: asambleasResolver
+  }
+};
 
 @Component({
   selector: 'app-asambleas-page',
@@ -109,10 +121,11 @@ import { load } from './asambleas.server';
 export default class AsambleasPage {
   title = 'Asembleas e Transparencia';
 
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$);
+  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
+  private route = inject(ActivatedRoute);
 
-  readonly asambleas = computed(() => this.data()?.asambleas ?? []);
+  // 4. Mapeamos los datos al signal
+  readonly asambleas = computed(() => this.route.snapshot.data['asambleasData'] as Asamblea[] ?? []);
 
   private seo = inject(SeoService);
 

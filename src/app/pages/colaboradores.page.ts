@@ -1,11 +1,22 @@
-import { injectLoad } from '@analogjs/router';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Colaborador } from '../domain/colaboradores/colaborador.model';
-import { load } from './colaboradores.server';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
+import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
+import { fetchColaboradores } from "../domain/colaboradores/colaboradores.action"; // Acción directa
+
+// 1. Definimos el Resolver
+export const colaboradoresResolver: ResolveFn<any> = () => {
+  return fetchColaboradores();
+};
+
+// 2. Configuramos el Meta de la ruta
+export const routeMeta = {
+  resolve: {
+    colaboradoresData: colaboradoresResolver
+  }
+};
 
 @Component({
   selector: 'app-colaboradores-page',
@@ -71,12 +82,11 @@ import { SeoService } from '../core/services/seo.service';
 export default class ColaboradoresPage {
   title = 'Comercios colaboradores'
 
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$, {
-    initialValue: { colaboradores: [] as Colaborador[] }
-  });
+  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
+  private route = inject(ActivatedRoute);
 
-  readonly colaboradores = computed(() => this.data()?.colaboradores ?? []);
+  // 4. Mapeamos los datos desde el objeto devuelto por el resolver
+  readonly colaboradores = computed(() => this.route.snapshot.data['colaboradoresData'] as Colaborador[] ?? []);
 
   private seo = inject(SeoService);
 

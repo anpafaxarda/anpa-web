@@ -1,11 +1,20 @@
-import { injectLoad } from '@analogjs/router';
-import { Component, computed, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { load } from './extraescolares.server';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule } from '@angular/common';
 import { Actividad } from '../domain/actividades/actividades.model';
 import { PageComponent } from '../shared/components/page.component';
+import { fetchActividades } from '../domain/actividades/actividades.action';
+import { ActivatedRoute, ResolveFn } from '@angular/router';
+
+export const extraescolaresResolver: ResolveFn<any> = () => {
+  return fetchActividades();
+}
+
+export const routeMeta = {
+  resolve: {
+    extraescolaresData: extraescolaresResolver
+  }
+}
 
 @Component({
   standalone: true,
@@ -155,10 +164,10 @@ import { PageComponent } from '../shared/components/page.component';
   `]
 })
 export default class ExtraescolaresPage {
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$, { initialValue: { actividades: [] as Actividad[] } });
+  private route = inject(ActivatedRoute);
 
-  readonly actividades = computed(() => this.data()?.actividades ?? []);
+  readonly actividades = computed(() => this.route.snapshot.data['extraescolaresData'] as Actividad[] ?? []);
+
   view = signal<'cards' | 'calendar'>('cards');
 
   readonly dias = ['Luns', 'Martes', 'Mércores', 'Xoves', 'Venres'];

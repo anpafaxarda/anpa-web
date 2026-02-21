@@ -2,9 +2,21 @@ import { Component, computed, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
-import { injectLoad } from '@analogjs/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { load } from './bus-escolar.server';
+import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
+import { fetchBusEscolar } from "../domain/bus/bus.action"; // Importamos la acción directamente
+import { RutaBus } from '../domain/bus/bus.model';
+
+// 1. Definimos el Resolver
+export const busEscolarResolver: ResolveFn<any> = () => {
+  return fetchBusEscolar();
+};
+
+// 2. Configuramos el Meta de la ruta
+export const routeMeta = {
+  resolve: {
+    busData: busEscolarResolver
+  }
+};
 
 @Component({
   selector: 'app-bus-page',
@@ -92,12 +104,13 @@ import { load } from './bus-escolar.server';
   `,
 })
 export default class BusPage {
-title = 'Transporte Escolar';
+  title = 'Transporte Escolar';
 
-  private readonly load$ = injectLoad<typeof load>();
-  readonly data = toSignal(this.load$);
+  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
+  private route = inject(ActivatedRoute);
 
-  readonly rutas = computed(() => this.data()?.rutas ?? []);
+  // 4. Mapeamos directamente el array de rutas desde el objeto devuelto por el resolver
+  readonly rutas = computed(() => this.route.snapshot.data['busData'] as RutaBus[] ?? []);
 
   private seo = inject(SeoService);
 
