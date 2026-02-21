@@ -2,12 +2,14 @@
   "version": 2,
   "cleanUrls": true,
   "trailingSlash": false,
-  "routes": [
+  "rewrites": [
     {
-      "src": "/api/_analog/pages/(.*)",
-      "dest": "/_analog/cache/pages/$1.server.json"
+      "source": "/api/_analog/pages/(.*)",
+      "destination": "/_analog/cache/pages/$1.server.json"
     },
-    { "handle": "filesystem" },
-    { "src": "/.*", "dest": "/index.html" }
+    {
+      "source": "/(.*)",
+      "destination": "/index.html"
+    }
   ]
 }
