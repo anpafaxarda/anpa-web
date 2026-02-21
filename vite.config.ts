@@ -14,7 +14,8 @@ export default defineConfig(({ mode }) => ({
     analog({
       static: true,
       nitro: {
-        preset: 'vercel'
+        preset: 'vercel',
+        serveStatic: true
       },
       prerender: {
         routes: [
@@ -39,12 +40,5 @@ export default defineConfig(({ mode }) => ({
       },
     }),
     tailwindcss()
-  ],
-  test: {
-    globals: true,
-    environment: 'jsdom',
-    setupFiles: ['src/test-setup.ts'],
-    include: ['**/*.spec.ts'],
-    reporters: ['default'],
-  },
+  ]
 }));
