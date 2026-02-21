@@ -4,7 +4,6 @@ import { defineConfig } from 'vite';
 import analog from '@analogjs/platform';
 import tailwindcss from '@tailwindcss/vite';
 
-// https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   publicDir: 'public',
   build: {
@@ -14,6 +13,9 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     analog({
       static: true,
+      nitro: {
+        preset: 'vercel',
+      },
       prerender: {
         routes: [
           '/',
@@ -35,7 +37,6 @@ export default defineConfig(({ mode }) => ({
           host: 'https://anpa-web.vercel.app'
         }
       },
-
     }),
     tailwindcss()
   ],
