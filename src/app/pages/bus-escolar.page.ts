@@ -27,49 +27,52 @@ import { load } from './bus-escolar.server';
         </div>
 
         <div class="space-y-12 mb-20">
-          @for (ruta of rutas(); track ruta._id) {
-            <div class="bg-white rounded-3xl border border-surface-100 overflow-hidden shadow-sm">
-              <div class="bg-surface-900 p-6 text-white flex justify-between items-center">
-                <h3 class="text-xl font-black">{{ ruta.nombreRuta }}</h3>
-                @if (ruta.conductor) {
-                  <span class="text-xs bg-white/20 px-3 py-1 rounded-full italic">Cond.: {{ ruta.conductor }}</span>
-                }
-              </div>
+          @if (rutas() && rutas().length > 0) {
+            @for (ruta of rutas(); track ruta._id) {
+              <div class="bg-white rounded-3xl border border-surface-100 overflow-hidden shadow-sm">
+                <div class="bg-surface-900 p-6 text-white flex justify-between items-center">
+                  <h3 class="text-xl font-black">{{ ruta.nombreRuta }}</h3>
+                  @if (ruta.conductor) {
+                    <span class="text-xs bg-white/20 px-3 py-1 rounded-full italic">Cond.: {{ ruta.conductor }}</span>
+                  }
+                </div>
 
-              <div class="overflow-x-auto">
-                <table class="w-full text-left border-collapse">
-                  <thead>
-                    <tr class="bg-surface-50 border-b border-surface-100">
-                      <th class="p-4 text-xs font-black uppercase text-surface-500">Parada</th>
-                      <th class="p-4 text-xs font-black uppercase text-surface-500 text-center">Recollida</th>
-                      <th class="p-4 text-xs font-black uppercase text-surface-500 text-center">Regreso</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    @for (parada of ruta.paradas; track parada.nombre) {
-                      <tr class="border-b border-surface-50 hover:bg-surface-50/50 transition-colors">
-                        <td class="p-4 text-surface-900 font-bold">{{ parada.nombre }}</td>
-                        <td class="p-4 text-center">
-                          <span class="bg-green-50 text-green-700 px-3 py-1 rounded-lg text-sm font-mono font-bold">
-                            {{ parada.horaRecogida }}
-                          </span>
-                        </td>
-                        <td class="p-4 text-center">
-                          <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-lg text-sm font-mono font-bold">
-                            {{ parada.horaRegreso }}
-                          </span>
-                        </td>
+                <div class="overflow-x-auto">
+                  <table class="w-full text-left border-collapse">
+                    <thead>
+                      <tr class="bg-surface-50 border-b border-surface-100">
+                        <th class="p-4 text-xs font-black uppercase text-surface-500">Parada</th>
+                        <th class="p-4 text-xs font-black uppercase text-surface-500 text-center">Recollida</th>
+                        <th class="p-4 text-xs font-black uppercase text-surface-500 text-center">Regreso</th>
                       </tr>
-                    }
-                  </tbody>
-                </table>
+                    </thead>
+                    <tbody>
+                      @for (parada of ruta.paradas; track parada.nombre) {
+                        <tr class="border-b border-surface-50 hover:bg-surface-50/50 transition-colors">
+                          <td class="p-4 text-surface-900 font-bold">{{ parada.nombre }}</td>
+                          <td class="p-4 text-center">
+                            <span class="bg-green-50 text-green-700 px-3 py-1 rounded-lg text-sm font-mono font-bold">
+                              {{ parada.horaRecogida }}
+                            </span>
+                          </td>
+                          <td class="p-4 text-center">
+                            <span class="bg-orange-50 text-orange-700 px-3 py-1 rounded-lg text-sm font-mono font-bold">
+                              {{ parada.horaRegreso }}
+                            </span>
+                          </td>
+                        </tr>
+                      }
+                    </tbody>
+                  </table>
+                </div>
               </div>
-            </div>
-          } @empty {
-             <div class="text-center py-20 bg-surface-50 rounded-3xl border border-dashed border-surface-200">
+            }
+          } @else if (rutas() && rutas().length === 0) {
+            <div class="text-center py-20 bg-surface-50 rounded-3xl border border-dashed border-surface-200">
               <p class="text-surface-400 italic">Cargando rutas de transporte...</p>
             </div>
           }
+
         </div>
 
         <div class="pt-4">

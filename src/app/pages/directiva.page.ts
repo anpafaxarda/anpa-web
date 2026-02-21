@@ -2,7 +2,7 @@ import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { injectLoad } from '@analogjs/router';
 import { toSignal } from '@angular/core/rxjs-interop';
-import { load } from './xunta-directiva.server';
+import { load } from './directiva.server';
 import { Member } from '../domain/members/member.model';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';

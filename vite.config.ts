@@ -13,9 +13,6 @@ export default defineConfig(({ mode }) => ({
   plugins: [
     analog({
       static: true,
-      nitro: {
-        preset: 'vercel',
-      },
       prerender: {
         routes: [
           '/',
@@ -24,7 +21,7 @@ export default defineConfig(({ mode }) => ({
           '/beneficios',
           '/colaboradores',
           '/contacto',
-          '/xunta-directiva',
+          '/directiva',
           '/extraescolares',
           '/iniciativas',
           '/labor-anpa',
