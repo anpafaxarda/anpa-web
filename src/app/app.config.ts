@@ -19,7 +19,15 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withFetch(),
-      withInterceptors([requestContextInterceptor])
+      withInterceptors([
+        (req, next) => {
+          if (typeof window !== 'undefined' && req.url.includes('_analog/pages')) {
+            console.log('Petición interceptada:', req.url);
+          }
+          return next(req);
+        },
+        requestContextInterceptor
+      ])
     ),
     provideClientHydration(withEventReplay()),
   ],
