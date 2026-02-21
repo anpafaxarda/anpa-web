@@ -1,4 +1,21 @@
 {
   "version": 2,
-  "outputDirectory": ".vercel/output"
+  "outputDirectory": ".vercel/output",
+  "routes": [
+    {
+      "src": "/_analog/.*",
+      "dest": "/"
+    },
+    {
+      "src": "/api/.*",
+      "dest": "/"
+    },
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/.*",
+      "dest": "/index.html"
+    }
+  ]
 }
