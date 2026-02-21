@@ -36,6 +36,14 @@ export default defineConfig(({ mode }) => ({
           host: 'https://anpa-web.vercel.app'
         }
       },
+      nitro: {
+        preset: 'vercel',
+        // Esto asegura que Nitro trate las rutas como "fetchables" para la SPA
+        prerender: {
+          crawlLinks: true,
+          concurrency: 1
+        }
+      }
     }),
     tailwindcss()
   ]

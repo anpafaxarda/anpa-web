@@ -5,7 +5,7 @@
   "rewrites": [
     {
       "source": "/api/_analog/pages/(.*)",
-      "destination": "/_analog/cache/pages/$1.server.json"
+      "destination": "/$1"
     },
     {
       "source": "/(.*)",
