@@ -132,7 +132,7 @@ export class NavbarComponent {
 
   anpaItems = [
     { label: 'Beneficios', path: '/beneficios' },
-    { label: 'A Xunta Directiva', path: '/xunta-directiva' },
+    { label: 'A Xunta Directiva', path: '/directiva' },
     { label: 'Asambleas', path: '/asambleas' },
     { label: 'Contacto', path: '/contacto' },
   ];

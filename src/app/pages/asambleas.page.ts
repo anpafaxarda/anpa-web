@@ -37,51 +37,52 @@ import { load } from './asambleas.server';
             <span class="w-8 h-1 bg-primary-500 rounded-full"></span>
             Próximas e recentes
           </h3>
+          @if (asambleas() && asambleas().length > 0) {
+            @for (asamblea of asambleas(); track asamblea._id) {
+              <div class="group relative bg-white rounded-3xl border border-surface-100 p-6 md:p-8 hover:border-primary-200 hover:shadow-xl transition-all duration-300">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
 
-          @for (asamblea of asambleas(); track asamblea._id) {
-            <div class="group relative bg-white rounded-3xl border border-surface-100 p-6 md:p-8 hover:border-primary-200 hover:shadow-xl transition-all duration-300">
-              <div class="flex flex-col md:flex-row md:items-center justify-between gap-6">
-
-                <div class="space-y-2 text-left">
-                  <div class="flex items-center gap-3">
-                    <span class="px-3 py-1 bg-primary-50 text-primary-600 text-[10px] font-black uppercase tracking-wider rounded-lg">
-                      {{ asamblea.tipo || 'Asemblea' }}
-                    </span>
-                    <span class="text-surface-400 text-sm font-medium italic">
-                      {{ asamblea.fecha | date:'dd/MM/yyyy' }}
-                    </span>
+                  <div class="space-y-2 text-left">
+                    <div class="flex items-center gap-3">
+                      <span class="px-3 py-1 bg-primary-50 text-primary-600 text-[10px] font-black uppercase tracking-wider rounded-lg">
+                        {{ asamblea.tipo || 'Asemblea' }}
+                      </span>
+                      <span class="text-surface-400 text-sm font-medium italic">
+                        {{ asamblea.fecha | date:'dd/MM/yyyy' }}
+                      </span>
+                    </div>
+                    <h4 class="text-xl font-black text-surface-900 group-hover:text-primary-600 transition-colors">
+                      {{ asamblea.titulo }}
+                    </h4>
+                    <p class="text-surface-500 text-sm flex items-center gap-1">
+                      📍 {{ asamblea.lugar || 'Biblioteca do Centro' }}
+                    </p>
                   </div>
-                  <h4 class="text-xl font-black text-surface-900 group-hover:text-primary-600 transition-colors">
-                    {{ asamblea.titulo }}
-                  </h4>
-                  <p class="text-surface-500 text-sm flex items-center gap-1">
-                    📍 {{ asamblea.lugar || 'Biblioteca do Centro' }}
-                  </p>
-                </div>
 
-                <div class="flex flex-wrap gap-2 md:justify-end">
-                  <button (click)="avisoSocio()"
-                    class="flex items-center gap-2 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-xl hover:bg-primary-600 transition-colors shadow-lg shadow-surface-900/10 cursor-pointer">
-                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-                    Solicitar Acta
-                  </button>
-                </div>
-                              </div>
+                  <div class="flex flex-wrap gap-2 md:justify-end">
+                    <button (click)="avisoSocio()"
+                      class="flex items-center gap-2 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-xl hover:bg-primary-600 transition-colors shadow-lg shadow-surface-900/10 cursor-pointer">
+                      <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+                      Solicitar Acta
+                    </button>
+                  </div>
+                                </div>
 
-              @if (asamblea.ordenDia && asamblea.ordenDia.length > 0) {
-                <div class="mt-6 pt-6 border-t border-dashed border-surface-100 text-left">
-                  <p class="text-[10px] font-black uppercase tracking-widest text-surface-400 mb-3">Orde do día:</p>
-                  <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
-                    @for (item of asamblea.ordenDia; track item) {
-                      <li class="text-sm text-surface-600 flex items-start gap-2">
-                        <span class="text-primary-400 font-bold">•</span> {{ item }}
-                      </li>
-                    }
-                  </ul>
-                </div>
-              }
-            </div>
-          } @empty {
+                @if (asamblea.ordenDia && asamblea.ordenDia.length > 0) {
+                  <div class="mt-6 pt-6 border-t border-dashed border-surface-100 text-left">
+                    <p class="text-[10px] font-black uppercase tracking-widest text-surface-400 mb-3">Orde do día:</p>
+                    <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
+                      @for (item of asamblea.ordenDia; track item) {
+                        <li class="text-sm text-surface-600 flex items-start gap-2">
+                          <span class="text-primary-400 font-bold">•</span> {{ item }}
+                        </li>
+                      }
+                    </ul>
+                  </div>
+                }
+              </div>
+            }
+          } @else if (asambleas() && asambleas().length === 0) {
             <div class="text-center py-20 bg-surface-50 rounded-3xl border border-dashed border-surface-200">
               <p class="text-surface-400 italic">Non hai asembleas publicadas polo momento.</p>
             </div>

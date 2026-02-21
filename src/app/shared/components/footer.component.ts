@@ -52,7 +52,7 @@ import { CommonModule } from '@angular/common';
               <li><a (click)="navigateTo('/labor-anpa')" class="hover:text-white transition-colors cursor-pointer">O noso labor</a></li>
               <li><a (click)="navigateTo('/iniciativas')" class="hover:text-white transition-colors cursor-pointer">Iniciativas</a></li>
               <li><a (click)="navigateTo('/asambleas')" class="hover:text-white transition-colors cursor-pointer">Asembleas</a></li>
-              <li><a (click)="navigateTo('/xunta-directiva')" class="hover:text-white transition-colors cursor-pointer">Xunta Directiva</a></li>
+              <li><a (click)="navigateTo('/directiva')" class="hover:text-white transition-colors cursor-pointer">Xunta Directiva</a></li>
               <li><a (click)="navigateTo('/colaboradores')" class="hover:text-white transition-colors cursor-pointer">Colaboradores</a></li>
               <li><a (click)="navigateTo('/contacto')" class="hover:text-white transition-colors cursor-pointer">Contacto</a></li>
             </ul>
