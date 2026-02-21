@@ -2,8 +2,5 @@
   "version": 2,
   "outputDirectory": ".vercel/output",
   "cleanUrls": true,
-  "routes": [
-    { "handle": "filesystem" },
-    { "src": "/(.*)", "dest": "/index.html" }
-  ]
+  "trailingSlash": false
 }
