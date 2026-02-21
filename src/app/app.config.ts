@@ -8,7 +8,7 @@ import {
   provideBrowserGlobalErrorListeners,
 } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
-import { provideFileRouter, requestContextInterceptor } from '@analogjs/router';
+import { provideFileRouter } from '@analogjs/router';
 import { withPreloading, PreloadAllModules } from '@angular/router';
 
 export const appConfig: ApplicationConfig = {
@@ -19,15 +19,7 @@ export const appConfig: ApplicationConfig = {
     ),
     provideHttpClient(
       withFetch(),
-      withInterceptors([
-        (req, next) => {
-          if (typeof window !== 'undefined' && req.url.includes('_analog/pages')) {
-            console.log('Navegación SPA detectada hacia:', req.url);
-          }
-          return next(req);
-        },
-        requestContextInterceptor
-      ])
+      withInterceptors([])
     ),
     provideClientHydration(withEventReplay()),
   ],
