@@ -88,7 +88,6 @@ export class CookieBannerComponent implements OnInit {
         (window as any).gtag('config', id, {
           'page_path': event.urlAfterRedirects
         });
-        console.log(`📈 Tracking ruta: ${event.urlAfterRedirects}`);
       }
     });
   }

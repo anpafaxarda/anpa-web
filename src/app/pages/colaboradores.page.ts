@@ -1,11 +1,20 @@
-import { injectLoad } from '@analogjs/router';
 import { CommonModule } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
 import { Colaborador } from '../domain/colaboradores/colaborador.model';
-import { load } from './colaboradores.server';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
+import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
+import { fetchColaboradores } from "../domain/colaboradores/colaboradores.action"; // Acción directa
+
+export const colaboradoresResolver: ResolveFn<any> = () => {
+  return fetchColaboradores();
+};
+
+export const routeMeta = {
+  resolve: {
+    colaboradoresData: colaboradoresResolver
+  }
+};
 
 @Component({
   selector: 'app-colaboradores-page',
@@ -71,12 +80,9 @@ import { SeoService } from '../core/services/seo.service';
 export default class ColaboradoresPage {
   title = 'Comercios colaboradores'
 
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$, {
-    initialValue: { colaboradores: [] as Colaborador[] }
-  });
+  private route = inject(ActivatedRoute);
 
-  readonly colaboradores = computed(() => this.data()?.colaboradores ?? []);
+  readonly colaboradores = computed(() => this.route.snapshot.data['colaboradoresData'] as Colaborador[] ?? []);
 
   private seo = inject(SeoService);
 

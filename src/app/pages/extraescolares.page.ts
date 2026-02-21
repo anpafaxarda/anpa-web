@@ -1,11 +1,20 @@
-import { injectLoad } from '@analogjs/router';
-import { Component, computed, signal } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { load } from './extraescolares.server';
+import { Component, computed, inject, signal } from '@angular/core';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule } from '@angular/common';
 import { Actividad } from '../domain/actividades/actividades.model';
 import { PageComponent } from '../shared/components/page.component';
+import { fetchActividades } from '../domain/actividades/actividades.action';
+import { ActivatedRoute, ResolveFn } from '@angular/router';
+
+export const extraescolaresResolver: ResolveFn<any> = () => {
+  return fetchActividades();
+}
+
+export const routeMeta = {
+  resolve: {
+    extraescolaresData: extraescolaresResolver
+  }
+}
 
 @Component({
   standalone: true,
@@ -155,10 +164,10 @@ import { PageComponent } from '../shared/components/page.component';
   `]
 })
 export default class ExtraescolaresPage {
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$, { initialValue: { actividades: [] as Actividad[] } });
+  private route = inject(ActivatedRoute);
 
-  readonly actividades = computed(() => this.data()?.actividades ?? []);
+  readonly actividades = computed(() => this.route.snapshot.data['extraescolaresData'] as Actividad[] ?? []);
+
   view = signal<'cards' | 'calendar'>('cards');
 
   readonly dias = ['Luns', 'Martes', 'Mércores', 'Xoves', 'Venres'];
@@ -167,7 +176,6 @@ export default class ExtraescolaresPage {
   private readonly PIXELS_PER_HOUR = 150;
   private readonly START_HOUR = 16;
 
-  // Paleta con colores de alto contraste
   private readonly COLORS = [
     { bg: '#d1e3ff', border: '#1967d2', text: '#0d47a1' }, // Azul
     { bg: '#feeeb3', border: '#f29900', text: '#8a4b00' }, // Ámbar
@@ -187,16 +195,11 @@ export default class ExtraescolaresPage {
     { bg: '#ffecd2', border: '#fcb045', text: '#8a5a00' }, // Melocotón
   ];
 
-  /**
-   * ESTA ES LA CLAVE:
-   * Creamos un mapa de colores único para cada nombre de actividad diferente.
-   */
   readonly colorMap = computed(() => {
     const nombresUnicos = Array.from(new Set(this.actividades().map(a => a.name.trim())));
     const map: Record<string, typeof this.COLORS[0]> = {};
 
     nombresUnicos.forEach((nombre, index) => {
-      // Asignamos el color por índice secuencial, evitando colisiones matemáticas
       map[nombre] = this.COLORS[index % this.COLORS.length];
     });
 
@@ -224,10 +227,11 @@ export default class ExtraescolaresPage {
     return filas.length > 0 ? filas : [[]];
   }
 
-  getLeftOffset(hora: string): number {
-    const [h, m] = hora.split(':').map(Number);
-    return (h + m / 60 - this.START_HOUR) * this.PIXELS_PER_HOUR;
-  }
+getLeftOffset(hora: string): number {
+  if (!hora) return 0;
+  const [h, m] = hora.split(':').map(Number);
+  return (h + m / 60 - this.START_HOUR) * this.PIXELS_PER_HOUR;
+}
 
   getWidthDuration(inicio: string, fin: string): number {
     const [h1, m1] = inicio.split(':').map(Number);

@@ -1,11 +1,20 @@
 import { CategoriaResumen, Categorias } from './../domain/colaboradores/colaborador.model';
 import { Component, computed, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { injectLoad } from '@analogjs/router';
 import { PageComponent } from '../shared/components/page.component';
-import { load } from './beneficios.server';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
+import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
+import { fetchCategorias } from '../domain/colaboradores/categorias.action'; // Acción directa
+
+export const beneficiosResolver: ResolveFn<Categorias> = () => {
+  return fetchCategorias();
+};
+
+export const routeMeta = {
+  resolve: {
+    beneficiosData: beneficiosResolver
+  }
+};
 
 @Component({
   selector: 'app-beneficios-page',
@@ -70,15 +79,17 @@ import { SeoService } from '../core/services/seo.service';
 })
 export default class BeneficiosPage {
   title = 'Beneficios';
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$, {
-    initialValue: { categorias: [] as CategoriaResumen[], total: 0 } as Categorias
-  });
 
-  readonly categorias = computed(() => this.data()?.categorias ?? []);
+  private route = inject(ActivatedRoute);
+
+  private readonly data = computed(() =>
+    this.route.snapshot.data['beneficiosData'] as Categorias
+  );
+
+  readonly categorias = computed(() => this.data()?.categorias as CategoriaResumen[] ?? []);
+
   readonly totalComercios = computed(() => {
     const total = this.data()?.total ?? 0;
-
     return Math.floor(total * 0.75);
   });
 

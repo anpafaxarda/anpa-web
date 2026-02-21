@@ -1,11 +1,20 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { injectLoad } from '@analogjs/router';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { load } from './directiva.server';
 import { Member } from '../domain/members/member.model';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
+import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
+import { fetchMembers } from "../domain/members/members.action"; // Acción directa
+
+export const directivaResolver: ResolveFn<any> = () => {
+  return fetchMembers();
+};
+
+export const routeMeta = {
+  resolve: {
+    directivaData: directivaResolver
+  }
+};
 
 @Component({
   selector: 'app-xunta-directiva-page',
@@ -65,12 +74,10 @@ import { SeoService } from '../core/services/seo.service';
 })
 export default class XuntaDirectivaPage {
   title = 'A Xunta Directiva';
-  private readonly load$ = injectLoad<typeof load>();
-  private readonly data = toSignal(this.load$, {
-    initialValue: { directiva: [] as Member[] }
-  });
 
-  readonly directiva = computed(() => this.data()?.directiva ?? []);
+  private route = inject(ActivatedRoute);
+
+  readonly directiva = computed(() => this.route.snapshot.data['directivaData'] as Member[] ?? []);
 
   private seo = inject(SeoService);
 
