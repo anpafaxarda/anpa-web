@@ -14,7 +14,7 @@ export default defineConfig(({ mode }) => ({
     analog({
       static: true,
       nitro: {
-        preset: 'vercelj',
+        preset: 'vercel',
       },
       prerender: {
         routes: [
