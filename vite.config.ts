@@ -15,7 +15,6 @@ export default defineConfig(({ mode }) => ({
       static: true,
       nitro: {
         preset: 'vercel',
-        serveStatic: true
       },
       prerender: {
         routes: [
