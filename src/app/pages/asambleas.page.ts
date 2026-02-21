@@ -6,12 +6,10 @@ import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo ne
 import { fetchAsambleas } from "../domain/asambleas/asamblea.action"; // Importamos la acción directamente
 import { Asamblea } from '../domain/asambleas/asamblea.model';
 
-// 1. Definimos el Resolver (sustituye al server.ts)
 export const asambleasResolver: ResolveFn<any> = () => {
   return fetchAsambleas();
 };
 
-// 2. Configuramos el Meta de la ruta para que Analog use el Resolver
 export const routeMeta = {
   resolve: {
     asambleasData: asambleasResolver
@@ -121,10 +119,8 @@ export const routeMeta = {
 export default class AsambleasPage {
   title = 'Asembleas e Transparencia';
 
-  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
   private route = inject(ActivatedRoute);
 
-  // 4. Mapeamos los datos al signal
   readonly asambleas = computed(() => this.route.snapshot.data['asambleasData'] as Asamblea[] ?? []);
 
   private seo = inject(SeoService);

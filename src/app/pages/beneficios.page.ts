@@ -6,12 +6,10 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
 import { fetchCategorias } from '../domain/colaboradores/categorias.action'; // Acción directa
 
-// 1. Definimos el Resolver
 export const beneficiosResolver: ResolveFn<Categorias> = () => {
   return fetchCategorias();
 };
 
-// 2. Configuramos el Meta de la ruta
 export const routeMeta = {
   resolve: {
     beneficiosData: beneficiosResolver
@@ -82,10 +80,8 @@ export const routeMeta = {
 export default class BeneficiosPage {
   title = 'Beneficios';
 
-  // 3. Inyectamos ActivatedRoute
   private route = inject(ActivatedRoute);
 
-  // 4. Accedemos a los datos (Categorias) desde el resolver
   private readonly data = computed(() =>
     this.route.snapshot.data['beneficiosData'] as Categorias
   );

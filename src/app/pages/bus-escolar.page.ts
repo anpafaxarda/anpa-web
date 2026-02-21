@@ -6,12 +6,10 @@ import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo ne
 import { fetchBusEscolar } from "../domain/bus/bus.action"; // Importamos la acción directamente
 import { RutaBus } from '../domain/bus/bus.model';
 
-// 1. Definimos el Resolver
 export const busEscolarResolver: ResolveFn<any> = () => {
   return fetchBusEscolar();
 };
 
-// 2. Configuramos el Meta de la ruta
 export const routeMeta = {
   resolve: {
     busData: busEscolarResolver
@@ -106,10 +104,8 @@ export const routeMeta = {
 export default class BusPage {
   title = 'Transporte Escolar';
 
-  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
   private route = inject(ActivatedRoute);
 
-  // 4. Mapeamos directamente el array de rutas desde el objeto devuelto por el resolver
   readonly rutas = computed(() => this.route.snapshot.data['busData'] as RutaBus[] ?? []);
 
   private seo = inject(SeoService);

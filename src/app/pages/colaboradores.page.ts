@@ -6,12 +6,10 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
 import { fetchColaboradores } from "../domain/colaboradores/colaboradores.action"; // Acción directa
 
-// 1. Definimos el Resolver
 export const colaboradoresResolver: ResolveFn<any> = () => {
   return fetchColaboradores();
 };
 
-// 2. Configuramos el Meta de la ruta
 export const routeMeta = {
   resolve: {
     colaboradoresData: colaboradoresResolver
@@ -82,10 +80,8 @@ export const routeMeta = {
 export default class ColaboradoresPage {
   title = 'Comercios colaboradores'
 
-  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
   private route = inject(ActivatedRoute);
 
-  // 4. Mapeamos los datos desde el objeto devuelto por el resolver
   readonly colaboradores = computed(() => this.route.snapshot.data['colaboradoresData'] as Colaborador[] ?? []);
 
   private seo = inject(SeoService);

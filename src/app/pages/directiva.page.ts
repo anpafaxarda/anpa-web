@@ -6,12 +6,10 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
 import { fetchMembers } from "../domain/members/members.action"; // Acción directa
 
-// 1. Definimos el Resolver
 export const directivaResolver: ResolveFn<any> = () => {
   return fetchMembers();
 };
 
-// 2. Configuramos el Meta de la ruta
 export const routeMeta = {
   resolve: {
     directivaData: directivaResolver
@@ -77,10 +75,8 @@ export const routeMeta = {
 export default class XuntaDirectivaPage {
   title = 'A Xunta Directiva';
 
-  // 3. Inyectamos ActivatedRoute para leer los datos del Resolver
   private route = inject(ActivatedRoute);
 
-  // 4. Mapeamos los datos desde el objeto devuelto por el resolver
   readonly directiva = computed(() => this.route.snapshot.data['directivaData'] as Member[] ?? []);
 
   private seo = inject(SeoService);
