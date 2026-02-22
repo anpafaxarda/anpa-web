@@ -83,8 +83,10 @@ export const routeMeta = {
             @if (data.horariosAtencion && data.horariosAtencion.length > 0) {
               <div class="bg-primary-50 p-6 rounded-3xl border border-primary-100 shadow-sm animate-in fade-in slide-in-from-bottom-4 duration-500">
                 <div class="flex items-center gap-3 mb-6">
-                  <div class="w-10 h-10 bg-primary-500 text-white rounded-xl flex items-center justify-center">
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center shadow-sm">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" class="w-6 h-6">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
                   </div>
                   <h4 class="font-black text-primary-900 uppercase text-xs tracking-widest">Atención Telefónica</h4>
                 </div>
@@ -92,8 +94,8 @@ export const routeMeta = {
                 <div class="space-y-4">
                   @for (h of data.horariosAtencion; track h.dias) {
                     <div class="flex justify-between items-center text-sm border-b border-primary-200/50 pb-3 last:border-0 last:pb-0">
-                      <span class="text-primary-700 font-bold">{{ h.dias }}</span>
-                      <span class="font-black text-primary-600 bg-white px-3 py-1 rounded-full shadow-sm">{{ h.horas }}</span>
+                      <span class="text-surface-600 font-bold">{{ h.dias }}</span>
+                      <span class="font-black text-amber-600 bg-white px-3 py-1 rounded-full shadow-sm">{{ h.horas }}</span>
                     </div>
                   }
                 </div>
