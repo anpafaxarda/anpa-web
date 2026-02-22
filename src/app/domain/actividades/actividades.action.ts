@@ -6,6 +6,8 @@ export async function fetchActividades(): Promise<Actividad[]> {
       name,
       "imageUrl": image.asset->url + "?w=800&auto=format",
       price,
+      memberPrice,
+      discountTag,
       classDuration,
       enrollmentPeriod,
       coursePeriod,

@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule } from '@angular/common';
 import { Actividad } from '../domain/actividades/actividades.model';
@@ -31,12 +31,12 @@ export const routeMeta = {
           <button (click)="view.set('cards')"
             [class]="view() === 'cards' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
             class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2 cursor-pointer">
-            <span class="pointer-events-none">🎴</span> Lista
+            <span>🎴</span> Lista
           </button>
           <button (click)="view.set('calendar')"
             [class]="view() === 'calendar' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
             class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2 cursor-pointer">
-            <span class="pointer-events-none">📅</span> Horario
+            <span>📅</span> Horario
           </button>
         </div>
       </div>
@@ -46,19 +46,58 @@ export const routeMeta = {
         @if (view() === 'cards') {
           <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 animate-slide-in-left">
             @for (actividad of actividades(); track actividad.name) {
-              <div class="bg-white rounded-3xl shadow-xl border border-surface-100 overflow-hidden flex flex-col md:flex-row group transition-all duration-500 hover:border-primary-200">
-                <div class="md:w-1/3 relative h-48 md:h-auto bg-surface-100 overflow-hidden">
+              <div class="bg-white rounded-[2.5rem] shadow-xl border border-surface-100 overflow-hidden flex flex-col md:flex-row group transition-all duration-500 hover:border-primary-200">
+                <div class="md:w-1/3 relative h-56 md:h-auto bg-surface-100 overflow-hidden">
                   @if (actividad.imageUrl) {
                     <img [src]="actividad.imageUrl" [alt]="actividad.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
                   }
-                  <div class="absolute inset-0 bg-gradient-to-t from-surface-900/60 to-transparent"></div>
-                  <div class="absolute bottom-4 left-4 text-white font-black text-lg">{{ actividad.price }}</div>
+                  <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
+
+                  <div class="absolute bottom-4 left-5 right-0 text-white pr-5">
+                    <div class="text-[10px] font-black uppercase tracking-widest opacity-80">Duración</div>
+                    <div class="text-sm font-bold leading-tight break-words">
+                      {{ actividad.classDuration }}
+                    </div>
+                  </div>
                 </div>
+
                 <div class="md:w-2/3 p-8 flex flex-col">
-                  <h3 class="text-2xl font-black text-surface-900 mb-2 leading-tight">{{ actividad.name }}</h3>
-                  <div class="portable-text text-surface-600 text-sm mb-6 flex-grow line-clamp-3" [innerHTML]="actividad.description | portableText"></div>
-                  <div class="pt-4 border-t border-surface-50 text-xs font-bold text-surface-700 flex items-center gap-2">
-                    <span class="text-primary-600">🕒</span> {{ actividad.classDuration }}
+                  <h3 class="text-2xl font-black text-surface-900 mb-4 leading-tight">{{ actividad.name }}</h3>
+                  <div class="relative mb-6">
+                    <div #textContainer
+                         class="portable-text text-surface-600 text-sm transition-all duration-500 ease-in-out"
+                         [class.line-clamp-3]="!expandedCards[actividad.name]">
+                      <div [innerHTML]="actividad.description | portableText"></div>
+                    </div>
+                    @if (expandedCards[actividad.name] || (textContainer.scrollHeight > textContainer.clientHeight)) {
+                      <button (click)="toggleCard(actividad.name)"
+                              class="text-primary-600 text-[11px] font-black uppercase tracking-widest mt-2 hover:text-primary-800 transition-colors cursor-pointer">
+                        {{ expandedCards[actividad.name] ? 'Ler menos ↑' : 'Ler máis ↓' }}
+                      </button>
+                    }
+                  </div>
+
+                  <div class="mt-auto pt-6 border-t border-surface-100 flex flex-wrap gap-y-6">
+                    <div class="w-full sm:w-1/2 flex flex-col justify-end pr-2">
+                      <span class="text-[10px] font-black text-surface-400 uppercase tracking-widest mb-1">P. Ordinario</span>
+                      <span class="text-base font-bold text-surface-700 leading-tight">{{ actividad.price }}</span>
+                    </div>
+
+                    @if (actividad.memberPrice) {
+                      <div class="w-full sm:w-1/2 flex flex-col border-t sm:border-t-0 sm:border-l border-surface-100 pt-4 sm:pt-0 sm:pl-4 relative">
+                        @if (actividad.discountTag) {
+                          <div class="absolute -top-4 sm:-top-3 right-0 sm:-right-2 rotate-12 z-20">
+                            <span class="bg-primary-500 text-[10px] text-white px-2.5 py-1 rounded-lg font-black uppercase shadow-lg border border-white/20 whitespace-nowrap">
+                              {{ actividad.discountTag }}
+                            </span>
+                          </div>
+                        }
+                        <span class="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-1 flex items-center gap-1">
+                          P. Socios <span class="w-1.5 h-1.5 bg-primary-500 rounded-full animate-pulse"></span>
+                        </span>
+                        <span class="text-xl lg:text-2xl font-black text-primary-600 tracking-tighter leading-tight break-words">{{ actividad.memberPrice }}</span>
+                      </div>
+                    }
                   </div>
                 </div>
               </div>
@@ -87,7 +126,10 @@ export const routeMeta = {
                         </div>
                         <div class="flex-grow">
                           <h4 class="text-base font-bold text-surface-900 leading-tight">{{ act.name }}</h4>
-                          <p class="text-[10px] text-surface-400 font-bold uppercase mt-1">Remata ás {{ act.horaFin }}</p>
+                          <div class="flex flex-wrap gap-x-3 mt-1">
+                             <p class="text-[10px] text-surface-400 font-bold uppercase">Ord: {{ act.price }}</p>
+                             <p class="text-[10px] text-primary-600 font-black uppercase">Socio: {{ act.memberPrice }}</p>
+                          </div>
                         </div>
                       </div>
                     }
@@ -97,64 +139,50 @@ export const routeMeta = {
             </div>
 
             <div class="hidden lg:block bg-white rounded-[2.5rem] shadow-2xl border border-surface-100 overflow-hidden">
-              <div class="overflow-x-auto">
-                <div class="min-w-[1000px]">
-                  <div class="grid grid-cols-[160px_1fr] border-b border-surface-100">
-                    <div class="bg-surface-50/50 p-4 border-r border-surface-100"></div>
-                    <div class="relative h-12 flex items-center">
-                      @for (hora of horasDisponibles; track hora) {
-                        <div class="absolute text-[10px] font-black text-surface-300 uppercase tracking-tighter" [style.left.px]="getLeftOffset(hora)">
-                          {{ hora }}
+              <div class="grid grid-cols-5 divide-x divide-surface-100">
+                @for (dia of dias; track dia) {
+                  <div class="flex flex-col min-h-[500px]">
+                    <div class="bg-surface-50/50 p-6 text-center border-b border-surface-100">
+                      <span class="text-sm font-black uppercase tracking-[0.2em] text-surface-900">{{ dia }}</span>
+                    </div>
+
+                    <div class="p-4 space-y-4 flex-grow bg-grid-lines-vertical">
+                      @for (act of getActividadesOrdenadas(dia); track act.name) {
+                        <div class="rounded-2xl p-4 border-l-[6px] shadow-sm transition-all duration-300 hover:scale-[1.03] hover:shadow-md"
+                            [style.backgroundColor]="colorMap()[act.name].bg"
+                            [style.borderColor]="colorMap()[act.name].border">
+                          <div class="flex justify-between items-start mb-2">
+                            <span class="text-[10px] font-black uppercase px-2 py-0.5 rounded-md bg-white/50" [style.color]="colorMap()[act.name].text">
+                              {{ act.horaInicio }} - {{ act.horaFin }}
+                            </span>
+                          </div>
+                          <h4 class="text-sm font-black leading-tight uppercase mb-1 break-words overflow-wrap-anywhere"
+                              [style.color]="colorMap()[act.name].text">
+                            {{ act.name }}
+                          </h4>
+                          <p class="text-[10px] font-bold opacity-80" [style.color]="colorMap()[act.name].text">
+                            Socio: {{ act.memberPrice }}
+                          </p>
+                        </div>
+                      }
+                      @if (getActividadesOrdenadas(dia).length === 0) {
+                        <div class="h-full flex items-center justify-center opacity-20 grayscale mt-10">
+                          <span class="text-4xl">🍃</span>
                         </div>
                       }
                     </div>
                   </div>
-
-                  @for (dia of dias; track dia) {
-                    <div class="grid grid-cols-[160px_1fr] border-b border-surface-100 last:border-0 min-h-[100px]">
-                      <div class="bg-surface-50/30 p-4 border-r border-surface-100 flex items-center justify-center sticky left-0 z-20">
-                        <span class="text-xs font-black uppercase tracking-widest text-surface-900">{{ dia }}</span>
-                      </div>
-
-                      <div class="relative py-4 bg-grid-lines-horizontal">
-                        @for (fila of getFilasDeActividades(dia); track $index) {
-                          <div class="relative h-14 mb-2 last:mb-0">
-                             @for (act of fila; track act.name) {
-                              <div class="absolute h-full p-1 transition-all duration-300 z-10 hover:z-20"
-                                   [style.left.px]="getLeftOffset(act.horaInicio)"
-                                   [style.width.px]="getWidthDuration(act.horaInicio, act.horaFin)">
-                                <div class="h-full w-full rounded-xl px-3 py-2 shadow-sm border-l-[6px] flex flex-col justify-center overflow-hidden transition-all hover:scale-[1.02] hover:shadow-md"
-                                     [style.backgroundColor]="colorMap()[act.name].bg"
-                                     [style.borderColor]="colorMap()[act.name].border">
-                                  <h4 class="text-[11px] font-black leading-tight uppercase truncate"
-                                      [style.color]="colorMap()[act.name].text">{{ act.name }}</h4>
-                                  <p class="text-[10px] font-bold opacity-90 mt-0.5"
-                                     [style.color]="colorMap()[act.name].text">{{ act.horaInicio }} - {{ act.horaFin }}</p>
-                                </div>
-                              </div>
-                             }
-                          </div>
-                        }
-                      </div>
-                    </div>
-                  }
-                </div>
+                }
               </div>
             </div>
           </div>
-          <p class="hidden lg:block text-center text-surface-400 text-[10px] mt-6 italic font-medium">
-            * Podes desprazar o horario lateralmente para ver todas as franxas horarias
-          </p>
         }
       </div>
     </app-page-component>
   `,
   styles: [`
     .portable-text ::ng-deep p { margin-bottom: 0.5rem; }
-    .bg-grid-lines-horizontal {
-      background-size: 150px 100%;
-      background-image: linear-gradient(to right, #f1f5f9 1px, transparent 1px);
-    }
+    .bg-grid-lines-vertical { background-image: radial-gradient(#f1f5f9 1px, transparent 1px); background-size: 20px 20px; }
     .animate-slide-in-left { animation: slideInLeft 0.5s ease-out; }
     .animate-slide-in-right { animation: slideInRight 0.5s ease-out; }
     @keyframes slideInLeft { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
@@ -163,16 +191,18 @@ export const routeMeta = {
 })
 export default class ExtraescolaresPage {
   private route = inject(ActivatedRoute);
+  private cdr = inject(ChangeDetectorRef);
 
   readonly actividades = computed(() => this.route.snapshot.data['extraescolaresData'] as Actividad[] ?? []);
-
   view = signal<'cards' | 'calendar'>('cards');
+  expandedCards: Record<string, boolean> = {};
+
+  toggleCard(name: string) {
+    this.expandedCards[name] = !this.expandedCards[name];
+    this.cdr.detectChanges();
+  }
 
   readonly dias = ['Luns', 'Martes', 'Mércores', 'Xoves', 'Venres'];
-  readonly horasDisponibles = ['16:00', '17:00', '18:00', '19:00', '20:00'];
-
-  private readonly PIXELS_PER_HOUR = 150;
-  private readonly START_HOUR = 16;
 
   private readonly COLORS = [
     { bg: '#d1e3ff', border: '#1967d2', text: '#0d47a1' },
@@ -186,11 +216,10 @@ export default class ExtraescolaresPage {
     { bg: '#dcfce7', border: '#16a34a', text: '#14532d' },
     { bg: '#fae8ff', border: '#c026d3', text: '#701a75' },
     { bg: '#ffedd5', border: '#f97316', text: '#7c2d12' },
-    { bg: '#ecfdf5', border: '#10b981', text: '#064e3b' },
-    { bg: '#fff1f2', border: '#f43f5e', text: '#881337' },
-    { bg: '#fef9c3', border: '#ca8a04', text: '#713f12' },
     { bg: '#e0e7ff', border: '#4f46e5', text: '#312e81' },
-    { bg: '#ffecd2', border: '#fcb045', text: '#8a5a00' },
+    { bg: '#f1f8e9', border: '#7cb342', text: '#33691e' },
+    { bg: '#efebe9', border: '#8d6e63', text: '#3e2723' },
+    { bg: '#fff9c4', border: '#fbc02d', text: '#f57f17' }
   ];
 
   readonly colorMap = computed(() => {
@@ -203,36 +232,8 @@ export default class ExtraescolaresPage {
   });
 
   getActividadesOrdenadas(dia: string) {
-    return this.actividades().filter(a => a.diaSemana === dia).sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
-  }
-
-  getFilasDeActividades(dia: string): Actividad[][] {
-    const actividadesDelDia = this.actividades().filter(a => a.diaSemana === dia);
-    const filas: Actividad[][] = [];
-    actividadesDelDia.forEach(act => {
-      let filaEncontrada = false;
-      for (let fila of filas) {
-        if (!fila.some(a => (act.horaInicio < a.horaFin && act.horaFin > a.horaInicio))) {
-          fila.push(act);
-          filaEncontrada = true;
-          break;
-        }
-      }
-      if (!filaEncontrada) filas.push([act]);
-    });
-    return filas.length > 0 ? filas : [[]];
-  }
-
-  getLeftOffset(hora: string): number {
-    if (!hora) return 0;
-    const [h, m] = hora.split(':').map(Number);
-    return (h + m / 60 - this.START_HOUR) * this.PIXELS_PER_HOUR;
-  }
-
-  getWidthDuration(inicio: string, fin: string): number {
-    if (!inicio || !fin) return 0;
-    const [h1, m1] = inicio.split(':').map(Number);
-    const [h2, m2] = fin.split(':').map(Number);
-    return ((h2 + m2 / 60) - (h1 + m1 / 60)) * this.PIXELS_PER_HOUR;
+    return this.actividades()
+      .filter(a => a.diaSemana === dia)
+      .sort((a, b) => a.horaInicio.localeCompare(b.horaInicio));
   }
 }
