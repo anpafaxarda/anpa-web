@@ -33,9 +33,9 @@ import { filter } from 'rxjs/operators';
             }
 
             <div class="relative ml-2" (mouseenter)="openDropdown('servicios')" (mouseleave)="closeDropdownWithDelay()">
-              <button class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all"
+              <button class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all cursor-pointer"
                       [class.text-primary-600]="activeDropdown() === 'servicios'">
-                Servicios
+                Servizos
                 <svg class="w-4 h-4 transition-transform" [class.rotate-180]="activeDropdown() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
               </button>
               @if (activeDropdown() === 'servicios') {
@@ -54,9 +54,9 @@ import { filter } from 'rxjs/operators';
             </div>
 
             <div class="relative ml-2" (mouseenter)="openDropdown('anpa')" (mouseleave)="closeDropdownWithDelay()">
-              <button class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all"
+              <button class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all cursor-pointer"
                       [class.text-primary-600]="activeDropdown() === 'anpa'">
-                Sobre el ANPA
+                Sobre o ANPA
                 <svg class="w-4 h-4 transition-transform" [class.rotate-180]="activeDropdown() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
               </button>
               @if (activeDropdown() === 'anpa') {
@@ -75,12 +75,12 @@ import { filter } from 'rxjs/operators';
             </div>
 
             <a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener noreferrer"
-               class="ml-4 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2">
+               class="ml-4 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2 cursor-pointer">
               Blog <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
             </a>
           </div>
 
-          <button (click)="isMobileMenuOpen.set(!isMobileMenuOpen())" class="lg:hidden p-2 text-surface-600">
+          <button (click)="isMobileMenuOpen.set(!isMobileMenuOpen())" class="lg:hidden p-2 text-surface-600 cursor-pointer">
              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path [class.hidden]="isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                <path [class.hidden]="!isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
@@ -90,13 +90,55 @@ import { filter } from 'rxjs/operators';
       </div>
 
       @if (isMobileMenuOpen()) {
-        <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-2 shadow-inner overflow-y-auto max-h-[80vh]">
+        <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-1 shadow-inner overflow-y-auto max-h-[80vh]">
+
           @for (item of mainItems; track item.path) {
             <a (click)="navigateTo(item.path)"
                [class.text-primary-600]="currentPath() === item.path"
-               class="block py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer">{{item.label}}</a>
+               class="block py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors">
+              {{item.label}}
+            </a>
           }
+
+          <div class="border-t border-surface-50 pt-2">
+            <button (click)="toggleMobileGroup('servicios')"
+                    class="w-full flex justify-between items-center py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors">
+              Servizos
+              <svg class="w-5 h-5 transition-transform" [class.rotate-180]="mobileGroupOpen() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            @if (mobileGroupOpen() === 'servicios') {
+              <div class="bg-surface-50 rounded-xl mx-2 mb-2 overflow-hidden animate-in slide-in-from-top-2 duration-200">
+                @for (sub of serviciosItems; track sub.path) {
+                  <a (click)="navigateTo(sub.path)"
+                     class="block py-3 px-8 text-base text-surface-600 cursor-pointer border-b border-white last:border-0">
+                    {{ sub.label }}
+                  </a>
+                }
+              </div>
+            }
           </div>
+
+          <div>
+            <button (click)="toggleMobileGroup('anpa')"
+                    class="w-full flex justify-between items-center py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors">
+              Sobre o ANPA
+              <svg class="w-5 h-5 transition-transform" [class.rotate-180]="mobileGroupOpen() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+            @if (mobileGroupOpen() === 'anpa') {
+              <div class="bg-surface-50 rounded-xl mx-2 mb-2 overflow-hidden animate-in slide-in-from-top-2 duration-200">
+                @for (sub of anpaItems; track sub.path) {
+                  <a (click)="navigateTo(sub.path)"
+                     class="block py-3 px-8 text-base text-surface-600 cursor-pointer border-b border-white last:border-0">
+                    {{ sub.label }}
+                  </a>
+                }
+              </div>
+            }
+          </div>
+
+          <a href="https://afaxarda.wordpress.com/" target="_blank"
+             class="block py-3 px-4 text-lg font-bold text-primary-600 cursor-pointer">Blog ↗</a>
+        </div>
       }
     </nav>
   `
@@ -157,6 +199,7 @@ export class NavbarComponent {
     if (this.closeTimeout) clearTimeout(this.closeTimeout);
     this.activeDropdown.set(null);
     this.isMobileMenuOpen.set(false);
+    this.mobileGroupOpen.set(null);
   }
 
   toggleMobileGroup(group: string) {

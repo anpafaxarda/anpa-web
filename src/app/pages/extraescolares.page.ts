@@ -30,13 +30,13 @@ export const routeMeta = {
         <div class="inline-flex p-1 bg-surface-100 rounded-2xl shadow-inner relative">
           <button (click)="view.set('cards')"
             [class]="view() === 'cards' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
-            class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2">
-            <span>🎴</span> Lista
+            class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2 cursor-pointer">
+            <span class="pointer-events-none">🎴</span> Lista
           </button>
           <button (click)="view.set('calendar')"
             [class]="view() === 'calendar' ? 'bg-white shadow-md text-primary-700' : 'text-surface-500 hover:text-surface-700'"
-            class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2">
-            <span>📅</span> Horario
+            class="relative z-10 px-8 py-2.5 rounded-xl text-sm font-black transition-all duration-300 flex items-center gap-2 cursor-pointer">
+            <span class="pointer-events-none">📅</span> Horario
           </button>
         </div>
       </div>
@@ -68,7 +68,6 @@ export const routeMeta = {
 
         @if (view() === 'calendar') {
           <div class="animate-slide-in-right">
-
             <div class="lg:hidden space-y-8">
               @for (dia of dias; track dia) {
                 <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
@@ -100,7 +99,6 @@ export const routeMeta = {
             <div class="hidden lg:block bg-white rounded-[2.5rem] shadow-2xl border border-surface-100 overflow-hidden">
               <div class="overflow-x-auto">
                 <div class="min-w-[1000px]">
-
                   <div class="grid grid-cols-[160px_1fr] border-b border-surface-100">
                     <div class="bg-surface-50/50 p-4 border-r border-surface-100"></div>
                     <div class="relative h-12 flex items-center">
@@ -177,32 +175,30 @@ export default class ExtraescolaresPage {
   private readonly START_HOUR = 16;
 
   private readonly COLORS = [
-    { bg: '#d1e3ff', border: '#1967d2', text: '#0d47a1' }, // Azul
-    { bg: '#feeeb3', border: '#f29900', text: '#8a4b00' }, // Ámbar
-    { bg: '#c6f0d1', border: '#188038', text: '#0b5324' }, // Esmeralda
-    { bg: '#fad2cf', border: '#c5221f', text: '#8c1c1c' }, // Carmesí
-    { bg: '#f3d2f9', border: '#9333ea', text: '#6b21a8' }, // Violeta
-    { bg: '#c4f0f6', border: '#0891b2', text: '#164e63' }, // Turquesa
-    { bg: '#ffe4cc', border: '#ea580c', text: '#7c2d12' }, // Naranja
-    { bg: '#e2e8f0', border: '#475569', text: '#1e293b' }, // Pizarra
-    { bg: '#dcfce7', border: '#16a34a', text: '#14532d' }, // Verde Lima
-    { bg: '#fae8ff', border: '#c026d3', text: '#701a75' }, // Fucsia
-    { bg: '#ffedd5', border: '#f97316', text: '#7c2d12' }, // Naranja Intenso
-    { bg: '#ecfdf5', border: '#10b981', text: '#064e3b' }, // Menta
-    { bg: '#fff1f2', border: '#f43f5e', text: '#881337' }, // Rosa
-    { bg: '#fef9c3', border: '#ca8a04', text: '#713f12' }, // Amarillo
-    { bg: '#e0e7ff', border: '#4f46e5', text: '#312e81' }, // Índigo
-    { bg: '#ffecd2', border: '#fcb045', text: '#8a5a00' }, // Melocotón
+    { bg: '#d1e3ff', border: '#1967d2', text: '#0d47a1' },
+    { bg: '#feeeb3', border: '#f29900', text: '#8a4b00' },
+    { bg: '#c6f0d1', border: '#188038', text: '#0b5324' },
+    { bg: '#fad2cf', border: '#c5221f', text: '#8c1c1c' },
+    { bg: '#f3d2f9', border: '#9333ea', text: '#6b21a8' },
+    { bg: '#c4f0f6', border: '#0891b2', text: '#164e63' },
+    { bg: '#ffe4cc', border: '#ea580c', text: '#7c2d12' },
+    { bg: '#e2e8f0', border: '#475569', text: '#1e293b' },
+    { bg: '#dcfce7', border: '#16a34a', text: '#14532d' },
+    { bg: '#fae8ff', border: '#c026d3', text: '#701a75' },
+    { bg: '#ffedd5', border: '#f97316', text: '#7c2d12' },
+    { bg: '#ecfdf5', border: '#10b981', text: '#064e3b' },
+    { bg: '#fff1f2', border: '#f43f5e', text: '#881337' },
+    { bg: '#fef9c3', border: '#ca8a04', text: '#713f12' },
+    { bg: '#e0e7ff', border: '#4f46e5', text: '#312e81' },
+    { bg: '#ffecd2', border: '#fcb045', text: '#8a5a00' },
   ];
 
   readonly colorMap = computed(() => {
     const nombresUnicos = Array.from(new Set(this.actividades().map(a => a.name.trim())));
     const map: Record<string, typeof this.COLORS[0]> = {};
-
     nombresUnicos.forEach((nombre, index) => {
       map[nombre] = this.COLORS[index % this.COLORS.length];
     });
-
     return map;
   });
 
@@ -227,13 +223,14 @@ export default class ExtraescolaresPage {
     return filas.length > 0 ? filas : [[]];
   }
 
-getLeftOffset(hora: string): number {
-  if (!hora) return 0;
-  const [h, m] = hora.split(':').map(Number);
-  return (h + m / 60 - this.START_HOUR) * this.PIXELS_PER_HOUR;
-}
+  getLeftOffset(hora: string): number {
+    if (!hora) return 0;
+    const [h, m] = hora.split(':').map(Number);
+    return (h + m / 60 - this.START_HOUR) * this.PIXELS_PER_HOUR;
+  }
 
   getWidthDuration(inicio: string, fin: string): number {
+    if (!inicio || !fin) return 0;
     const [h1, m1] = inicio.split(':').map(Number);
     const [h2, m2] = fin.split(':').map(Number);
     return ((h2 + m2 / 60) - (h1 + m1 / 60)) * this.PIXELS_PER_HOUR;
