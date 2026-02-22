@@ -1,91 +1,130 @@
-import { Component, inject } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { Component, computed, inject } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
-import { SeoService } from '../core/services/seo.service';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, ResolveFn } from '@angular/router';
+import { fetchContacto } from '../domain/contacto/contacto.action';
+
+export const contactoResolver: ResolveFn<any> = () => {
+  return fetchContacto();
+};
+
+export const routeMeta = {
+  resolve: {
+    contactoData: contactoResolver
+  }
+};
 
 @Component({
   selector: 'app-contacto-page',
   standalone: true,
-  imports: [CommonModule, PageComponent],
+  imports: [PageComponent, CommonModule],
   template: `
-   <app-page-component
-      [title]="title"
-      [subTitle]="'Estamos aquí para axudarche. Escríbenos, chámanos ou ven visitar o noso local no colexio.'"
+    <app-page-component
+      [category]="'Axuda'"
+      [title]="'Contacto'"
+      [subTitle]="'Estamos aquí para escoitarte. Ponte en contacto con nós por calquera das nosas vías.'"
     >
-      <div class="container mx-auto px-4 -mt-10">
-        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      @let data = contacto();
 
-          <div class="lg:col-span-1 space-y-6">
+      <div class="max-w-6xl mx-auto px-4">
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-surface-100 group">
-              <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 bg-green-100 text-green-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"></path></svg>
-                </div>
-                <h3 class="font-bold text-surface-800">Teléfono e WhatsApp</h3>
+          <div class="space-y-6">
+
+            <div class="bg-white p-6 rounded-3xl border border-surface-100 shadow-sm transition-all hover:shadow-md">
+              <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/></svg>
               </div>
-              <p class="text-surface-600 mb-4">+34 600 000 000</p>
-              <a href="https://wa.me/34600000000" target="_blank" rel="noopener" class="inline-flex items-center justify-center w-full py-3 bg-green-500 hover:bg-green-600 text-white font-bold rounded-xl transition-colors gap-2 cursor-pointer">
-                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.72 0 3.675.722 5.712.722 11.892 0 11.896-11.893 11.896-11.893 0-3.174-1.234-6.159-3.475-8.401z"></path></svg>
-                WhatsApp Directo
+
+              <h4 class="font-bold text-surface-900 mb-2">Teléfono e WhatsApp</h4>
+              <p class="text-xl font-black text-surface-700 mb-4">{{ data.telefono }}</p>
+
+              @if (data.tiempoRespuestaWhatsapp) {
+                <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-[10px] font-bold uppercase rounded-lg mb-6">
+                  <span class="relative flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                  </span>
+                  Resposta en {{ data.tiempoRespuestaWhatsapp }}
+                </div>
+              }
+
+              <a [href]="'https://wa.me/' + data.whatsapp"
+                 target="_blank"
+                 class="flex items-center justify-center gap-2 w-full py-4 bg-[#4ade80] hover:bg-[#22c55e] text-white font-black rounded-2xl transition-all cursor-pointer shadow-lg shadow-green-100">
+                 WhatsApp Directo
               </a>
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-surface-100">
-              <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 bg-primary-100 text-primary-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path></svg>
-                </div>
-                <h3 class="font-bold text-surface-800">Correo Electrónico</h3>
+            <div class="bg-white p-6 rounded-3xl border border-surface-100 shadow-sm transition-all hover:shadow-md">
+              <div class="w-10 h-10 bg-blue-50 text-blue-600 rounded-xl flex items-center justify-center mb-4">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/></svg>
               </div>
-              <p class="text-surface-600">anpafaxarda&#64;gmail.com</p>
-              <p class="text-xs text-surface-400 mt-1">Respondemos en menos de 48h</p>
+              <h4 class="font-bold text-surface-900 mb-2">Correo Electrónico</h4>
+              <p class="font-bold text-surface-600 break-all mb-4">{{ data.email }}</p>
+
+              @if (data.tiempoRespuestaEmail) {
+                <div class="pt-4 border-t border-surface-50">
+                   <p class="text-[10px] text-surface-400 uppercase tracking-widest font-black flex items-center gap-1.5">
+                    <span class="w-1 h-1 bg-blue-400 rounded-full"></span>
+                    Atención: {{ data.tiempoRespuestaEmail }}
+                  </p>
+                </div>
+              }
             </div>
 
-            <div class="bg-white p-6 rounded-2xl shadow-sm border border-surface-100">
-              <div class="flex items-center gap-4 mb-4">
-                <div class="w-10 h-10 bg-amber-100 text-amber-600 rounded-lg flex items-center justify-center">
-                  <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg>
+            @if (data.horariosAtencion && data.horariosAtencion.length > 0) {
+              <div class="bg-surface-900 p-6 rounded-3xl text-white shadow-xl animate-in fade-in slide-in-from-bottom-4 duration-500">
+                <h4 class="font-bold mb-6 flex items-center gap-2 text-primary-400">
+                  <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
+                  Atención Telefónica
+                </h4>
+                <div class="space-y-4">
+                  @for (h of data.horariosAtencion; track h.dias) {
+                    <div class="flex justify-between items-center text-sm border-b border-white/5 pb-3 last:border-0 last:pb-0">
+                      <span class="text-surface-400 font-medium">{{ h.dias }}</span>
+                      <span class="font-black text-primary-400 bg-primary-400/10 px-2 py-1 rounded-md">{{ h.horas }}</span>
+                    </div>
+                  }
                 </div>
-                <h3 class="font-bold text-surface-800">Horarios de Atención</h3>
               </div>
-              <ul class="space-y-2 text-sm text-surface-600">
-                <li class="flex justify-between"><span>Luns e Mércores:</span> <span class="font-semibold text-surface-800">16:00 - 18:00</span></li>
-                <li class="flex justify-between"><span>Venres:</span> <span class="font-semibold text-surface-800">09:00 - 11:00</span></li>
-                <li class="pt-2 border-t border-surface-50 text-xs italic">Ubicación: Local ANPA (Planta Baixa)</li>
-              </ul>
-            </div>
-
+            }
           </div>
 
           <div class="lg:col-span-2">
-            <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-surface-100">
-              <h2 class="text-2xl font-bold text-surface-800 mb-6">Envíanos unha mensaxe</h2>
-              <form class="space-y-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                  <div>
-                    <label class="block text-sm font-semibold text-surface-700 mb-2">Nome</label>
-                    <input type="text" class="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all">
+            <div class="bg-white p-8 md:p-10 rounded-[2.5rem] border border-surface-100 shadow-sm">
+              <h2 class="text-2xl font-black text-surface-900 mb-2">Envíanos unha mensaxe</h2>
+              <p class="text-surface-500 mb-8 font-medium">Se o prefires, podes completar este formulario e contactaremos contigo o antes posible.</p>
+
+              <form class="space-y-6">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                  <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-widest text-surface-400 ml-1">Nome completo</label>
+                    <input type="text" placeholder="Ex: María Pérez" class="w-full px-5 py-4 bg-surface-50 border-none rounded-2xl focus:ring-2 focus:ring-primary-500 transition-all outline-none text-surface-900 placeholder:text-surface-300">
                   </div>
-                  <div>
-                    <label class="block text-sm font-semibold text-surface-700 mb-2">Email</label>
-                    <input type="email" class="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all">
+                  <div class="space-y-2">
+                    <label class="text-xs font-black uppercase tracking-widest text-surface-400 ml-1">Email de contacto</label>
+                    <input type="email" placeholder="marperez@email.com" class="w-full px-5 py-4 bg-surface-50 border-none rounded-2xl focus:ring-2 focus:ring-primary-500 transition-all outline-none text-surface-900 placeholder:text-surface-300">
                   </div>
                 </div>
-                <div>
-                  <label class="block text-sm font-semibold text-surface-700 mb-2">Asunto</label>
-                  <select class="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all">
+
+                <div class="space-y-2">
+                  <label class="text-xs font-black uppercase tracking-widest text-surface-400 ml-1">Asunto da consulta</label>
+                  <select class="w-full px-5 py-4 bg-surface-50 border-none rounded-2xl focus:ring-2 focus:ring-primary-500 transition-all outline-none text-surface-900 appearance-none cursor-pointer">
                     <option>Consulta xeral</option>
-                    <option>Alta de socio/a</option>
-                    <option>Incidencia extraescolares</option>
-                    <option>Suxestión</option>
+                    <option>Actividades Extraescolares</option>
+                    <option>Socio / Alta de socio</option>
+                    <option>Bus Escolar</option>
+                    <option>Outros</option>
                   </select>
                 </div>
-                <div>
-                  <label class="block text-sm font-semibold text-surface-700 mb-2">Mensaxe</label>
-                  <textarea rows="5" class="w-full px-4 py-3 bg-surface-50 border border-surface-200 rounded-xl focus:ring-2 focus:ring-primary-500 focus:outline-none transition-all"></textarea>
+
+                <div class="space-y-2">
+                  <label class="text-xs font-black uppercase tracking-widest text-surface-400 ml-1">Mensaxe</label>
+                  <textarea rows="5" placeholder="Escribe aquí a túa mensaxe..." class="w-full px-5 py-4 bg-surface-50 border-none rounded-2xl focus:ring-2 focus:ring-primary-500 transition-all outline-none text-surface-900 placeholder:text-surface-300 resize-none"></textarea>
                 </div>
-                <button type="button" class="w-full py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl shadow-lg shadow-primary-200 transition-all transform active:scale-[0.98]">
+
+                <button type="submit" class="w-full py-5 bg-primary-600 hover:bg-primary-700 text-white font-black rounded-2xl transition-all shadow-lg shadow-primary-200 cursor-pointer">
                   Enviar Mensaxe
                 </button>
               </form>
@@ -95,16 +134,17 @@ import { SeoService } from '../core/services/seo.service';
         </div>
       </div>
     </app-page-component>
-  `,
+  `
 })
 export default class ContactoPage {
-  title = 'Contacta con nós'
-  private seo = inject(SeoService);
+  private route = inject(ActivatedRoute);
 
-  ngOnInit() {
-    this.seo.setPageMeta(
-      this.title,
-      'Tes dúbidas ou suxestións? Ponte en contacto co ANPA A Faxarda a través do noso formulario, email ou redes sociais.'
-    );
-  }
+  readonly contacto = computed(() => this.route.snapshot.data['contactoData'] ?? {
+    telefono: '',
+    whatsapp: '',
+    email: '',
+    tiempoRespuestaWhatsapp: '',
+    tiempoRespuestaEmail: '',
+    horariosAtencion: []
+  });
 }
