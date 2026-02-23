@@ -1,13 +1,13 @@
 import { Component, computed, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule } from '@angular/common';
-import { Actividad } from '../domain/actividades/actividades.model';
+import { Actividad } from '../domain/extraescolares/extraescolares.model';
 import { PageComponent } from '../shared/components/page.component';
-import { fetchActividades } from '../domain/actividades/actividades.action';
+import { fetchExtraescolares } from '../domain/extraescolares/extraescolares.action';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 
 export const extraescolaresResolver: ResolveFn<any> = () => {
-  return fetchActividades();
+  return fetchExtraescolares();
 }
 
 export const routeMeta = {

@@ -1,15 +1,23 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, computed } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router, ResolveFn } from '@angular/router';
+import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
+import { fetchAvisoLegal } from '../domain/aviso-legal/aviso-legal.action';
+
+export const avisoLegalResolver: ResolveFn<any> = () => fetchAvisoLegal();
+
+export const routeMeta = {
+  resolve: { legalData: avisoLegalResolver }
+};
 
 @Component({
   selector: 'app-aviso-legal-page',
   standalone: true,
-  imports: [PageComponent, CommonModule],
+  imports: [PageComponent, CommonModule, PortableTextPipe],
   template: `
-    <app-page-component [title]="title" category="Legal">
+    <app-page-component [title]="this.title" category="Legal">
       <div class="container mx-auto px-4 -mt-10 mb-20">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-surface-100 max-w-4xl mx-auto prose prose-slate">
 
@@ -19,39 +27,30 @@ import { Router } from '@angular/router';
               En cumprimento co deber de información recollido no artigo 10 da Lei 34/2002, do 11 de xullo, de Servizos da Sociedade da Información e do Comercio Electrónico, a continuación reflíctense os seguintes datos:
             </p>
             <ul class="list-disc ml-6 mt-4 text-surface-600">
-              <li><strong>Titular:</strong> ANPA A Faxarda</li>
-              <li><strong>NIF:</strong> [GXXXXXXXX]</li>
-              <li><strong>Domicilio:</strong> CEIP Gregorio Sanz, planta baixa (Ribadeo)</li>
-              <li><strong>Correo electrónico:</strong> anpafaxarda&#64;gmail.com</li>
+              <li><strong>Titular:</strong> {{ data().datosIdentificativos?.name }}</li>
+              <li><strong>NIF:</strong> {{ data().datosIdentificativos?.nif }}</li>
+              <li><strong>Domicilio:</strong> {{ data().datosIdentificativos?.domicilio }}</li>
+              <li><strong>Correo electrónico:</strong> {{ data().datosIdentificativos?.email }}</li>
             </ul>
           </section>
 
-          <section class="mb-8">
-            <h2 class="text-2xl font-bold text-surface-900 mb-4">2. Usuarios</h2>
-            <p class="text-surface-600">
-              O acceso e/ou uso deste portal atribúe a condición de USUARIO, que acepta, desde dito acceso e/ou uso, as Condicións Xerais de Uso aquí reflectidas.
-            </p>
-          </section>
+          <div [innerHTML]="data().contenido | portableText"></div>
 
-          <section class="mb-8">
-            <h2 class="text-2xl font-bold text-surface-900 mb-4">3. Propiedade Intelectual</h2>
-            <p class="text-surface-600">
-              O deseño do portal e os seus códigos fonte, así como os logos, marcas e demais signos distintivos que aparecen no mesmo pertencen ao ANPA e están protexidos polos correspondentes dereitos de propiedade intelectual e industrial.
-            </p>
-          </section>
-
-          <div class="mt-12 pt-8 border-t border-surface-100 text-center">
+          <div class="mt-12 pt-8 border-t border-surface-100 text-center not-prose">
             <a (click)="goHome()" class="text-primary-600 font-bold hover:underline cursor-pointer">← Volver ao inicio</a>
           </div>
         </div>
       </div>
     </app-page-component>
-  `,
+  `
 })
 export default class AvisoLegalPage {
   title = 'Aviso Legal';
   private seo = inject(SeoService);
   private router = inject(Router);
+  private route = inject(ActivatedRoute);
+
+  readonly data = computed(() => this.route.snapshot.data['legalData'] || {});
 
   ngOnInit() {
     this.seo.setPageMeta(
