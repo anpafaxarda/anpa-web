@@ -84,10 +84,10 @@ export const routeMeta = {
                     </div>
 
                     @if (actividad.memberPrice) {
-                      <div class="w-full sm:w-1/2 flex flex-col border-t sm:border-t-0 sm:border-l border-surface-100 pt-4 sm:pt-0 sm:pl-4 relative">
+                      <div class="w-full sm:w-1/2 flex flex-col border-t sm:border-t-0 sm:border-l border-surface-100 pt-8 sm:pt-0 sm:pl-4 relative">
                         @if (actividad.discountTag) {
-                          <div class="absolute -top-4 sm:-top-3 right-0 sm:-right-2 rotate-12 z-20">
-                            <span class="bg-primary-500 text-[10px] text-white px-2.5 py-1 rounded-lg font-black uppercase shadow-lg border border-white/20 whitespace-nowrap">
+                          <div class="absolute -top-6 sm:-top-5 right-0 sm:-right-2 rotate-12 z-20">
+                            <span class="bg-primary-500 text-[10px] text-white px-2.5 py-1 rounded-lg font-black uppercase shadow-xl border border-white/20 whitespace-nowrap">
                               {{ actividad.discountTag }}
                             </span>
                           </div>
@@ -95,7 +95,7 @@ export const routeMeta = {
                         <span class="text-[10px] font-black text-primary-600 uppercase tracking-widest mb-1 flex items-center gap-1">
                           P. Socios <span class="w-1.5 h-1.5 bg-primary-500 rounded-full animate-pulse"></span>
                         </span>
-                        <span class="text-xl lg:text-2xl font-black text-primary-600 tracking-tighter leading-tight break-words">{{ actividad.memberPrice }}</span>
+                        <span class="text-xl lg:text-2xl font-black text-primary-600 tracking-tighter leading-none break-words">{{ actividad.memberPrice }}</span>
                       </div>
                     }
                   </div>
