@@ -66,7 +66,7 @@ import { CommonModule } from '@angular/common';
 
             <div class="flex flex-col gap-2 pt-4 border-t border-surface-800 text-xs text-surface-500">
               <a (click)="navigateTo('/aviso-legal')" class="hover:underline cursor-pointer py-1">Aviso Legal</a>
-              <a (click)="navigateTo('/privacidade')" class="hover:underline cursor-pointer py-1">Privacidade</a>
+              <a (click)="navigateTo('/privacidad')" class="hover:underline cursor-pointer py-1">Privacidade</a>
               <a (click)="navigateTo('/politica-cookies')" class="hover:underline cursor-pointer py-1">Política de Cookies</a>
             </div>
           </div>

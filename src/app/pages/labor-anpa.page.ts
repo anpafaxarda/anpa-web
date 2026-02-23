@@ -1,7 +1,21 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, OnInit } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
+import { ActivatedRoute } from '@angular/router';
+import { RouteMeta } from '@analogjs/router';
+import { fetchLaborAnpaPageData } from '../domain/labor-anpa/labor-anpa.action';
+import { SociosPageData } from '../domain/labor-anpa/labor-anpa.model';
+
+export const informacionSociosResolver = () => {
+  return fetchLaborAnpaPageData();
+}
+
+export const routeMeta: RouteMeta = {
+  resolve: {
+    informacionSociosData: informacionSociosResolver
+  }
+}
 
 @Component({
   selector: 'app-labor-anpa-page',
@@ -16,54 +30,15 @@ import { SeoService } from '../core/services/seo.service';
       <div class="max-w-5xl mx-auto px-4">
 
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-16">
-
-          <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
-            <div class="text-3xl mb-4">📢</div>
-            <h3 class="text-xl font-black text-surface-900 mb-3">Representación</h3>
-            <p class="text-surface-600 text-sm leading-relaxed">
-              Somos a voz das familias ante o Consello Escolar e a dirección, trasladando inquedanzas e propostas de mellora.
-            </p>
-          </div>
-
-          <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
-            <div class="text-3xl mb-4">🚌</div>
-            <h3 class="text-xl font-black text-surface-900 mb-3">Xestión de Servizos</h3>
-            <p class="text-surface-600 text-sm leading-relaxed">
-              Coordinamos o bus escolar, o programa Bos Días/Boas Tardes e as actividades extraescolares para facilitar a conciliación.
-            </p>
-          </div>
-
-          <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
-            <div class="text-3xl mb-4">🏗️</div>
-            <h3 class="text-xl font-black text-surface-900 mb-3">Mellora do Centro</h3>
-            <p class="text-surface-600 text-sm leading-relaxed">
-              Colaboramos na adquisición de material didáctico, tecnolóxico e na mellora das instalacións (patio, aulas, etc).
-            </p>
-          </div>
-
-          <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
-            <div class="text-3xl mb-4">🎉</div>
-            <h3 class="text-xl font-black text-surface-900 mb-3">Eventos e Festas</h3>
-            <p class="text-surface-600 text-sm leading-relaxed">
-              Organizamos o Magosto, Nadal, Entroido e a festa de fin de curso, creando momentos inesquecibles.
-            </p>
-          </div>
-
-          <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
-            <div class="text-3xl mb-4">💰</div>
-            <h3 class="text-xl font-black text-surface-900 mb-3">Axudas e Bolsas</h3>
-            <p class="text-surface-600 text-sm leading-relaxed">
-              Mantemos ás familias informadas sobre bolsas de comedor, libros de texto e outras subvencións públicas.
-            </p>
-          </div>
-
-          <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
-            <div class="text-3xl mb-4">🤝</div>
-            <h3 class="text-xl font-black text-surface-900 mb-3">Apoio Mutuo</h3>
-            <p class="text-surface-600 text-sm leading-relaxed">
-              Creamos unha rede de apoio entre familias para resolver dúbidas e compartir información relevante.
-            </p>
-          </div>
+          @for (item of data().servizos; track item.name) {
+            <div class="bg-white p-8 rounded-3xl border border-surface-100 shadow-sm hover:shadow-md transition-all border-t-4 border-t-primary-500 text-left">
+              <div class="text-3xl mb-4">{{ item.emoji }}</div>
+              <h3 class="text-xl font-black text-surface-900 mb-3">{{ item.name }}</h3>
+              <p class="text-surface-600 text-sm leading-relaxed">
+                {{ item.description }}
+              </p>
+            </div>
+          }
         </div>
 
         <div class="pt-4">
@@ -72,18 +47,12 @@ import { SeoService } from '../core/services/seo.service';
               <h2 class="text-3xl font-black text-white mb-6">Por que facerte socio/a?</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left">
-                <div class="flex items-start gap-3 bg-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                  <span class="bg-white/20 p-1 rounded-full text-white text-xs font-bold">✓</span>
-                  <p class="text-sm font-medium text-white">Servizos de conciliación xestionados polo ANPA.</p>
-                </div>
-                <div class="flex items-start gap-3 bg-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                  <span class="bg-white/20 p-1 rounded-full text-white text-xs font-bold">✓</span>
-                  <p class="text-sm font-medium text-white">Descontos en extraescolares e comercios.</p>
-                </div>
-                <div class="flex items-start gap-3 bg-white/10 p-4 rounded-2xl backdrop-blur-sm">
-                  <span class="bg-white/20 p-1 rounded-full text-white text-xs font-bold">✓</span>
-                  <p class="text-sm font-medium text-white">Voto directo nas asembleas e decisións.</p>
-                </div>
+                @for (motivo of data().motivos; track motivo.text) {
+                  <div class="flex items-start gap-3 bg-white/10 p-4 rounded-2xl backdrop-blur-sm">
+                    <span class="bg-white/20 p-1 rounded-full text-white text-xs font-bold shrink-0">✓</span>
+                    <p class="text-sm font-medium text-white">{{ motivo.text }}</p>
+                  </div>
+                }
               </div>
 
               <p class="text-primary-100 italic border-l-2 border-primary-400 pl-4 text-left inline-block">
@@ -98,10 +67,15 @@ import { SeoService } from '../core/services/seo.service';
     </app-page-component>
   `,
 })
-export default class LaborAnpaPage {
+export default class LaborAnpaPage implements OnInit {
   title = 'Labor do ANPA';
 
   private seo = inject(SeoService);
+  private route = inject(ActivatedRoute);
+
+  readonly data = computed<SociosPageData>(() =>
+    this.route.snapshot.data['informacionSociosData'] ?? { servizos: [], motivos: [] }
+  );
 
   ngOnInit() {
     this.seo.setPageMeta(

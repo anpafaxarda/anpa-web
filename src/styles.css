@@ -30,7 +30,6 @@
   to { transform: scale(1.1); }
 }
 
-
 @layer components {
   .programa-content {
     @apply text-left text-surface-600 leading-relaxed;
@@ -59,4 +58,109 @@
   }
 }
 
+/* --- ESTILOS PARA CONTIDO DINÁMICO (SANITY) --- */
+
+/* Encabezados */
+.prose h2 {
+  font-size: 1.5rem !important; /* text-2xl */
+  font-weight: 700 !important;
+  color: var(--color-surface-900) !important;
+  margin-top: 2rem !important;
+  margin-bottom: 1rem !important;
+}
+
+.prose h3 {
+  font-size: 1.25rem !important; /* text-xl */
+  font-weight: 700 !important;
+  color: var(--color-surface-900) !important;
+  margin-top: 1.5rem !important;
+  margin-bottom: 0.75rem !important;
+}
+
+.prose h4, .prose h5, .prose h6 {
+  font-size: 1.125rem !important; /* text-lg */
+  font-weight: 700 !important;
+  color: var(--color-surface-800) !important;
+  margin-top: 1.25rem !important;
+  margin-bottom: 0.5rem !important;
+}
+
+/* Texto base */
+.prose p {
+  color: var(--color-surface-600) !important;
+  margin-bottom: 1rem !important;
+  line-height: 1.625 !important;
+}
+
+/* Enlaces */
+.prose a {
+  color: var(--color-primary-600) !important;
+  text-decoration: underline !important;
+  font-weight: 500 !important;
+  transition: color 0.2s !important;
+}
+.prose a:hover {
+  color: var(--color-primary-700) !important;
+}
+
+/* Formatos de texto */
+.prose strong {
+  font-weight: 700 !important;
+  color: var(--color-surface-900) !important;
+}
+
+.prose em {
+  font-style: italic !important;
+}
+
+.prose u {
+  text-decoration: underline !important;
+}
+
+.prose s {
+  text-decoration: line-through !important;
+}
+
+/* Listas */
+.prose ul {
+  list-style-type: disc !important;
+  margin-left: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  color: var(--color-surface-600) !important;
+}
+
+.prose ol {
+  list-style-type: decimal !important;
+  margin-left: 1.5rem !important;
+  margin-bottom: 1.5rem !important;
+  color: var(--color-surface-600) !important;
+}
+
+.prose li {
+  margin-bottom: 0.5rem !important;
+  display: list-item !important;
+}
+
+/* Citas (Blockquote) */
+.prose blockquote {
+  border-left: 4px solid var(--color-primary-400) !important;
+  padding-left: 1.5rem !important;
+  margin: 1.5rem 0 !important;
+  font-style: italic !important;
+  color: var(--color-surface-700) !important;
+  background-color: var(--color-surface-50) !important;
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  border-radius: 0 0.5rem 0.5rem 0 !important;
+}
+
+/* Código (Inline code) */
+.prose code {
+  background-color: var(--color-surface-100) !important;
+  color: var(--color-surface-900) !important;
+  padding: 0.2rem 0.4rem !important;
+  border-radius: 0.375rem !important;
+  font-size: 0.875em !important;
+  font-family: monospace !important;
+}
 

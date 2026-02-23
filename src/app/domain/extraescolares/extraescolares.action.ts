@@ -1,11 +1,13 @@
 import { sanityClient } from '../../core/api/sanity.client';
-import { Actividad } from './actividades.model';
+import { Actividad } from './extraescolares.model';
 
-export async function fetchActividades(): Promise<Actividad[]> {
+export async function fetchExtraescolares(): Promise<Actividad[]> {
   return await sanityClient.fetch(`*[_type == "extraescolar"] | order(horaInicio asc) {
       name,
       "imageUrl": image.asset->url + "?w=800&auto=format",
       price,
+      memberPrice,
+      discountTag,
       classDuration,
       enrollmentPeriod,
       coursePeriod,
