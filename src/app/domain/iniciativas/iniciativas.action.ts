@@ -1,0 +1,14 @@
+import { sanityClient } from './../../core/api/sanity.client';
+
+export async function fetchIniciativas() {
+  const query = `*[_type == "iniciativa"] | order(orden asc) {
+    titulo,
+    tipoCabecera,
+    emoji,
+    "imageUrl": imaxe.asset->url,
+    corFondo,
+    descripcion,
+    etiquetaTexto
+  }`;
+  return await sanityClient.fetch(query);
+}
