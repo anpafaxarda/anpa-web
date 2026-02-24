@@ -1,10 +1,10 @@
 import { Component, computed, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { Member } from '../domain/members/member.model';
+import { Member } from '../domain/directiva/member.model';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
-import { fetchMembers } from "../domain/members/members.action"; // Acción directa
+import { fetchMembers } from "../domain/directiva/members.action"; // Acción directa
 
 export const directivaResolver: ResolveFn<any> = () => {
   return fetchMembers();

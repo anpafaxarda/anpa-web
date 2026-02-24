@@ -9,4 +9,16 @@ export interface RutaBus {
   nombreRuta: string;
   conductor?: string;
   paradas: Parada[];
+  prezoSocio: number;
+  prezoOrdinario: number;
+}
+
+export interface Bus {
+  rutas: RutaBus[];
+  tarifa: Tarifa;
+}
+
+export interface Tarifa {
+  prezoSocio: number;
+  prezoOrdinario: number;
 }
