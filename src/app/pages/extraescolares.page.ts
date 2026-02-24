@@ -86,7 +86,7 @@ export const routeMeta = {
                     @if (actividad.memberPrice) {
                       <div class="w-full sm:w-1/2 flex flex-col border-t sm:border-t-0 sm:border-l border-surface-100 pt-8 sm:pt-0 sm:pl-4 relative">
                         @if (actividad.discountTag) {
-                          <div class="absolute -top-6 sm:-top-5 right-0 sm:-right-2 rotate-12 z-20">
+                          <div class="absolute sm:-top-5 right-0 sm:-right-2 rotate-12 z-20">
                             <span class="bg-primary-500 text-[10px] text-white px-2.5 py-1 rounded-lg font-black uppercase shadow-xl border border-white/20 whitespace-nowrap">
                               {{ actividad.discountTag }}
                             </span>
@@ -107,7 +107,7 @@ export const routeMeta = {
 
         @if (view() === 'calendar') {
           <div class="animate-slide-in-right">
-            <div class="lg:hidden space-y-8">
+            <div class="lg:hidden space-y-8 px-2">
               @for (dia of dias; track dia) {
                 <div class="animate-in fade-in slide-in-from-bottom-4 duration-500">
                   <h3 class="flex items-center gap-3 text-sm font-black uppercase tracking-widest text-primary-600 mb-4">
@@ -117,21 +117,26 @@ export const routeMeta = {
                   </h3>
                   <div class="grid gap-3">
                     @for (act of getActividadesOrdenadas(dia); track act.name) {
-                      <div class="bg-white p-5 rounded-3xl border border-surface-100 shadow-sm flex items-center gap-4">
-                        <div class="flex-shrink-0 text-center py-2 px-3 rounded-2xl border-2 min-w-[80px]"
+                      <div class="bg-white p-4 rounded-[2rem] border border-surface-100 shadow-sm flex items-center gap-4">
+                        <div class="flex-shrink-0 text-center py-2 px-3 rounded-2xl border-2 min-w-[90px]"
                              [style.backgroundColor]="colorMap()[act.name].bg"
                              [style.borderColor]="colorMap()[act.name].border">
-                          <p class="text-[9px] font-black uppercase leading-none" [style.color]="colorMap()[act.name].text">Inicio</p>
-                          <p class="text-sm font-black mt-1" [style.color]="colorMap()[act.name].text">{{ act.horaInicio }}</p>
+                          <p class="text-[8px] font-black uppercase leading-none opacity-70" [style.color]="colorMap()[act.name].text">Horario</p>
+                          <p class="text-xs font-black mt-1 whitespace-nowrap" [style.color]="colorMap()[act.name].text">
+                            {{ act.horaInicio }} - {{ act.horaFin }}
+                          </p>
                         </div>
                         <div class="flex-grow">
                           <h4 class="text-base font-bold text-surface-900 leading-tight">{{ act.name }}</h4>
                           <div class="flex flex-wrap gap-x-3 mt-1">
-                             <p class="text-[10px] text-surface-400 font-bold uppercase">Ord: {{ act.price }}</p>
-                             <p class="text-[10px] text-primary-600 font-black uppercase">Socio: {{ act.memberPrice }}</p>
+                             <p class="text-[9px] text-surface-400 font-bold uppercase">Ord: {{ act.price }}</p>
+                             <p class="text-[9px] text-primary-600 font-black uppercase">Socio: {{ act.memberPrice }}</p>
                           </div>
                         </div>
                       </div>
+                    }
+                    @if (getActividadesOrdenadas(dia).length === 0) {
+                        <p class="text-center text-xs text-surface-400 italic py-2">Non hai actividades este día</p>
                     }
                   </div>
                 </div>
