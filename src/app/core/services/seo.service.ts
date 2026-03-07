@@ -27,33 +27,46 @@ export class SeoService {
       fullTitle = `${title} | ${this.siteName}`;
     }
 
+    const imageUrl = this.getImageUrl(imagePath);
+
     this.titleService.setTitle(fullTitle);
     this.metaService.updateTag({ name: 'description', content: description });
 
-    this.setMetaOg(fullTitle, description, imagePath);
-    this.setMetaTwitter(fullTitle, description);
+    this.setMetaOg(fullTitle, description, imageUrl);
+    this.setMetaTwitter(fullTitle, description, imageUrl);
   }
 
-  private setMetaOg(fullTitle: string, description: string, imagePath?: string): void {
+  private setMetaOg(fullTitle: string, description: string, imagePath: string): void {
     this.metaService.updateTag({ property: 'og:title', content: fullTitle });
     this.metaService.updateTag({ property: 'og:description', content: description });
     this.metaService.updateTag({ property: 'og:type', content: 'website' });
-    this.metaService.updateTag({ property: 'og:image', content: this.getImageUrl(imagePath) });
+    this.metaService.updateTag({ property: 'og:image', content: imagePath });
+    this.metaService.updateTag({ property: 'og:image:secure_url', content: imagePath });
+    this.metaService.updateTag({ property: 'og:image:width', content: '800' });
+    this.metaService.updateTag({ property: 'og:image:height', content: '533' });
+    this.metaService.updateTag({ property: 'og:image:type', content: 'image/jpeg' });
   }
 
-  private setMetaTwitter(fullTitle: string, description: string): void {
-    this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
-    this.metaService.updateTag({ name: 'twitter:title', content: fullTitle });
-    this.metaService.updateTag({ name: 'twitter:description', content: description });
-  }
+private setMetaTwitter(fullTitle: string, description: string, imagePath: string): void {
+  this.metaService.updateTag({ name: 'twitter:card', content: 'summary_large_image' });
+  this.metaService.updateTag({ name: 'twitter:title', content: fullTitle });
+  this.metaService.updateTag({ name: 'twitter:description', content: description });
+  this.metaService.updateTag({ name: 'twitter:image', content: imagePath });
+}
 
   private getImageUrl(imagePath?: string): string {
-    const baseUrl = this.document.location.origin;
+    const baseUrl = this.document.location.origin.replace(/\/$/, '');
 
-    const fullImageUrl = imagePath
-      ? (imagePath.startsWith('http') ? imagePath : `${baseUrl}/${imagePath}`)
-      : `${baseUrl}/assets/anpa-og-image.jpg`;
+    if (!imagePath) {
+      return `${baseUrl}/assets/anpa-og-image.jpg`;
+    }
 
-    return fullImageUrl;
+    if (imagePath.startsWith('http')) {
+      return imagePath;
+    }
+
+    const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
+
+    return `${baseUrl}/${cleanPath}`;
   }
 }
