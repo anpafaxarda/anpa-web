@@ -5,6 +5,8 @@ import { Title, Meta } from '@angular/platform-browser';
   providedIn: 'root'
 })
 export class SeoService {
+  private baseUrl = 'https://anpa-web.vercel.app'
+  private imagePath: string = '/assets/anpa-og-image.jpg'
   private titleService = inject(Title);
   private metaService = inject(Meta);
   private document = inject(DOCUMENT);
@@ -55,10 +57,10 @@ private setMetaTwitter(fullTitle: string, description: string, imagePath: string
 }
 
   private getImageUrl(imagePath?: string): string {
-    const baseUrl = this.document.location.origin.replace(/\/$/, '');
+    const imageUrl = this.baseUrl+this.imagePath;
 
     if (!imagePath) {
-      return `${baseUrl}/assets/anpa-og-image.jpg`;
+      return imageUrl;
     }
 
     if (imagePath.startsWith('http')) {
@@ -67,6 +69,6 @@ private setMetaTwitter(fullTitle: string, description: string, imagePath: string
 
     const cleanPath = imagePath.startsWith('/') ? imagePath.substring(1) : imagePath;
 
-    return `${baseUrl}/${cleanPath}`;
+    return `${this.baseUrl}/${cleanPath}`;
   }
 }
