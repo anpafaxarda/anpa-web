@@ -2,7 +2,7 @@ import { Component, computed, inject, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { PageComponent } from '../shared/components/page.component';
-import { fetchFaiteSocioData } from '../domain/faite-socio/facite-socio.action';
+import { fetchFaiteSocioData } from '../domain/faite-socio/faite-socio.action';
 import { FaiteSocioData } from '../domain/faite-socio/faite-socio.model';
 import { SeoService } from '../core/services/seo.service';
 

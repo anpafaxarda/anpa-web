@@ -36,7 +36,7 @@ import { SeoService } from '../core/services/seo.service';
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up-more-delayed">
-          <a routerLink="/beneficios" class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary-600/30 hover:-translate-y-1 active:scale-95">
+          <a routerLink="/faite-socio" class="px-8 py-4 bg-primary-600 hover:bg-primary-700 text-white font-bold rounded-xl transition-all shadow-lg shadow-primary-600/30 hover:-translate-y-1 active:scale-95">
             Facerme Socio/a
           </a>
           <a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener" class="px-8 py-4 bg-white/10 hover:bg-white/20 text-white font-bold rounded-xl border border-white/30 transition-all backdrop-blur-sm hover:-translate-y-1 active:scale-95 flex items-center justify-center gap-2">
