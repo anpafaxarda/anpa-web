@@ -74,8 +74,13 @@ import { filter } from 'rxjs/operators';
               }
             </div>
 
+            <button (click)="navigateTo('/faite-socio')"
+               class="ml-4 px-5 py-2.5 bg-[rgb(72,159,67)] text-white text-sm font-black rounded-full hover:bg-opacity-90 hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer shadow-sm">
+              <span>🤝</span> Faite socio/a
+            </button>
+
             <a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener noreferrer"
-               class="ml-4 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2 cursor-pointer">
+               class="ml-2 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2 cursor-pointer">
               Blog <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
             </a>
           </div>
@@ -91,6 +96,11 @@ import { filter } from 'rxjs/operators';
 
       @if (isMobileMenuOpen()) {
         <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-1 shadow-inner overflow-y-auto max-h-[80vh]">
+
+          <button (click)="navigateTo('/faite-socio')"
+             class="w-full mb-6 py-4 bg-[rgb(72,159,67)] text-white text-center font-black rounded-2xl shadow-lg flex items-center justify-center gap-3">
+             <span>🤝</span> FAITE SOCIO/A AGORA
+          </button>
 
           @for (item of mainItems; track item.path) {
             <a (click)="navigateTo(item.path)"
