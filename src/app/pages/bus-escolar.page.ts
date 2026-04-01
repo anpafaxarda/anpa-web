@@ -92,7 +92,7 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                   </div>
 
                   <div class="relative pl-10 space-y-6 before:content-[''] before:absolute before:left-[13px] before:top-2 before:bottom-2 before:w-1 before:bg-orange-100">
-                    @for (parada of getReverseParadas(ruta.paradas); track parada.nombre) {
+                    @for (parada of (ruta.nombreRuta === 'Ruta 1' ? getReverseParadas(ruta.paradas) : ruta.paradas); track parada.nombre) {
                       <div class="relative flex items-center justify-between bg-white p-5 rounded-3xl border border-surface-100 shadow-sm hover:border-orange-300 transition-all group">
                         <div class="absolute -left-[32px] w-5 h-5 rounded-full border-4 border-white shadow-sm bg-orange-500 z-10"></div>
 
