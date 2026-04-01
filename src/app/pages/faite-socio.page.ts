@@ -40,12 +40,23 @@ template: `
 
             <div [ngClass]="{
               'bg-primary-50 border-2 border-primary-200 relative shadow-md scale-105 z-10': isBonificado(),
-              'bg-surface-50 border border-surface-100 opacity-50 scale-95': !isBonificado()
-            }" class="rounded-3xl p-8 transition-all duration-700">
+              'bg-surface-50 border border-surface-100 opacity-60 scale-95': !isBonificado()
+            }" class="rounded-3xl p-8 transition-all duration-700 mt-4 relative">
+
               @if (isBonificado()) {
-                <div class="absolute top-4 right-4 bg-primary-600 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse">ACTUAL</div>
+                <div class="absolute top-0 right-6 -translate-y-1/2 bg-primary-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg z-20 uppercase tracking-widest flex items-center gap-2">
+                  <span class="flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-white opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                  </span>
+                  Actual
+                </div>
               }
-              <h4 [class]="isBonificado() ? 'text-primary-700' : 'text-surface-500'" class="font-black uppercase tracking-widest text-xs mb-6 text-center">Cota Bonificada</h4>
+
+              <h4 [class]="isBonificado() ? 'text-primary-700' : 'text-surface-500'"
+                  class="font-black uppercase tracking-widest text-xs mb-6 text-center pt-2">
+                Cota Bonificada (Ata o {{ formatDate(data.finBonificacion) }})
+              </h4>
               <div class="space-y-6">
                 <div class="flex justify-between items-center border-b border-surface-200 pb-4">
                   <span class="font-bold text-surface-700 font-sans">1 Crianza</span>
@@ -60,12 +71,23 @@ template: `
 
             <div [ngClass]="{
               'bg-primary-50 border-2 border-primary-200 relative shadow-md scale-105 z-10': !isBonificado(),
-              'bg-surface-50 border border-surface-100 opacity-50 scale-95': isBonificado()
-            }" class="rounded-3xl p-8 transition-all duration-700">
+              'bg-surface-50 border border-surface-100 opacity-60 scale-95': isBonificado()
+            }" class="rounded-3xl p-8 transition-all duration-700 mt-4 relative">
+
               @if (!isBonificado()) {
-                <div class="absolute top-4 right-4 bg-primary-600 text-white text-[10px] font-black px-3 py-1 rounded-full animate-pulse">ACTUAL</div>
+                <div class="absolute top-0 right-6 -translate-y-1/2 bg-primary-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg z-20 uppercase tracking-widest flex items-center gap-2">
+                  <span class="flex h-2 w-2">
+                    <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-white opacity-75"></span>
+                    <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                  </span>
+                  Actual
+                </div>
               }
-              <h4 [class]="!isBonificado() ? 'text-primary-700' : 'text-surface-500'" class="font-black uppercase tracking-widest text-xs mb-6 text-center">Cota Xeral</h4>
+
+              <h4 [class]="!isBonificado() ? 'text-primary-700' : 'text-surface-500'"
+                  class="font-black uppercase tracking-widest text-xs mb-6 text-center pt-2">
+                Cota Xeral (Dende o {{ getNextDayFormatted(data.finBonificacion) }})
+              </h4>
               <div class="space-y-6">
                 <div class="flex justify-between items-center border-b border-surface-200 pb-4">
                   <span class="font-bold text-surface-700 font-sans">1 Crianza</span>
@@ -152,5 +174,30 @@ export default class FaiteSocioPage implements OnInit {
       `${data.title || 'Faite socio/a'} - ANPA A Faxarda`,
       data.subtitle || 'Únete ao ANPA A Faxarda.'
     );
+  }
+
+  private meses = [
+    'xaneiro', 'febreiro', 'marzo', 'abril', 'maio', 'xuño',
+    'xullo', 'agosto', 'setembro', 'outubro', 'novembro', 'decembro'
+  ];
+
+  formatDate(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    const day = date.getDate();
+    const month = this.meses[date.getMonth()];
+
+    return `${day} de ${month}`;
+  }
+
+  getNextDayFormatted(dateStr: string): string {
+    if (!dateStr) return '';
+    const date = new Date(dateStr);
+    date.setDate(date.getDate() + 1);
+
+    const day = date.getDate();
+    const month = this.meses[date.getMonth()];
+
+    return `${day} de ${month}`;
   }
 }
