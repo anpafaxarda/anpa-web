@@ -63,8 +63,9 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
               <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20">
 
                 <div class="space-y-8">
-                  <div class="flex items-center gap-3 px-5 py-2 bg-green-50 text-green-700 rounded-2xl w-fit font-black uppercase text-xs tracking-widest border border-green-100">
-                    ☀️ Ida: Cara o Colexio
+                  <div class="flex items-center justify-between px-5 py-2 bg-green-50 text-green-700 rounded-2xl border border-green-100">
+                    <span class="font-black uppercase text-xs tracking-widest">☀️ Ida: Cara o Colexio</span>
+                    <span class="text-[10px] font-bold italic bg-white/50 px-2 py-1 rounded-lg">🕒 Horarios orientativos</span>
                   </div>
 
                   <div class="relative pl-10 space-y-6 before:content-[''] before:absolute before:left-[13px] before:top-2 before:bottom-2 before:w-1 before:bg-green-100">
@@ -87,8 +88,9 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                 </div>
 
                 <div class="space-y-8">
-                  <div class="flex items-center gap-3 px-5 py-2 bg-orange-50 text-orange-700 rounded-2xl w-fit font-black uppercase text-xs tracking-widest border border-orange-100 lg:ml-auto">
-                    🌙 Volta: Regreso a casa
+                  <div class="flex items-center justify-between px-5 py-2 bg-orange-50 text-orange-700 rounded-2xl border border-orange-100 lg:ml-auto">
+                    <span class="font-black uppercase text-xs tracking-widest">🌙 Volta: Regreso a casa</span>
+                    <span class="text-[10px] font-bold italic bg-white/50 px-2 py-1 rounded-lg ml-4">🕒 Horarios orientativos</span>
                   </div>
 
                   <div class="relative pl-10 space-y-6 before:content-[''] before:absolute before:left-[13px] before:top-2 before:bottom-2 before:w-1 before:bg-orange-100">
@@ -109,6 +111,16 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                     }
                   </div>
                 </div>
+              </div>
+
+              <div class="bg-amber-50 border border-amber-100 p-4 rounded-3xl flex items-center gap-4">
+                <span class="text-xl">⚠️</span>
+                <p class="text-[11px] md:text-xs text-amber-800 leading-tight">
+                  <span class="font-black uppercase text-amber-900">Aviso:</span>
+                  As horas son estimadas e poden variar polo tráfico ou o tempo de embarque.
+                  Recoméndase estar na parada <span class="font-bold text-amber-950 underline">5 minutos antes</span>.
+                  Servizo operado por <span class="font-bold text-primary-700">EOCAR</span> (♿ Flota adaptada).
+                </p>
               </div>
             </div>
           }
@@ -147,7 +159,7 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
               </p>
 
               <p class="text-surface-600 font-medium leading-relaxed italic border-l-4 border-primary-200 pl-4 bg-primary-50/50 py-2 rounded-r-xl">
-                O servizo permite <span class="text-primary-700 font-bold">combinar rutas</span> de ida e volta segundo as necesidades semanais de cada familia, previa comunicación á ANPA.
+                O servizo permite <span class="text-primary-700 font-bold">combinar rutas</span> de ida e volta segundo as necesidades semanais de cada familia, previa comunicación á ANPA ou á empresa.
               </p>
 
               <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
@@ -158,7 +170,7 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                   🔄 Combinación de Rutas
                 </div>
                 <div class="bg-surface-50 px-4 py-2 rounded-2xl border border-surface-100 text-[10px] font-black text-surface-500 italic lowercase">
-                  * Avisar con antelación á EOCAR
+                  * Horarios suxeitos ao tráfico
                 </div>
               </div>
             </div>
@@ -188,11 +200,6 @@ export default class BusPage implements OnInit {
     this.seo.setPageMeta('Transporte Escolar', 'Rutas e tarifas de bus do CEIP Gregorio Sanz.');
   }
 
-  /**
-   * Para la Ruta 1 de vuelta:
-   * Mueve el Colegio (última parada de la ida) al principio de la lista,
-   * manteniendo el resto de paradas en su orden original.
-   */
   getVoltaRuta1(paradas: Parada[]) {
     if (!paradas || paradas.length === 0) return [];
     const copy = [...paradas];
