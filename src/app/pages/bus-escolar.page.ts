@@ -92,7 +92,7 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                   </div>
 
                   <div class="relative pl-10 space-y-6 before:content-[''] before:absolute before:left-[13px] before:top-2 before:bottom-2 before:w-1 before:bg-orange-100">
-                    @for (parada of (ruta.nombreRuta === 'Ruta 2' ? getReverseParadas(ruta.paradas) : ruta.paradas); track parada.nombre) {
+                    @for (parada of (ruta.nombreRuta === 'Ruta 1' ? getVoltaRuta1(ruta.paradas) : ruta.paradas); track parada.nombre) {
                       <div class="relative flex items-center justify-between bg-white p-5 rounded-3xl border border-surface-100 shadow-sm hover:border-orange-300 transition-all group">
                         <div class="absolute -left-[32px] w-5 h-5 rounded-full border-4 border-white shadow-sm bg-orange-500 z-10"></div>
 
@@ -113,6 +113,65 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
             </div>
           }
         </div>
+
+        <div class="mb-20 bg-white border-2 border-surface-100 rounded-[2.5rem] p-8 md:p-12 shadow-sm relative overflow-hidden">
+
+          <div class="flex flex-col md:flex-row items-center gap-10 relative z-10">
+
+            <div class="flex flex-col items-center space-y-6 min-w-[200px]">
+              <div class="w-32 h-32 md:w-40 md:h-40 bg-surface-50 rounded-3xl flex items-center justify-center p-6 border border-surface-100 shadow-inner">
+                <img src="assets/logo-EOCAR.png" alt="Logotipo EOCAR" class="max-w-full h-auto object-contain">
+              </div>
+
+              <a href="https://eocar.es" target="_blank"
+                class="flex items-center gap-2 text-xs font-black uppercase tracking-widest text-primary-600 hover:text-primary-800 transition-colors">
+                🌐 Visitar web eocar
+                <span class="text-lg">→</span>
+              </a>
+            </div>
+
+            <div class="flex-1 space-y-6 text-center md:text-left">
+              <div class="space-y-2">
+                <div class="flex flex-wrap justify-center md:justify-start gap-2">
+                  <span class="text-[10px] font-black uppercase text-primary-600 tracking-[0.2em]">Proveedor Oficial</span>
+                  <span class="text-[10px] font-black uppercase text-blue-600 tracking-[0.2em] flex items-center gap-1">
+                    <span class="text-xs">♿</span> Accesibilidade Total
+                  </span>
+                </div>
+                <h3 class="text-3xl font-black text-surface-900 italic tracking-tight">Servizo operado por EOCAR</h3>
+              </div>
+
+              <p class="text-surface-600 font-medium leading-relaxed">
+                O CEIP Gregorio Sanz conta coa colaboración de <span class="text-surface-900 font-bold">EOCAR</span> para un transporte seguro e inclusivo.
+                Toda a nosa flota está <span class="text-blue-700 font-bold">completamente adaptada</span> para alumnos con mobilidade reducida, contando con sistemas de rampla e ancoraxes homologadas para cadeiras de rodas.
+              </p>
+
+              <p class="text-surface-600 font-medium leading-relaxed italic border-l-4 border-primary-200 pl-4 bg-primary-50/50 py-2 rounded-r-xl">
+                O servizo permite <span class="text-primary-700 font-bold">combinar rutas</span> de ida e volta segundo as necesidades semanais de cada familia, previa comunicación á ANPA.
+              </p>
+
+              <div class="flex flex-wrap justify-center md:justify-start gap-3 pt-2">
+                <div class="bg-blue-50 px-4 py-2 rounded-2xl border border-blue-100 text-[10px] font-black text-blue-700 uppercase tracking-wider flex items-center gap-2">
+                  ♿ Flota Adaptada PMR
+                </div>
+                <div class="bg-primary-50 px-4 py-2 rounded-2xl border border-primary-100 text-[10px] font-black text-primary-700 uppercase tracking-wider">
+                  🔄 Combinación de Rutas
+                </div>
+                <div class="bg-surface-50 px-4 py-2 rounded-2xl border border-surface-100 text-[10px] font-black text-surface-500 italic lowercase">
+                  * Avisar con antelación á EOCAR
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="absolute right-[-20px] bottom-[-20px] opacity-[0.04] pointer-events-none rotate-12">
+            <svg width="250" height="250" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M7 18c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2zM1 2v2h2l3.6 7.59-1.35 2.45c-.16.28-.25.61-.25.96 0 1.1.9 2 2 2h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12.9-1.63h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49c.08-.14.12-.31.12-.48 0-.55-.45-1-1-1H5.21l-.94-2H1zm16 16c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"/>
+            </svg>
+          </div>
+        </div>
+
       </div>
     </app-page-component>
   `,
@@ -127,6 +186,19 @@ export default class BusPage implements OnInit {
 
   ngOnInit() {
     this.seo.setPageMeta('Transporte Escolar', 'Rutas e tarifas de bus do CEIP Gregorio Sanz.');
+  }
+
+  /**
+   * Para la Ruta 1 de vuelta:
+   * Mueve el Colegio (última parada de la ida) al principio de la lista,
+   * manteniendo el resto de paradas en su orden original.
+   */
+  getVoltaRuta1(paradas: Parada[]) {
+    if (!paradas || paradas.length === 0) return [];
+    const copy = [...paradas];
+    const colegio = copy.pop();
+    if (colegio) copy.unshift(colegio);
+    return copy;
   }
 
   getReverseParadas(paradas: Parada[]) {
