@@ -101,12 +101,14 @@ template: `
             </div>
           </div>
 
-          <div class="mt-12 text-center">
-            <a [href]="data.urlAppWeb" target="_blank" rel="noopener noreferrer"
-               class="inline-block bg-[rgb(72,159,67)] text-white px-10 py-4 rounded-2xl font-black text-xl hover:shadow-xl hover:-translate-y-1 transition-all shadow-lg cursor-pointer">
-              Acceder á plataforma de xestión ↗
-            </a>
-          </div>
+          @if (data.urlAppWeb) {
+            <div class="mt-12 text-center">
+              <a [href]="data.urlAppWeb" target="_blank" rel="noopener noreferrer"
+                 class="inline-block bg-[rgb(72,159,67)] text-white px-10 py-4 rounded-2xl font-black text-xl hover:shadow-xl hover:-translate-y-1 transition-all shadow-lg cursor-pointer">
+                Acceder á plataforma de xestión ↗
+              </a>
+            </div>
+          } 
         </div>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
