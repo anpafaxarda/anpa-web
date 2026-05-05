@@ -15,7 +15,12 @@ export const fetchFaiteSocioData = async () => {
       urlAppWeb,
       urlIOS,
       urlAndroid,
-      features
+      features,
+      "tutorialSteps": tutorialSteps[]{
+        title,
+        description,
+        "imageUrl": image.asset->url
+      }
     }
   `);
 };

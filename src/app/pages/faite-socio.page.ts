@@ -20,7 +20,7 @@ export const routeMeta = {
   selector: 'app-faite-socio-page',
   standalone: true,
   imports: [CommonModule, PageComponent],
-template: `
+  template: `
     @let data = socioData();
 
     <app-page-component
@@ -30,6 +30,7 @@ template: `
     >
       <div class="max-w-5xl mx-auto px-4">
 
+        <!-- SECCIÓN COTAS -->
         <div class="bg-white rounded-[3rem] border border-surface-100 shadow-2xl p-8 md:p-12 mb-16">
           <div class="text-center mb-10">
             <h3 class="text-3xl font-black text-surface-900 mb-2 tracking-tighter">Cotas por Curso Escolar</h3>
@@ -37,12 +38,10 @@ template: `
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-
             <div [ngClass]="{
               'bg-primary-50 border-2 border-primary-200 relative shadow-md scale-105 z-10': isBonificado(),
               'bg-surface-50 border border-surface-100 opacity-60 scale-95': !isBonificado()
             }" class="rounded-3xl p-8 transition-all duration-700 mt-4 relative">
-
               @if (isBonificado()) {
                 <div class="absolute top-0 right-6 -translate-y-1/2 bg-primary-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg z-20 uppercase tracking-widest flex items-center gap-2">
                   <span class="flex h-2 w-2">
@@ -52,7 +51,6 @@ template: `
                   Actual
                 </div>
               }
-
               <h4 [class]="isBonificado() ? 'text-primary-700' : 'text-surface-500'"
                   class="font-black uppercase tracking-widest text-xs mb-6 text-center pt-2">
                 Cota Bonificada (Ata o {{ formatDate(data.finBonificacion) }})
@@ -73,7 +71,6 @@ template: `
               'bg-primary-50 border-2 border-primary-200 relative shadow-md scale-105 z-10': !isBonificado(),
               'bg-surface-50 border border-surface-100 opacity-60 scale-95': isBonificado()
             }" class="rounded-3xl p-8 transition-all duration-700 mt-4 relative">
-
               @if (!isBonificado()) {
                 <div class="absolute top-0 right-6 -translate-y-1/2 bg-primary-600 text-white text-[10px] font-black px-4 py-1.5 rounded-full shadow-lg z-20 uppercase tracking-widest flex items-center gap-2">
                   <span class="flex h-2 w-2">
@@ -83,7 +80,6 @@ template: `
                   Actual
                 </div>
               }
-
               <h4 [class]="!isBonificado() ? 'text-primary-700' : 'text-surface-500'"
                   class="font-black uppercase tracking-widest text-xs mb-6 text-center pt-2">
                 Cota Xeral (Dende o {{ getNextDayFormatted(data.finBonificacion) }})
@@ -111,6 +107,7 @@ template: `
           } 
         </div>
 
+        <!-- SECCIÓN FEATURES -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
           @for (feature of data.features; track feature.title) {
             <div class="bg-white p-10 rounded-[2.5rem] border border-surface-100 shadow-xl flex flex-col items-center text-center group hover:border-primary-200 transition-all duration-500">
@@ -123,6 +120,43 @@ template: `
           }
         </div>
 
+        <!-- SECCIÓN TITORIAL DA APP -->
+        @if (data.tutorialSteps && data.tutorialSteps.length > 0) {
+          <div class="mb-24">
+            <div class="text-center mb-16">
+              <h3 class="text-4xl font-black text-surface-900 mb-4 tracking-tighter">Como funciona a App?</h3>
+              <p class="text-surface-500 font-medium italic">Un pequeno percorrido visual para que aprendas a moverte pola plataforma.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+              @for (step of data.tutorialSteps; track $index) {
+                <div class="flex flex-col items-center">
+                  <!-- Mockup de iPhone (iphone 16 pro max style) -->
+                  <div class="relative mx-auto border-surface-900 bg-surface-900 border-[8px] rounded-[3rem] h-[520px] w-[260px] shadow-2xl mb-8 overflow-hidden group">
+                    <!-- Dynamic Island Simulado -->
+                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-surface-900 z-20 rounded-b-2xl mt-1"></div>
+
+                    <img [src]="step.imageUrl"
+                         class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
+                         [alt]="step.title">
+
+                    <!-- Número de paso -->
+                    <div class="absolute bottom-4 right-4 w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
+                      {{ $index + 1 }}
+                    </div>
+                  </div>
+
+                  <div class="text-center px-2">
+                    <h4 class="font-black text-xl mb-3 text-surface-900 leading-tight">{{ step.title }}</h4>
+                    <p class="text-surface-600 font-medium text-sm italic leading-relaxed">{{ step.description }}</p>
+                  </div>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
+        <!-- SECCIÓN DESCARGA APP -->
         <div class="bg-surface-900 rounded-[3rem] p-8 md:p-16 text-white mb-20 relative overflow-hidden shadow-2xl">
           <div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
             <div class="flex-grow text-center lg:text-left">
