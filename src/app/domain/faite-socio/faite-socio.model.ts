@@ -4,6 +4,13 @@ export interface FaiteSocioFeature {
   description: string;
 }
 
+export interface TutorialStep {
+  title: string;
+  description: string;
+  imageUrl: string;
+  isRegistration: boolean;
+}
+
 export interface FaiteSocioData {
   title: string;
   subtitle: string;
@@ -21,4 +28,5 @@ export interface FaiteSocioData {
   urlAndroid: string;
   // Array dinámico
   features: FaiteSocioFeature[];
+  tutorialSteps: TutorialStep[];
 }

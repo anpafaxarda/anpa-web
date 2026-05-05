@@ -1,5 +1,5 @@
 import { sanityClient } from '../../core/api/sanity.client';
-import { Categorias } from "./colaborador.model";
+import { Categorias } from '../beneficios/beneficios.model';
 
 export async function fetchCategorias(): Promise<Categorias> {
   const query = `{

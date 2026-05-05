@@ -1,2 +1,4 @@
 User-agent: *
 Disallow: /
+
+Sitemap: https://anpa-web.verce.app/sitemap.xml
