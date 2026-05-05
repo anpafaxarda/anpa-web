@@ -34,7 +34,7 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                       <span class="text-[10px] font-black uppercase text-surface-400 tracking-widest">Prezo Base</span>
                       <span class="font-bold text-surface-900">Non Socios</span>
                     </div>
-                    <span class="text-2xl font-black text-surface-900">{{ t.prezoOrdinario }}€</span>
+                    <span class="text-2xl font-black text-surface-900">{{ t.prezoOrdinario }}€/mes</span>
                  </div>
 
                  <div class="flex justify-between items-center p-5 rounded-[1.8rem] bg-primary-600 text-white shadow-lg shadow-primary-200">
@@ -43,7 +43,7 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                       <span class="font-bold">Socios ANPA</span>
                     </div>
                     <div class="flex flex-col items-end">
-                      <span class="text-2xl font-black">{{ t.prezoSocio }}€</span>
+                      <span class="text-2xl font-black">{{ t.prezoSocio }}€/mes</span>
                       <span class="text-[10px] font-black bg-white/20 px-2 py-0.5 rounded-full mt-1">Aforra un {{ t.desconto }}</span>
                     </div>
                  </div>

@@ -19,7 +19,8 @@ export const fetchFaiteSocioData = async () => {
       "tutorialSteps": tutorialSteps[]{
         title,
         description,
-        "imageUrl": image.asset->url
+        "imageUrl": image.asset->url,
+        isRegistration,
       }
     }
   `);

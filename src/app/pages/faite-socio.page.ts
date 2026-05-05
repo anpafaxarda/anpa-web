@@ -28,9 +28,9 @@ export const routeMeta = {
       [title]="data.title"
       [subTitle]="data.subtitle"
     >
-      <div class="max-w-5xl mx-auto px-4">
+      <div class="max-w-6xl mx-auto px-4">
 
-        <!-- SECCIÓN COTAS -->
+        <!-- SECCIÓN COTAS (Sin cambios) -->
         <div class="bg-white rounded-[3rem] border border-surface-100 shadow-2xl p-8 md:p-12 mb-16">
           <div class="text-center mb-10">
             <h3 class="text-3xl font-black text-surface-900 mb-2 tracking-tighter">Cotas por Curso Escolar</h3>
@@ -97,78 +97,65 @@ export const routeMeta = {
             </div>
           </div>
 
-          @if (data.urlAppWeb) {
-            <div class="mt-12 text-center">
-              <a [href]="data.urlAppWeb" target="_blank" rel="noopener noreferrer"
-                 class="inline-block bg-[rgb(72,159,67)] text-white px-10 py-4 rounded-2xl font-black text-xl hover:shadow-xl hover:-translate-y-1 transition-all shadow-lg cursor-pointer">
-                Acceder á plataforma de xestión ↗
-              </a>
-            </div>
-          } 
+          <div class="mt-12 text-center">
+            <a [href]="data.urlAppWeb" target="_blank" rel="noopener noreferrer"
+               class="inline-block bg-[rgb(72,159,67)] text-white px-10 py-4 rounded-2xl font-black text-xl hover:shadow-xl hover:-translate-y-1 transition-all shadow-lg cursor-pointer">
+              Acceder á plataforma de xestión ↗
+            </a>
+          </div>
         </div>
 
-        <!-- SECCIÓN FEATURES -->
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
-          @for (feature of data.features; track feature.title) {
-            <div class="bg-white p-10 rounded-[2.5rem] border border-surface-100 shadow-xl flex flex-col items-center text-center group hover:border-primary-200 transition-all duration-500">
-              <div class="w-20 h-20 bg-primary-50 text-primary-600 rounded-3xl flex items-center justify-center text-4xl mb-6 shadow-inner group-hover:scale-110 transition-transform">
-                {{ feature.icon }}
-              </div>
-              <h4 class="font-black text-2xl mb-4 text-surface-900 leading-tight">{{ feature.title }}</h4>
-              <p class="text-surface-600 font-medium leading-relaxed italic">{{ feature.description }}</p>
-            </div>
-          }
-        </div>
-
-        <!-- SECCIÓN TITORIAL DA APP -->
+        <!-- TITORIAL DIVIDIDO POR BLOQUES -->
         @if (data.tutorialSteps && data.tutorialSteps.length > 0) {
-          <div class="mb-24">
-            <div class="text-center mb-16">
-              <h3 class="text-4xl font-black text-surface-900 mb-4 tracking-tighter">Como funciona a App?</h3>
-              <p class="text-surface-500 font-medium italic">Un pequeno percorrido visual para que aprendas a moverte pola plataforma.</p>
+
+          <!-- BLOQUE 1: REXISTRO -->
+          <div class="mb-24 bg-surface-50 rounded-[4rem] p-8 md:p-16 border border-surface-100">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+              <div class="text-left">
+                <span class="text-primary-600 font-black uppercase tracking-widest text-sm">Paso 1</span>
+                <h3 class="text-4xl font-black text-surface-900 tracking-tighter">Primeiros pasos: Rexistro</h3>
+              </div>
+              <p class="text-surface-500 font-medium italic max-w-md">Como darte de alta e configurar a túa conta por primeira vez.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+              @for (step of registrationSteps(); track step.title) {
+                <ng-container *ngTemplateOutlet="stepTemplate; context: { $implicit: step, index: $index + 1 }"></ng-container>
+              }
+            </div>
+          </div>
+
+          <!-- BLOQUE 2: USO DA APP -->
+          <div class="mb-32 p-8 md:p-16">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+              <div class="text-left">
+                <span class="text-primary-600 font-black uppercase tracking-widest text-sm">Paso 2</span>
+                <h3 class="text-4xl font-black text-surface-900 tracking-tighter">Explora a túa App</h3>
+              </div>
+              <p class="text-surface-500 font-medium italic max-w-md">Saca o máximo proveito ás ferramentas que ofrece o ANPA.</p>
             </div>
 
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-              @for (step of data.tutorialSteps; track $index) {
-                <div class="flex flex-col items-center">
-                  <!-- Mockup de iPhone (iphone 16 pro max style) -->
-                  <div class="relative mx-auto border-surface-900 bg-surface-900 border-[8px] rounded-[3rem] h-[520px] w-[260px] shadow-2xl mb-8 overflow-hidden group">
-                    <!-- Dynamic Island Simulado -->
-                    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-surface-900 z-20 rounded-b-2xl mt-1"></div>
-
-                    <img [src]="step.imageUrl"
-                         class="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105"
-                         [alt]="step.title">
-
-                    <!-- Número de paso -->
-                    <div class="absolute bottom-4 right-4 w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
-                      {{ $index + 1 }}
-                    </div>
-                  </div>
-
-                  <div class="text-center px-2">
-                    <h4 class="font-black text-xl mb-3 text-surface-900 leading-tight">{{ step.title }}</h4>
-                    <p class="text-surface-600 font-medium text-sm italic leading-relaxed">{{ step.description }}</p>
-                  </div>
-                </div>
+              @for (step of usageSteps(); track step.title) {
+                <ng-container *ngTemplateOutlet="stepTemplate; context: { $implicit: step, index: $index + 1 }"></ng-container>
               }
             </div>
           </div>
         }
 
-        <!-- SECCIÓN DESCARGA APP -->
+        <!-- SECCIÓN DESCARGA APP (Footer) -->
         <div class="bg-surface-900 rounded-[3rem] p-8 md:p-16 text-white mb-20 relative overflow-hidden shadow-2xl">
           <div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
             <div class="flex-grow text-center lg:text-left">
-              <h3 class="text-4xl font-black mb-4 tracking-tighter leading-tight text-balance">Leva o ANPA contigo</h3>
-              <p class="text-surface-400 font-medium text-lg max-w-md mx-auto lg:mx-0">Xestiona pagos e comunicación desde a nosa App oficial.</p>
+              <h3 class="text-4xl font-black mb-4 tracking-tighter leading-tight text-balance">¿Listo para comezar?</h3>
+              <p class="text-surface-400 font-medium text-lg max-w-md mx-auto lg:mx-0">Descarga a App oficial e xestiona todo desde a palma da man.</p>
             </div>
 
             <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
               <a [href]="data.urlIOS" target="_blank" class="bg-black text-white px-5 py-2.5 rounded-xl flex items-center gap-3 w-48 hover:bg-surface-800 transition-all shadow-lg border border-surface-700">
                 <svg class="w-7 h-7" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
                 <div class="text-left leading-tight font-sans">
-                  <p class="text-[9px] font-medium uppercase leading-none mb-1">Download on the</p>
+                  <p class="text-[9px] font-medium uppercase leading-none mb-1 text-surface-400">Download on the</p>
                   <p class="text-lg font-semibold -mt-1 leading-none text-white">App Store</p>
                 </div>
               </a>
@@ -176,7 +163,7 @@ export const routeMeta = {
               <a [href]="data.urlAndroid" target="_blank" class="bg-black text-white px-5 py-2.5 rounded-xl flex items-center gap-3 w-48 hover:bg-surface-800 transition-all shadow-lg border border-surface-700">
                 <svg class="w-7 h-7" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 58.9-34.1c18-10.3 18-27.3 0-37.7zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
                 <div class="text-left leading-tight font-sans">
-                  <p class="text-[9px] font-medium uppercase leading-none mb-1">Get it on</p>
+                  <p class="text-[9px] font-medium uppercase leading-none mb-1 text-surface-400">Get it on</p>
                   <p class="text-lg font-semibold -mt-1 leading-none text-white">Google Play</p>
                 </div>
               </a>
@@ -186,6 +173,23 @@ export const routeMeta = {
         </div>
       </div>
     </app-page-component>
+
+    <!-- TEMPLATE REUTILIZABLE PARA CADA MÓVIL -->
+    <ng-template #stepTemplate let-step let-index="index">
+      <div class="flex flex-col items-center group">
+        <div class="relative mx-auto border-surface-900 bg-surface-900 border-[8px] rounded-[3rem] h-[520px] w-[260px] shadow-2xl mb-8 overflow-hidden">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-surface-900 z-20 rounded-b-2xl mt-1"></div>
+          <img [src]="step.imageUrl" class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" [alt]="step.title">
+          <div class="absolute bottom-4 right-4 w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
+            {{ index }}
+          </div>
+        </div>
+        <div class="text-center px-4">
+          <h4 class="font-black text-xl mb-3 text-surface-900 leading-tight">{{ step.title }}</h4>
+          <p class="text-surface-600 font-medium text-sm italic leading-relaxed">{{ step.description }}</p>
+        </div>
+      </div>
+    </ng-template>
   `
 })
 export default class FaiteSocioPage implements OnInit {
@@ -193,6 +197,16 @@ export default class FaiteSocioPage implements OnInit {
   private seo = inject(SeoService);
 
   readonly socioData = computed(() => this.route.snapshot.data['faiteSocioData'] as FaiteSocioData);
+
+  // Filtramos los pasos de Rexistro (aquellos que tengan isRegistration: true en Sanity)
+  readonly registrationSteps = computed(() =>
+    this.socioData()?.tutorialSteps?.filter(s => s.isRegistration) || []
+  );
+
+  // Filtramos los pasos de Uso (aquellos que tengan isRegistration: false o no lo tengan)
+  readonly usageSteps = computed(() =>
+    this.socioData()?.tutorialSteps?.filter(s => !s.isRegistration) || []
+  );
 
   readonly isBonificado = computed(() => {
     const data = this.socioData();
@@ -222,7 +236,6 @@ export default class FaiteSocioPage implements OnInit {
     const date = new Date(dateStr);
     const day = date.getDate();
     const month = this.meses[date.getMonth()];
-
     return `${day} de ${month}`;
   }
 
@@ -230,10 +243,8 @@ export default class FaiteSocioPage implements OnInit {
     if (!dateStr) return '';
     const date = new Date(dateStr);
     date.setDate(date.getDate() + 1);
-
     const day = date.getDate();
     const month = this.meses[date.getMonth()];
-
     return `${day} de ${month}`;
   }
 }

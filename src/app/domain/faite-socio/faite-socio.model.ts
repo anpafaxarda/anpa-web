@@ -8,6 +8,7 @@ export interface TutorialStep {
   title: string;
   description: string;
   imageUrl: string;
+  isRegistration: boolean;
 }
 
 export interface FaiteSocioData {
