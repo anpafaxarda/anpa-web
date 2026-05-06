@@ -40,17 +40,17 @@ export default defineConfig(({ mode }) => ({
             '/bos-dias-tardes',
             '/bus-escolar',
             '/actividade',
+            '/sitemap.xml',
             ...cursos.map(c => `/actividade/curso/${c}`),
             ...slugs
           ]
         },
         sitemap: {
-          host: 'https://anpa-web.vercel.app'
+          host: 'https://anpafaxarda.org',
         }
       },
       nitro: {
         preset: 'vercel',
-        // Esto asegura que Nitro trate las rutas como "fetchables" para la SPA
         prerender: {
           crawlLinks: true,
           concurrency: 1

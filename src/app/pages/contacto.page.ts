@@ -32,7 +32,7 @@ export const routeMeta = {
         <div class="mb-12 bg-surface-900 rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl border border-surface-800">
           <div class="flex flex-col lg:flex-row items-center gap-8 relative z-10">
             <div class="flex-shrink-0">
-              <div class="w-20 h-20 bg-white rounded-3xl p-4 shadow-xl transform rotate-3">
+              <div class="w-20 h-20 bg-white rounded-3xl shadow-xl transform rotate-3">
                 <img src="/assets/abaco-logo.webp" alt="Ábaco Logo" class="w-full h-full object-contain">
               </div>
             </div>
