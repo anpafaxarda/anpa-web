@@ -30,9 +30,13 @@ export const routeMeta = {
         @for (item of colaboradores(); track item.name) {
           <div class="bg-white rounded-2xl shadow-xl shadow-surface-200/60 border border-surface-100 overflow-hidden flex flex-col group">
 
-            <div class="relative h-48 bg-surface-100 flex items-center justify-center p-6">
+            <div class="relative h-48 bg-surface-100 flex items-center justify-center">
               @if (item.imageUrl) {
-                <img [src]="item.imageUrl" [alt]="item.name" class="max-w-full max-h-full object-contain group-hover:scale-105 transition-transform duration-500">
+                <img
+                  [src]="item.imageUrl"
+                  [alt]="item.name"
+                  class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                >
               } @else {
                 <div class="text-surface-300 text-4xl font-bold uppercase">{{ item.name.substring(0,2) }}</div>
               }
