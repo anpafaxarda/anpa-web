@@ -172,7 +172,7 @@ export class NavbarComponent {
 
   mainItems = [
     { label: 'Labor ANPA', path: '/labor-anpa' },
-    { label: 'Iniciativas', path: '/iniciativas' },
+    { label: 'Actividade', path: '/actividade' },
     { label: 'Colaboradores', path: '/colaboradores' },
   ];
 

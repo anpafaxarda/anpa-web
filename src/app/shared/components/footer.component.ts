@@ -50,7 +50,7 @@ import { CommonModule } from '@angular/common';
             <h4 class="font-bold text-lg mb-6 text-primary-400">O ANPA</h4>
             <ul class="space-y-3 text-surface-400 text-sm">
               <li><a (click)="navigateTo('/labor-anpa')" class="hover:text-white transition-colors cursor-pointer block">O noso labor</a></li>
-              <li><a (click)="navigateTo('/iniciativas')" class="hover:text-white transition-colors cursor-pointer block">Iniciativas</a></li>
+              <li><a (click)="navigateTo('/actividade')" class="hover:text-white transition-colors cursor-pointer block">Iniciativas</a></li>
               <li><a (click)="navigateTo('/asambleas')" class="hover:text-white transition-colors cursor-pointer block">Asembleas</a></li>
               <li><a (click)="navigateTo('/directiva')" class="hover:text-white transition-colors cursor-pointer block">Xunta Directiva</a></li>
               <li><a (click)="navigateTo('/colaboradores')" class="hover:text-white transition-colors cursor-pointer block">Colaboradores</a></li>
