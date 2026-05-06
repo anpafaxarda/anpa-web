@@ -96,13 +96,6 @@ export const routeMeta = {
               </div>
             </div>
           </div>
-
-          <div class="mt-12 text-center">
-            <a [href]="data.urlAppWeb" target="_blank" rel="noopener noreferrer"
-               class="inline-block bg-[rgb(72,159,67)] text-white px-10 py-4 rounded-2xl font-black text-xl hover:shadow-xl hover:-translate-y-1 transition-all shadow-lg cursor-pointer">
-              Acceder á plataforma de xestión ↗
-            </a>
-          </div>
         </div>
 
         <!-- TITORIAL DIVIDIDO POR BLOQUES -->
@@ -144,13 +137,21 @@ export const routeMeta = {
         }
 
         <!-- SECCIÓN DESCARGA APP (Footer) -->
-        <div class="bg-surface-900 rounded-[3rem] p-8 md:p-16 text-white mb-20 relative overflow-hidden shadow-2xl">
+<div class="bg-surface-900 rounded-[3rem] p-8 md:p-16 text-white mb-20 relative overflow-hidden shadow-2xl">
           <div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
-            <div class="flex-grow text-center lg:text-left">
-              <h3 class="text-4xl font-black mb-4 tracking-tighter leading-tight text-balance">¿Listo para comezar?</h3>
-              <p class="text-surface-400 font-medium text-lg max-w-md mx-auto lg:mx-0">Descarga a App oficial e xestiona todo desde a palma da man.</p>
+
+            <!-- Columna Logotipo e Texto -->
+            <div class="flex flex-col sm:flex-row items-center gap-6 lg:flex-grow text-center sm:text-left">
+              <div class="w-24 h-24 bg-white rounded-[2rem] shadow-xl transform -rotate-3">
+                <img src="/assets/abaco-logo.webp" alt="Ábaco Logo" class="w-full h-full object-contain">
+              </div>
+              <div>
+                <h3 class="text-4xl font-black mb-2 tracking-tighter leading-tight text-balance">¿Listo para comezar?</h3>
+                <p class="text-surface-400 font-medium text-lg max-w-sm">Descarga <b>Ábaco Familias</b> e xestiona todo desde a túa man.</p>
+              </div>
             </div>
 
+            <!-- Botóns de Tenda -->
             <div class="flex flex-col sm:flex-row gap-4 w-full lg:w-auto">
               <a [href]="data.urlIOS" target="_blank" class="bg-black text-white px-5 py-2.5 rounded-xl flex items-center gap-3 w-48 hover:bg-surface-800 transition-all shadow-lg border border-surface-700">
                 <svg class="w-7 h-7" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
@@ -177,9 +178,9 @@ export const routeMeta = {
     <!-- TEMPLATE REUTILIZABLE PARA CADA MÓVIL -->
     <ng-template #stepTemplate let-step let-index="index">
       <div class="flex flex-col items-center group">
-        <div class="relative mx-auto border-surface-900 bg-surface-900 border-[8px] rounded-[3rem] h-[520px] w-[260px] shadow-2xl mb-8 overflow-hidden">
-          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-surface-900 z-20 rounded-b-2xl mt-1"></div>
-          <img [src]="step.imageUrl" class="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110" [alt]="step.title">
+        <div class="relative mx-auto border-surface-900 bg-surface-900 border-[8px] rounded-[2rem] h-[520px] w-[250px] shadow-2xl mb-8 overflow-hidden">
+          <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-surface-900 z-20 rounded-b-2xl mt-0"></div>
+          <img [src]="step.imageUrl" class="h-full w-full object-cover transition-transform duration-1000" [alt]="step.title">
           <div class="absolute bottom-4 right-4 w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
             {{ index }}
           </div>

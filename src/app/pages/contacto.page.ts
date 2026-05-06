@@ -28,10 +28,36 @@ export const routeMeta = {
       @let data = contacto();
 
       <div class="max-w-6xl mx-auto px-4">
+        <!-- BLOQUE PRIORITARIO: APP ÁBACO (Sen enlace, informativo) -->
+        <div class="mb-12 bg-surface-900 rounded-[3rem] p-8 md:p-12 text-white relative overflow-hidden shadow-2xl border border-surface-800">
+          <div class="flex flex-col lg:flex-row items-center gap-8 relative z-10">
+            <div class="flex-shrink-0">
+              <div class="w-20 h-20 bg-white rounded-3xl p-4 shadow-xl transform rotate-3">
+                <img src="/assets/abaco-logo.webp" alt="Ábaco Logo" class="w-full h-full object-contain">
+              </div>
+            </div>
+
+            <div class="flex-grow text-center lg:text-left">
+              <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary-600/20 text-primary-400 text-[10px] font-black uppercase rounded-full mb-4 border border-primary-600/30">
+                <span class="relative flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary-400 opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-primary-500"></span>
+                </span>
+                Vía recomendada para socios/as
+              </div>
+              <h3 class="text-3xl font-black mb-2 tracking-tighter">Atención directa na túa App</h3>
+              <p class="text-surface-400 font-medium text-lg max-w-3xl">
+                Se xa eres socio/a, abre a túa App <b>Ábaco Familias</b> e escríbenos polo chat. É a canle máis rápida e eficiente xa que contamos con máis persoas pendentes para responderte.
+              </p>
+            </div>
+          </div>
+          <div class="absolute -right-20 -bottom-20 w-64 h-64 bg-primary-600/10 rounded-full blur-3xl"></div>
+        </div>
+
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-20">
 
           <div class="space-y-6">
-
+            <h4 class="text-xs font-black uppercase tracking-widest text-surface-400 ml-1">Vías alternativas</h4>
             <div class="bg-white p-6 rounded-3xl border border-surface-100 shadow-sm transition-all hover:shadow-md">
               <div class="flex items-center gap-3 mb-4">
                 <div class="w-10 h-10 bg-green-50 text-green-600 rounded-xl flex items-center justify-center">

@@ -49,7 +49,7 @@ export const routeMeta = {
                <span class="text-primary-700 font-black text-xs uppercase mb-1 leading-none tracking-tight">Día Solto</span>
                <div class="flex justify-around items-baseline px-2 mt-1">
                  <span class="text-xl font-black text-primary-800 font-mono">{{ data().config.prezosSoltos.hora }}€<small class="text-[10px]">/h</small></span>
-                 <span class="text-xl font-black text-primary-800 font-mono">{{ data().config.prezosSoltos.mediaHora }}€<small class="text-[10px]">/1/2h</small></span>
+                 <span class="text-xl font-black text-primary-800 font-mono">{{ data().config.prezosSoltos.mediaHora }}€<small class="text-[10px]">/media hora</small></span>
                </div>
             </div>
           </div>
