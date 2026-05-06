@@ -1,13 +1,26 @@
-import { Component, inject } from '@angular/core';
-import { RouterLink } from '@angular/router';
+import { Component, inject, computed, OnInit } from '@angular/core';
+import { RouterLink, ActivatedRoute, ResolveFn } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
+import { Actividade } from '../domain/actividade/actividade.model';
+import { fetchActividades } from '../domain/actividade/actividade.action';
+
+export const actividadesHomeResolver: ResolveFn<Actividade[]> = () => {
+  return fetchActividades();
+};
+
+export const routeMeta = {
+  resolve: {
+    actividadesData: actividadesHomeResolver
+  }
+};
 
 @Component({
   selector: 'app-home-page',
   standalone: true,
   imports: [RouterLink, CommonModule],
   template: `
+    <!-- HEADER HERO (Manteño igual) -->
     <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
       <div class="absolute inset-0 z-0">
         <img
@@ -46,6 +59,77 @@ import { SeoService } from '../core/services/seo.service';
         </div>
       </div>
     </header>
+
+    <!-- SECCIÓN ACTIVIDADES DESTACADAS -->
+    <section class="py-24 bg-white">
+      <div class="container mx-auto px-4">
+
+        <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+          <div class="max-w-2xl">
+            <h2 class="text-xs font-black uppercase tracking-[0.2em] text-primary-600 mb-3">Actividades do curso</h2>
+            <h3 class="text-4xl md:text-5xl font-black text-surface-900 leading-tight tracking-tighter">
+              O que estamos a facer neste <br>
+              <span class="text-primary-600">curso {{ cursoActual }}</span>
+            </h3>
+          </div>
+          <a routerLink="/actividade" class="text-sm font-bold text-surface-400 hover:text-primary-600 transition-all flex items-center gap-2 group mb-2">
+            Ver todas as actividades
+            <svg class="w-5 h-5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+        </div>
+
+        <div class="flex md:grid md:grid-cols-3 gap-8 overflow-x-auto pb-10 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
+          @for (act of actividadesFiltradas(); track act.id) {
+            <div class="min-w-[85vw] md:min-w-0 snap-center group">
+              <div class="h-full bg-white rounded-[2.5rem] overflow-hidden border border-surface-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col">
+
+                <div class="relative h-72 overflow-hidden">
+                  @if (act.imaxeUrl) {
+                    <img [src]="act.imaxeUrl" [alt]="act.titulo" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                  }
+
+                  <div class="absolute top-6 left-6 flex flex-col gap-2 items-start">
+                    <div class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-surface-900 shadow-sm">
+                      {{ act.data }}
+                    </div>
+
+                    @if (act.organizador) {
+                      <div class="bg-surface-900 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg">
+                        {{ act.organizador }}
+                      </div>
+                    }
+
+                    @if (act.porcentaxeSubvencion) {
+                      <div class="bg-primary-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/20">
+                        {{ act.subvencion }}% Subvencionado
+                      </div>
+                    }
+                  </div>
+                </div>
+
+                <div class="p-8 flex-grow flex flex-col">
+                  <h4 class="text-2xl font-bold text-surface-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">{{ act.titulo }}</h4>
+                  <p class="text-surface-500 leading-relaxed mb-8 line-clamp-3 italic font-medium">
+                    "{{ act.resumo }}"
+                  </p>
+
+                  <div class="mt-auto pt-6 border-t border-surface-50">
+                    <a [routerLink]="['/actividade/curso/', act.curso, act.slug]" class="inline-flex items-center gap-2 text-xs font-black text-primary-600 uppercase tracking-[0.15em] group/btn">
+                      Ler máis
+                      <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
+                      </svg>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          }
+        </div>
+      </div>
+    </section>
   `,
   styles: [`
     .animate-fade-in-down { animation: fadeInDown 0.8s ease-out forwards; }
@@ -53,6 +137,9 @@ import { SeoService } from '../core/services/seo.service';
     .animate-fade-in-up-delayed { animation: fadeInUp 0.8s ease-out 0.4s forwards; opacity: 0; }
     .animate-fade-in-up-more-delayed { animation: fadeInUp 0.8s ease-out 0.6s forwards; opacity: 0; }
     .animate-slow-zoom { animation: slowZoom 20s linear infinite alternate; }
+
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
     @keyframes fadeInDown {
       from { opacity: 0; transform: translateY(-20px); }
@@ -68,9 +155,30 @@ import { SeoService } from '../core/services/seo.service';
     }
   `],
 })
-export default class IndexPage {
-  title = 'ANPA A Faxarda - CEIP Gregorio Sanz'
+export default class IndexPage implements OnInit {
+  title = 'ANPA A Faxarda - CEIP Gregorio Sanz';
+
+  private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
+
+  readonly cursoActual = this.getCursoEscolarActual();
+
+  readonly actividadesFiltradas = computed(() => {
+    const todas = this.route.snapshot.data['actividadesData'] as Actividade[] ?? [];
+    return todas.filter(a => a.curso === this.cursoActual);
+  });
+
+  private getCursoEscolarActual(): string {
+    const hoxe = new Date();
+    const anoActual = hoxe.getFullYear();
+    const mesActual = hoxe.getMonth();
+
+    if (mesActual >= 8) {
+      return `${anoActual}-${anoActual + 1}`;
+    } else {
+      return `${anoActual - 1}-${anoActual}`;
+    }
+  }
 
   ngOnInit() {
     this.seo.setPageMeta(

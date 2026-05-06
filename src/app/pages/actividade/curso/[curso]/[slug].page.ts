@@ -1,0 +1,133 @@
+import { Component, inject, computed } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ActivatedRoute, ResolveFn } from '@angular/router';
+import { PortableTextPipe } from '../../../../shared/pipes/portable-text.pipe';
+import { PageComponent } from '../../../../shared/components/page.component';
+import { Actividade } from '../../../../domain/actividade/actividade.model';
+import { fetchActividadeBySlug } from '../../../../domain/actividade/actividade.action';
+import { SeoService } from '../../../../core/services/seo.service';
+
+export const actividadeDetailResolver: ResolveFn<Actividade | undefined> = (route) => {
+  const slug = route.paramMap.get('slug');
+  if (!slug) return Promise.resolve(undefined);
+  return fetchActividadeBySlug(slug);
+};
+
+export const routeMeta = {
+  resolve: {
+    actividade: actividadeDetailResolver
+  }
+};
+
+@Component({
+  standalone: true,
+  imports: [CommonModule, PortableTextPipe, PageComponent],
+  template: `
+    @if (actividade(); as act) {
+      <app-page-component
+        [category]="act.curso"
+        [title]="act.titulo"
+        [subTitle]="act.data"
+      >
+        <div class="max-w-4xl mx-auto">
+
+          <!-- Badges de información (Resumen rápido) -->
+          <div class="flex flex-wrap gap-3 mb-8 justify-center">
+            @if (act.organizador) {
+              <span class="px-4 py-1.5 bg-surface-900 text-white text-xs font-black uppercase tracking-widest rounded-full">
+                Organiza: {{ act.organizador }}
+              </span>
+            }
+            @if (act.porcentaxeSubvencion) {
+              <span class="px-4 py-1.5 bg-primary-100 text-primary-700 text-xs font-black uppercase tracking-widest rounded-full border border-primary-200">
+                Subvencionado ao {{ act.porcentaxeSubvencion }}%
+              </span>
+            }
+          </div>
+
+          <!-- Imaxe Principal -->
+          <div class="relative h-[40vh] md:h-[60vh] rounded-[3rem] overflow-hidden shadow-2xl mb-16">
+            <img [src]="act.imaxeUrl" [alt]="act.titulo" class="w-full h-full object-cover">
+          </div>
+
+          <!-- Contido do Artigo -->
+          <div class="prose prose-lg max-w-none text-surface-700 mb-12">
+            <div [innerHTML]="act.contidoLongo | portableText"></div>
+          </div>
+
+          <!-- Info de Financiamento Detallada (Nueva sección) -->
+          @if (act.subvencion) {
+            <div class="bg-surface-50 rounded-3xl p-8 mb-20 border border-surface-100">
+              <h3 class="text-sm font-bold text-surface-400 uppercase tracking-widest mb-6">Información de financiamento</h3>
+
+              <div class="flex flex-wrap items-center gap-8">
+                @if (act.subvencion.logos && act.subvencion.logos.length > 0) {
+                  @for (logo of act.subvencion.logos; track $index) {
+                    <div class="h-16 flex items-center">
+                      <!-- Aquí asumo que pasas la URL del logo ya procesada o usas un pipe -->
+                      <img [src]="logo" [alt]="act.subvencion.titulo" class="h-full w-auto object-contain grayscale hover:grayscale-0 transition-all">
+                    </div>
+                  }
+                }
+
+                <div class="flex-1 min-w-[200px]">
+                  <p class="text-surface-900 font-bold text-lg mb-1">{{ act.subvencion.titulo }}</p>
+                  @if (act.subvencion.entidadeEmisora) {
+                    <p class="text-surface-500 text-sm mb-3">Concedida por: {{ act.subvencion.entidadeEmisora }}</p>
+                  }
+                  @if (act.subvencion.textoLegal) {
+                    <p class="text-surface-400 text-xs italic leading-relaxed">{{ act.subvencion.textoLegal }}</p>
+                  }
+                </div>
+              </div>
+            </div>
+          }
+
+          <!-- Galería de fotos -->
+          @if (act.galeria && act.galeria.length > 0) {
+            <div class="border-t border-surface-100 pt-16">
+              <h3 class="text-3xl font-black text-surface-900 mb-10 text-center uppercase tracking-tighter">
+                Galería de imaxes
+              </h3>
+              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                @for (foto of act.galeria; track $index) {
+                  <div class="h-80 rounded-3xl overflow-hidden shadow-lg group cursor-pointer">
+                    <img [src]="foto"
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                         alt="Imaxe da galería">
+                  </div>
+                }
+              </div>
+            </div>
+          }
+        </div>
+      </app-page-component>
+    } @else {
+      <div class="h-screen flex items-center justify-center">
+        <p class="text-surface-400 font-bold uppercase tracking-widest">Actividade non atopada...</p>
+      </div>
+    }
+  `,
+  styles: [`
+    :host ::ng-deep .prose p { margin-bottom: 1.5rem; line-height: 1.8; }
+    :host ::ng-deep .prose h2 { font-weight: 900; color: #0f172a; margin-top: 3rem; text-transform: uppercase; letter-spacing: -0.025em; }
+  `]
+})
+export default class ActividadeDetailPage {
+  private route = inject(ActivatedRoute);
+  private seo = inject(SeoService);
+
+  readonly actividade = computed(() => this.route.snapshot.data['actividade'] as Actividade);
+
+  ngOnInit() {
+    const act = this.actividade();
+
+    if (act) {
+      this.seo.setPageMeta(
+        act.titulo,
+        act.resumo,
+        act.imaxeUrl
+      );
+    }
+  }
+}
