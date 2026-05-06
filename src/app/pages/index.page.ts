@@ -95,17 +95,18 @@ export const routeMeta = {
                       {{ act.data }}
                     </div>
 
-                    @if (act.organizador) {
-                      <div class="bg-surface-900 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg">
-                        {{ act.organizador }}
-                      </div>
-                    }
+                  @if (act.organizador) {
+                    <div class="bg-cyan-800 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
+                      {{ act.organizador }}
+                    </div>
+                  }
 
-                    @if (act.porcentaxeSubvencion) {
-                      <div class="bg-primary-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/20">
-                        {{ act.subvencion }}% Subvencionado
-                      </div>
-                    }
+                  <!-- Badge de Subvención (MANTENIDO EN VERDE/PRIMARY) -->
+                  @if (act.porcentaxeSubvencion) {
+                    <div class="bg-primary-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
+                      {{ act.porcentaxeSubvencion }}% Subvencionado
+                    </div>
+                  }
                   </div>
                 </div>
 
