@@ -98,46 +98,8 @@ export const routeMeta = {
           </div>
         </div>
 
-        <!-- TITORIAL DIVIDIDO POR BLOQUES -->
-        @if (data.tutorialSteps && data.tutorialSteps.length > 0) {
-
-          <!-- BLOQUE 1: REXISTRO -->
-          <div class="mb-24 bg-surface-50 rounded-[4rem] p-8 md:p-16 border border-surface-100">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-              <div class="text-left">
-                <span class="text-primary-600 font-black uppercase tracking-widest text-sm">Paso 1</span>
-                <h3 class="text-4xl font-black text-surface-900 tracking-tighter">Primeiros pasos: Rexistro</h3>
-              </div>
-              <p class="text-surface-500 font-medium italic max-w-md">Como darte de alta e configurar a túa conta por primeira vez.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
-              @for (step of registrationSteps(); track step.title) {
-                <ng-container *ngTemplateOutlet="stepTemplate; context: { $implicit: step, index: $index + 1 }"></ng-container>
-              }
-            </div>
-          </div>
-
-          <!-- BLOQUE 2: USO DA APP -->
-          <div class="mb-32 p-8 md:p-16">
-            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
-              <div class="text-left">
-                <span class="text-primary-600 font-black uppercase tracking-widest text-sm">Paso 2</span>
-                <h3 class="text-4xl font-black text-surface-900 tracking-tighter">Explora a túa App</h3>
-              </div>
-              <p class="text-surface-500 font-medium italic max-w-md">Saca o máximo proveito ás ferramentas que ofrece o ANPA.</p>
-            </div>
-
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
-              @for (step of usageSteps(); track step.title) {
-                <ng-container *ngTemplateOutlet="stepTemplate; context: { $implicit: step, index: $index + 1 }"></ng-container>
-              }
-            </div>
-          </div>
-        }
-
-        <!-- SECCIÓN DESCARGA APP (Footer) -->
-<div class="bg-surface-900 rounded-[3rem] p-8 md:p-16 text-white mb-20 relative overflow-hidden shadow-2xl">
+        <!-- SECCIÓN DESCARGA APP -->
+        <div class="bg-surface-900 rounded-[3rem] p-8 md:p-16 text-white mb-20 relative overflow-hidden shadow-2xl">
           <div class="flex flex-col lg:flex-row items-center gap-12 relative z-10">
 
             <!-- Columna Logotipo e Texto -->
@@ -172,6 +134,44 @@ export const routeMeta = {
           </div>
           <div class="absolute -right-10 -top-10 w-40 h-40 bg-primary-600/20 rounded-full blur-3xl"></div>
         </div>
+
+        <!-- TITORIAL DIVIDIDO POR BLOQUES -->
+        @if (data.tutorialSteps && data.tutorialSteps.length > 0) {
+
+          <!-- BLOQUE 1: REXISTRO -->
+          <div class="bg-white rounded-[3rem] border border-surface-100 shadow-2xl p-8 md:p-12 mb-16">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+              <div class="text-left">
+                <span class="text-primary-600 font-black uppercase tracking-widest text-sm">Paso 1</span>
+                <h3 class="text-4xl font-black text-surface-900 tracking-tighter">Primeiros pasos: Rexistro</h3>
+              </div>
+              <p class="text-surface-500 font-medium italic max-w-md">Como darte de alta e configurar a túa conta por primeira vez.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-12">
+              @for (step of registrationSteps(); track step.title) {
+                <ng-container *ngTemplateOutlet="stepTemplate; context: { $implicit: step, index: $index + 1 }"></ng-container>
+              }
+            </div>
+          </div>
+
+          <!-- BLOQUE 2: USO DA APP -->
+          <div class="bg-white rounded-[3rem] border border-surface-100 shadow-2xl p-8 md:p-12 mb-16">
+            <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-4">
+              <div class="text-left">
+                <span class="text-primary-600 font-black uppercase tracking-widest text-sm">Paso 2</span>
+                <h3 class="text-4xl font-black text-surface-900 tracking-tighter">Explora a túa App</h3>
+              </div>
+              <p class="text-surface-500 font-medium italic max-w-md">Saca o máximo proveito ás ferramentas que ofrece o ANPA.</p>
+            </div>
+
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
+              @for (step of usageSteps(); track step.title) {
+                <ng-container *ngTemplateOutlet="stepTemplate; context: { $implicit: step, index: $index + 1 }"></ng-container>
+              }
+            </div>
+          </div>
+        }
       </div>
     </app-page-component>
 

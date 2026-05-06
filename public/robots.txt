@@ -1,4 +1,4 @@
 User-agent: *
-Disallow: /
+Allow: /
 
-Sitemap: https://anpa-web.verce.app/sitemap.xml
+Sitemap: https://anpafaxarda.org/sitemap.xml

@@ -17,6 +17,10 @@ import { CommonModule } from '@angular/common';
               Participando activamente na comunidade educativa do CEIP Gregorio Sanz
               para construír o mellor futuro para os nosos fillos e fillas.
             </p>
+            <p class="font-bold text-surface-400 text-xs leading-relaxed mb-6">
+              ASOCIACIÓN DE NAIS E PAIS DE ALUNOS/AS A FAXARDA DO COLEXIO DE EDUCACIÓN INFANTIL E PRIMARIA GREGORIO SANZ
+              Registro provincial de asociaciones inscrición nº 1979/00199 de la sección primera
+            </p>
             <div class="flex gap-4">
               <a href="https://www.instagram.com/anpafaxarda/"
                  target="_blank"
@@ -41,7 +45,6 @@ import { CommonModule } from '@angular/common';
               <li><a (click)="navigateTo('/extraescolares')" class="hover:text-white transition-colors cursor-pointer block">Extraescolares</a></li>
               <li><a (click)="navigateTo('/bus-escolar')" class="hover:text-white transition-colors cursor-pointer block">Bus Escolar</a></li>
               <li><a (click)="navigateTo('/bos-dias-tardes')" class="hover:text-white transition-colors cursor-pointer block">Bos días e Tardes</a></li>
-              <li><a (click)="navigateTo('/beneficios')" class="hover:text-white transition-colors cursor-pointer block">Beneficios Socios</a></li>
               <li><a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener" class="hover:text-white transition-colors cursor-pointer block">Blog do ANPA ↗</a></li>
             </ul>
           </div>
@@ -50,10 +53,12 @@ import { CommonModule } from '@angular/common';
             <h4 class="font-bold text-lg mb-6 text-primary-400">O ANPA</h4>
             <ul class="space-y-3 text-surface-400 text-sm">
               <li><a (click)="navigateTo('/labor-anpa')" class="hover:text-white transition-colors cursor-pointer block">O noso labor</a></li>
-              <li><a (click)="navigateTo('/actividade')" class="hover:text-white transition-colors cursor-pointer block">Iniciativas</a></li>
-              <li><a (click)="navigateTo('/asambleas')" class="hover:text-white transition-colors cursor-pointer block">Asembleas</a></li>
-              <li><a (click)="navigateTo('/directiva')" class="hover:text-white transition-colors cursor-pointer block">Xunta Directiva</a></li>
+              <li><a (click)="navigateTo('/actividade')" class="hover:text-white transition-colors cursor-pointer block">Actividades</a></li>
               <li><a (click)="navigateTo('/colaboradores')" class="hover:text-white transition-colors cursor-pointer block">Colaboradores</a></li>
+              <li><a (click)="navigateTo('/beneficios')" class="hover:text-white transition-colors cursor-pointer block">Beneficios Socios</a></li>
+              <li><a (click)="navigateTo('/directiva')" class="hover:text-white transition-colors cursor-pointer block">Xunta Directiva</a></li>
+              <li><a (click)="navigateTo('/estatutos')" class="hover:text-white transition-colors cursor-pointer block">Estatutos</a></li>
+              <li><a (click)="navigateTo('/asambleas')" class="hover:text-white transition-colors cursor-pointer block">Asembleas</a></li>
               <li><a (click)="navigateTo('/contacto')" class="hover:text-white transition-colors cursor-pointer block">Contacto</a></li>
             </ul>
           </div>
@@ -65,6 +70,7 @@ import { CommonModule } from '@angular/common';
             <p class="text-surface-300 text-sm mb-6 font-medium">anpafaxarda&#64;gmail.com</p>
 
             <div class="flex flex-col gap-2 pt-4 border-t border-surface-800 text-xs text-surface-500">
+              <a (click)="navigateTo('/faite-socio')" class="hover:underline cursor-pointer py-1">Faite Socio</a>
               <a (click)="navigateTo('/aviso-legal')" class="hover:underline cursor-pointer py-1">Aviso Legal</a>
               <a (click)="navigateTo('/privacidad')" class="hover:underline cursor-pointer py-1">Privacidade</a>
               <a (click)="navigateTo('/politica-cookies')" class="hover:underline cursor-pointer py-1">Política de Cookies</a>
