@@ -40,13 +40,12 @@ export default defineConfig(({ mode }) => ({
             '/bos-dias-tardes',
             '/bus-escolar',
             '/actividade',
-            '/sitemap.xml',
             ...cursos.map(c => `/actividade/curso/${c}`),
             ...slugs
           ]
         },
         sitemap: {
-          host: 'https://anpafaxarda.org',
+          host: 'https://www.anpafaxarda.org',
         }
       },
       nitro: {

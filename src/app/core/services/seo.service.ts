@@ -5,7 +5,7 @@ import { Title, Meta } from '@angular/platform-browser';
   providedIn: 'root'
 })
 export class SeoService {
-  private baseUrl = 'https://anpafaxarda.org'
+  private baseUrl = 'https://www.anpafaxarda.org'
   private imagePath: string = '/assets/anpa-og-image.jpg'
   private titleService = inject(Title);
   private metaService = inject(Meta);

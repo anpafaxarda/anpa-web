@@ -28,7 +28,7 @@ export const routeMeta = {
       [title]="data.title"
       [subTitle]="data.subtitle"
     >
-      <div class="max-w-6xl mx-auto px-4">
+      <div class="max-w-6xl mx-auto px-6">
 
         <!-- SECCIÓN COTAS (Sin cambios) -->
         <div class="bg-white rounded-[3rem] border border-surface-100 shadow-2xl p-8 md:p-12 mb-16">
