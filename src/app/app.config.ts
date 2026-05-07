@@ -5,11 +5,14 @@ import {
 } from '@angular/common/http';
 import {
   ApplicationConfig,
-  provideBrowserGlobalErrorListeners,
+  inject,
+  provideAppInitializer,
+  provideBrowserGlobalErrorListeners
 } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideFileRouter } from '@analogjs/router';
 import { withPreloading, PreloadAllModules } from '@angular/router';
+import { GlobalDataService } from './shared/services/global-data.service';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -22,5 +25,9 @@ export const appConfig: ApplicationConfig = {
       withInterceptors([])
     ),
     provideClientHydration(withEventReplay()),
+    provideAppInitializer(() => {
+      const globalDataService = inject(GlobalDataService);
+      return globalDataService.init();
+    }),
   ],
 };

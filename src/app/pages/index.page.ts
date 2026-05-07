@@ -4,14 +4,21 @@ import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
 import { Actividade } from '../domain/actividade/actividade.model';
 import { fetchActividades } from '../domain/actividade/actividade.action';
+import { fetchGeneralData } from '../domain/general-data/general-data.action';
+import { GeneralData } from '../domain/general-data/general-data.model';
 
 export const actividadesHomeResolver: ResolveFn<Actividade[]> = () => {
   return fetchActividades();
 };
 
+export const generalDataResolver: ResolveFn<any> = () => {
+  return fetchGeneralData();
+}
+
 export const routeMeta = {
   resolve: {
-    actividadesData: actividadesHomeResolver
+    actividadesData: actividadesHomeResolver,
+    generalData: generalDataResolver
   }
 };
 
@@ -33,19 +40,19 @@ export const routeMeta = {
 
       <div class="relative z-10 container mx-auto px-4 text-center">
         <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wider text-primary-400 uppercase bg-primary-400/10 rounded-full border border-primary-400/20 animate-fade-in-down">
-          Unidos pola educación
+          {{ generalData().mainBadge }}
         </span>
 
         <h1 class="text-5xl md:text-7xl font-extrabold text-white mb-6 leading-[1.1] animate-fade-in-up">
-          Construíndo xuntos o <br>
+          {{ generalData().mainTitle.substring(0, 21) }}
+          <br>
           <span class="text-transparent bg-clip-text bg-gradient-to-r from-primary-400 to-cyan-300">
-            futuro dos nosos fillos
+            {{ generalData().mainTitle.substring(21) }}
           </span>
         </h1>
 
         <p class="text-lg md:text-xl text-surface-400 max-w-2xl mx-auto mb-10 leading-relaxed animate-fade-in-up-delayed">
-          A asociación de familias dedicada a mellorar o día a día do colexio.
-          Información, actividades e comunidade nun só lugar.
+          {{ generalData().mainSubTitle }}
         </p>
 
         <div class="flex flex-col sm:flex-row gap-4 justify-center animate-fade-in-up-more-delayed">
@@ -163,6 +170,8 @@ export default class IndexPage implements OnInit {
   private seo = inject(SeoService);
 
   readonly cursoActual = this.getCursoEscolarActual();
+
+  readonly generalData = computed(() => this.route.snapshot.data['generalData'] as GeneralData);
 
   readonly actividadesFiltradas = computed(() => {
     const todas = this.route.snapshot.data['actividadesData'] as Actividade[] ?? [];

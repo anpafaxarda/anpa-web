@@ -1,6 +1,7 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
+import { GlobalDataService } from '../services/global-data.service';
 
 @Component({
   selector: 'app-footer',
@@ -12,14 +13,12 @@ import { CommonModule } from '@angular/common';
         <div class="grid grid-cols-1 md:grid-cols-4 gap-12 mb-12">
 
           <div class="md:col-span-1">
-            <h4 class="font-bold text-xl mb-6 text-primary-400">ANPA A Faxarda</h4>
+            <h4 class="font-bold text-xl mb-6 text-primary-400">{{ generalData().shortName }}</h4>
             <p class="text-surface-400 text-sm leading-relaxed mb-6">
-              Participando activamente na comunidade educativa do CEIP Gregorio Sanz
-              para construír o mellor futuro para os nosos fillos e fillas.
+              {{ generalData().footerText }}
             </p>
             <p class="font-bold text-surface-400 text-xs leading-relaxed mb-6">
-              ASOCIACIÓN DE NAIS E PAIS DE ALUNOS/AS A FAXARDA DO COLEXIO DE EDUCACIÓN INFANTIL E PRIMARIA GREGORIO SANZ
-              Registro provincial de asociaciones inscrición nº 1979/00199 de la sección primera
+              {{ generalData().legalName }}
             </p>
             <div class="flex gap-4">
               <a href="https://www.instagram.com/anpafaxarda/"
@@ -65,9 +64,14 @@ import { CommonModule } from '@angular/common';
 
           <div>
             <h4 class="font-bold text-lg mb-6 text-primary-400">Información</h4>
-            <p class="text-surface-400 text-sm mb-2">Local ANPA - Planta Baixa</p>
-            <p class="text-surface-400 text-sm mb-2">CEIP Gregorio Sanz</p>
-            <p class="text-surface-300 text-sm mb-6 font-medium">anpafaxarda&#64;gmail.com</p>
+            <p class="text-surface-400 text-sm mb-2">{{ generalData().address }}</p>
+            <p class="text-surface-400 text-sm mb-2">{{ generalData().schoolName }}</p>
+            <p class="text-surface-300 text-sm mb-2 font-medium">
+              <a [href]="'mailto:'+contacto().email">{{ contacto().email }}</a>
+            </p>
+            <p class="text-surface-300 text-sm mb-6 font-medium">
+              <a [href]="'tel:+34'+contacto().telefono">{{ buildPhoneNumberToDisplay() }}</a>
+            </p>
 
             <div class="flex flex-col gap-2 pt-4 border-t border-surface-800 text-xs text-surface-500">
               <a (click)="navigateTo('/faite-socio')" class="hover:underline cursor-pointer py-1">Faite Socio</a>
@@ -81,7 +85,7 @@ import { CommonModule } from '@angular/common';
 
         <div class="border-t border-surface-800 pt-8 text-center">
           <p class="text-surface-500 text-xs font-medium">
-            © 2026 ANPA A Faxarda. Ribadeo. Feito con ❤️ para a nosa comunidade escolar.
+            {{ generalData().footerCopyright }}
           </p>
         </div>
       </div>
@@ -91,9 +95,23 @@ import { CommonModule } from '@angular/common';
 export class FooterComponent {
   private router = inject(Router);
 
+  private globalDataService = inject(GlobalDataService);
+
+  readonly generalData = this.globalDataService.generalData;
+  readonly contacto = this.globalDataService.contacto;
+
   navigateTo(path: string) {
     this.router.navigate([path]).then(() => {
       window.scrollTo({ top: 0, behavior: 'smooth' });
     });
+  }
+
+  buildPhoneNumberToDisplay(): string {
+    return [
+      '+34',
+      this.contacto().telefono.substring(0, 3),
+      this.contacto().telefono.substring(3, 6),
+      this.contacto().telefono.substring(6, 9)
+    ].join(' ');
   }
 }
