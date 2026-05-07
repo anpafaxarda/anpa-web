@@ -4,16 +4,17 @@ import { CommonModule } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteMeta } from '@analogjs/router';
-import { fetchLaborAnpaPageData } from '../domain/labor-anpa/labor-anpa.action';
-import { SociosPageData } from '../domain/labor-anpa/labor-anpa.model';
+import { fetchLaborAnpaPageData, fetchLaborAnpaPageTextsData } from '../domain/labor-anpa/labor-anpa.action';
+import { PageTexts, SociosPageData } from '../domain/labor-anpa/labor-anpa.model';
 import { fetchIniciativas } from '../domain/iniciativas/iniciativas.action';
 
 export const laborAnpaResolver = async () => {
-  const [laborData, iniciativas] = await Promise.all([
+  const [laborData, iniciativas, laborPageTexts] = await Promise.all([
     fetchLaborAnpaPageData(),
-    fetchIniciativas()
+    fetchIniciativas(),
+    fetchLaborAnpaPageTextsData()
   ]);
-  return { laborData, iniciativas };
+  return { laborData, iniciativas, laborPageTexts };
 };
 
 export const routeMeta: RouteMeta = {
@@ -26,22 +27,22 @@ export const routeMeta: RouteMeta = {
   imports: [PageComponent, CommonModule],
   template: `
     <app-page-component
-      category="O noso compromiso"
+      [category]="laborAnpaPageTexts().badge"
       [title]="title"
-      subTitle="Traballamos para facer do CEIP Gregorio Sanz un lugar mellor para as nosas fillas e fillos."
+      [subTitle]="laborAnpaPageTexts().subtitle"
     >
       <!-- CONTEDOR CON OVERLAP (Axustado a max-w-5xl como en Asambleas) -->
-      <div class="max-w-5xl mx-auto px-4 -mt-16 md:-mt-24 relative z-10 pb-20">
+      <div class="max-w-5xl mx-auto px-4 -mt-10 md:-mt-10 relative z-10 pb-20">
 
         <!-- 1. CAIXA DE INTRODUCIÓN -->
         <div class="bg-white p-8 md:p-10 rounded-3xl border border-surface-100 shadow-sm mb-12">
           <div class="flex flex-col md:flex-row gap-8 items-center text-left">
             <div class="flex-grow">
               <h2 class="text-2xl md:text-3xl font-black text-surface-900 mb-4">
-                Máis que unha asociación, unha <span class="text-primary-600">comunidade activa</span>.
+                {{ laborAnpaPageTexts().introTitleColor1 }}&nbsp;<span class="text-primary-600">{{ laborAnpaPageTexts().introTitleColor2 }}</span>
               </h2>
               <p class="text-surface-600 leading-relaxed text-lg font-medium">
-                O ANPA A Faxarda é o nexo de unión entre as familias e a escola. A nosa labor vai máis alá da xestión; buscamos crear un contorno educativo enriquecedor, seguro e participativo.
+                {{ laborAnpaPageTexts().introParrafo }}
               </p>
             </div>
             <div class="shrink-0">
@@ -54,7 +55,7 @@ export const routeMeta: RouteMeta = {
         <div class="space-y-6 mb-20">
           <h3 class="text-xl font-bold text-surface-900 flex items-center gap-2 mb-8">
             <span class="w-8 h-1 bg-primary-500 rounded-full"></span>
-            As nosas liñas de traballo
+            {{ laborAnpaPageTexts().titleServizos }}
           </h3>
 
           @for (item of labor().servizos; track item.name) {
@@ -76,7 +77,7 @@ export const routeMeta: RouteMeta = {
         <div class="space-y-6 mb-20">
           <h3 class="text-xl font-bold text-surface-900 flex items-center gap-2 mb-8">
             <span class="w-8 h-1 bg-primary-500 rounded-full"></span>
-            Proxectos e iniciativas
+            {{ laborAnpaPageTexts().titleIniciativas }}
           </h3>
 
           @for (item of iniciativas(); track item.titulo) {
@@ -116,7 +117,7 @@ export const routeMeta: RouteMeta = {
           <div class="pt-4">
           <div class="group relative block overflow-hidden rounded-[2.5rem] bg-primary-600 p-8 md:p-12 text-center shadow-md hover:shadow-xl transition-all">
             <div class="relative z-10 max-w-3xl mx-auto">
-              <h2 class="text-3xl font-black text-white mb-6">Por que facerte socio/a?</h2>
+              <h2 class="text-3xl font-black text-white mb-6">{{ laborAnpaPageTexts().titleFaiteSocio }}</h2>
 
               <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8 text-left">
                 @for (motivo of labor().motivos; track motivo.text) {
@@ -127,8 +128,8 @@ export const routeMeta: RouteMeta = {
                 }
               </div>
 
-              <p class="text-primary-100 italic border-l-2 border-primary-400 pl-4 text-left inline-block">
-                "Unha asociación forte é a base dunha escola mellor."
+              <p class="text-primary-100 italic text-xl border-l-2 border-primary-400 pl-4 text-left inline-block">
+                {{ laborAnpaPageTexts().esloganFaiteSocio }}
               </p>
             </div>
 
@@ -141,14 +142,15 @@ export const routeMeta: RouteMeta = {
   `,
 })
 export default class LaborAnpaPage implements OnInit {
-  title = 'Labor do ANPA';
   private seo = inject(SeoService);
   private route = inject(ActivatedRoute);
 
-  // Accedemos aos datos do resolver
   readonly rawData = computed(() => this.route.snapshot.data['data']);
   readonly labor = computed(() => this.rawData()?.laborData ?? { servizos: [], motivos: [] });
   readonly iniciativas = computed(() => this.rawData()?.iniciativas ?? []);
+  readonly laborAnpaPageTexts = computed(() => this.rawData()?.laborPageTexts as PageTexts);
+
+  title = this.laborAnpaPageTexts().title;
 
   ngOnInit() {
     this.seo.setPageMeta(

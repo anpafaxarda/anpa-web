@@ -22,7 +22,7 @@ import { Component, computed, Input, OnInit } from '@angular/core';
           }
         </div>
       </section>
-      <section class="container mx-auto px-4 -mt-10">
+      <section class="container mx-auto px-4 -mt-6">
         <ng-content></ng-content>
       </section>
     </main>

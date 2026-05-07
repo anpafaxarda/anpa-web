@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://anpafaxarda.org/sitemap.xml
+Sitemap: https://wwww.anpafaxarda.org/sitemap.xml
