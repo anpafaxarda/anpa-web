@@ -96,7 +96,9 @@ export const routeMeta = {
                 <h4 class="font-bold text-surface-900">Correo Electrónico</h4>
               </div>
 
-              <p class="font-bold text-surface-600 break-all mb-4">{{ data.email }}</p>
+              <p class="font-bold text-surface-600 break-all mb-4">
+                <a [href]="'mailto:'+data.email">{{ data.email }}</a>
+              </p>
 
               @if (data.tiempoRespuestaEmail) {
                 <div class="pt-4 border-t border-surface-50">
