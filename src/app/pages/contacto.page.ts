@@ -66,7 +66,9 @@ export const routeMeta = {
                 <h4 class="font-bold text-surface-900">Teléfono e WhatsApp</h4>
               </div>
 
-              <p class="text-xl font-black text-surface-700 mb-4">{{ data.telefono }}</p>
+              <p class="text-xl font-black text-surface-700 mb-4">
+                <a [href]="'tel:+34'+data.telefono">{{ buildPhoneNumberToDisplay() }}</a>
+              </p>
 
               @if (data.tiempoRespuestaWhatsapp) {
                 <div class="inline-flex items-center gap-1.5 px-3 py-1 bg-green-50 text-green-700 text-[10px] font-bold uppercase rounded-lg mb-6">
@@ -94,7 +96,9 @@ export const routeMeta = {
                 <h4 class="font-bold text-surface-900">Correo Electrónico</h4>
               </div>
 
-              <p class="font-bold text-surface-600 break-all mb-4">{{ data.email }}</p>
+              <p class="font-bold text-surface-600 break-all mb-4">
+                <a [href]="'mailto:'+data.email">{{ data.email }}</a>
+              </p>
 
               @if (data.tiempoRespuestaEmail) {
                 <div class="pt-4 border-t border-surface-50">
@@ -193,5 +197,14 @@ export default class ContactoPage implements OnInit {
       `${this.title} - ANPA A Faxarda`,
       'Ponte en contacto co ANPA A Faxarda do CEIP Gregorio Sanz. Estamos dispoñibles por WhatsApp, teléfono, email ou a través do noso formulario para axudarte.'
     );
+  }
+
+    buildPhoneNumberToDisplay(): string {
+    return [
+      '+34',
+      this.contacto().telefono.substring(0, 3),
+      this.contacto().telefono.substring(3, 6),
+      this.contacto().telefono.substring(6, 9)
+    ].join(' ');
   }
 }
