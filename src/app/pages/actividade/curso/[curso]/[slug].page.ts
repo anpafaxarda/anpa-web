@@ -1,5 +1,5 @@
 import { Component, inject, computed } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { PortableTextPipe } from '../../../../shared/pipes/portable-text.pipe';
 import { PageComponent } from '../../../../shared/components/page.component';
@@ -21,7 +21,7 @@ export const routeMeta = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PortableTextPipe, PageComponent],
+  imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage],
   template: `
     @if (actividade(); as act) {
       <app-page-component
@@ -47,7 +47,12 @@ export const routeMeta = {
 
           <!-- Imaxe Principal -->
           <div class="relative h-[40vh] md:h-[60vh] rounded-[3rem] overflow-hidden shadow-2xl mb-16">
-            <img [src]="act.imaxeUrl" [alt]="act.titulo" class="w-full h-full object-cover">
+            <img
+              [ngSrc]="act.imaxePath"
+              [alt]="act.titulo"
+              fill
+              class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
           </div>
 
           <!-- Contido do Artigo -->

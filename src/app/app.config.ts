@@ -13,6 +13,7 @@ import { provideClientHydration, withEventReplay } from '@angular/platform-brows
 import { provideFileRouter } from '@analogjs/router';
 import { withPreloading, PreloadAllModules } from '@angular/router';
 import { GlobalDataService } from './shared/services/global-data.service';
+import { provideImgixLoader } from '@angular/common';
 
 export const appConfig: ApplicationConfig = {
   providers: [
@@ -29,5 +30,6 @@ export const appConfig: ApplicationConfig = {
       const globalDataService = inject(GlobalDataService);
       return globalDataService.init();
     }),
+    provideImgixLoader('https://cdn.sanity.io/'),
   ],
 };

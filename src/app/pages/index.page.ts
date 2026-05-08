@@ -1,6 +1,6 @@
 import { Component, inject, computed, OnInit } from '@angular/core';
 import { RouterLink, ActivatedRoute, ResolveFn } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
 import { Actividade } from '../domain/actividade/actividade.model';
 import { fetchActividades } from '../domain/actividade/actividade.action';
@@ -25,7 +25,7 @@ export const routeMeta = {
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [RouterLink, CommonModule],
+  imports: [RouterLink, CommonModule, NgOptimizedImage],
   template: `
     <!-- HEADER HERO (Manteño igual) -->
     <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
@@ -88,13 +88,19 @@ export const routeMeta = {
         </div>
 
         <div class="flex md:grid md:grid-cols-3 gap-8 overflow-x-auto pb-10 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
-          @for (act of actividadesFiltradas(); track act.id) {
+          @for (act of actividadesFiltradas(); track act.id; let i = $index) {
             <div class="min-w-[85vw] md:min-w-0 snap-center group">
               <div class="h-full bg-white rounded-[2.5rem] overflow-hidden border border-surface-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col">
 
                 <div class="relative h-72 overflow-hidden">
-                  @if (act.imaxeUrl) {
-                    <img [src]="act.imaxeUrl" [alt]="act.titulo" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                  @if (act.imaxePath) {
+                    <img
+                    [ngSrc]="act.imaxePath"
+                    [alt]="act.titulo"
+                    fill
+                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    [priority]="i < 3">
                   }
 
                   <div class="absolute top-6 left-6 flex flex-col gap-2 items-start">

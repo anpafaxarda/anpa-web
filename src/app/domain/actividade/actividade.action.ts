@@ -9,6 +9,7 @@ export async function fetchActividades(): Promise<Actividade[]> {
     curso,
     data,
     resumo,
+    "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
     organizador,
     porcentaxeSubvencion,
@@ -22,6 +23,7 @@ export async function fetchActividadeBySlug(slug: string): Promise<Actividade> {
     "slug": slug.current,
     curso,
     data,
+    "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
     organizador,
     porcentaxeSubvencion,
@@ -51,6 +53,7 @@ export async function fetchActividadesByCurso(curso: string): Promise<Actividade
     curso,
     data,
     resumo,
+    "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
     rol
   }`;
