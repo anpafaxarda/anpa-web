@@ -47,6 +47,7 @@ export class CookieBannerComponent implements OnInit {
       if (!consent) {
         this.isVisible.set(true);
       } else if (consent === 'accepted') {
+        (window as any).gtag?.('consent', 'update', { analytics_storage: 'granted' });
         this.initGoogleAnalytics();
       }
     }
@@ -55,6 +56,7 @@ export class CookieBannerComponent implements OnInit {
   accept() {
     localStorage.setItem('cookie-consent', 'accepted');
     this.isVisible.set(false);
+    (window as any).gtag?.('consent', 'update', { analytics_storage: 'granted' });
     this.initGoogleAnalytics();
   }
 
