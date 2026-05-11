@@ -32,6 +32,8 @@ export const routeMeta = {
       <div class="absolute inset-0 z-0">
         <img
           src="assets/colegio-image-bg.webp"
+          srcset="assets/colegio-image-bg-640.webp 640w, assets/colegio-image-bg.webp 800w"
+          sizes="100vw"
           alt="Comunidade ANPA"
           class="w-full h-full object-cover opacity-60 animate-slow-zoom"
           fetchpriority="high"

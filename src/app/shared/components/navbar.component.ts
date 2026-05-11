@@ -13,7 +13,7 @@ import { CommonModule } from '@angular/common';
 
           <a routerLink="/" (click)="forceClose()" class="flex items-center gap-3 group cursor-pointer">
             <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-surface-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
-              <img src="/favicon.ico" alt="ANPA A Faxarda" class="w-8 h-8 object-contain">
+              <img src="/assets/logo.svg" alt="ANPA A Faxarda" class="w-9 h-9 object-contain">
             </div>
             <div class="flex flex-col">
               <span class="font-black text-xl leading-none tracking-tighter text-[rgb(72,159,67)]">ANPA A Faxarda</span>
