@@ -34,6 +34,8 @@ export const routeMeta = {
           src="assets/colegio-image-bg.webp"
           alt="Comunidade ANPA"
           class="w-full h-full object-cover opacity-60 animate-slow-zoom"
+          fetchpriority="high"
+          loading="eager"
         >
         <div class="absolute inset-0 bg-gradient-to-b from-surface-900/40 via-surface-900/60 to-surface-900"></div>
       </div>

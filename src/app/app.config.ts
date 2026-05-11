@@ -11,7 +11,7 @@ import {
 } from '@angular/core';
 import { provideClientHydration, withEventReplay } from '@angular/platform-browser';
 import { provideFileRouter } from '@analogjs/router';
-import { withPreloading, PreloadAllModules } from '@angular/router';
+import { withPreloading, NoPreloading } from '@angular/router';
 import { GlobalDataService } from './shared/services/global-data.service';
 import { provideImgixLoader } from '@angular/common';
 
@@ -19,7 +19,7 @@ export const appConfig: ApplicationConfig = {
   providers: [
     provideBrowserGlobalErrorListeners(),
     provideFileRouter(
-      withPreloading(PreloadAllModules)
+      withPreloading(NoPreloading)
     ),
     provideHttpClient(
       withFetch(),
