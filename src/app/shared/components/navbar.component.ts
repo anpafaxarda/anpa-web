@@ -1,18 +1,17 @@
-import { Component, signal, inject } from '@angular/core';
-import { Router, NavigationEnd } from '@angular/router';
+import { Component, signal } from '@angular/core';
+import { RouterLink, RouterLinkActive } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-navbar',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink, RouterLinkActive],
   template: `
     <nav class="bg-white border-b border-surface-200 sticky top-0 z-50">
       <div class="container mx-auto px-4">
         <div class="flex justify-between items-center h-20">
 
-          <a (click)="navigateTo('/')" class="flex items-center gap-3 group cursor-pointer">
+          <a routerLink="/" (click)="forceClose()" class="flex items-center gap-3 group cursor-pointer">
             <div class="relative flex items-center justify-center w-12 h-12 bg-white border border-surface-100 rounded-xl shadow-sm group-hover:shadow-md group-hover:-translate-y-0.5 transition-all duration-300">
               <img src="/favicon.ico" alt="ANPA A Faxarda" class="w-8 h-8 object-contain">
             </div>
@@ -24,9 +23,7 @@ import { filter } from 'rxjs/operators';
 
           <div class="hidden lg:flex items-center gap-1">
             @for (item of mainItems; track item.path) {
-              <a (click)="navigateTo(item.path)"
-                 [class.text-primary-600]="currentPath() === item.path"
-                 [class.bg-primary-50]="currentPath() === item.path"
+              <a [routerLink]="item.path" routerLinkActive="text-primary-600 bg-primary-50" (click)="forceClose()"
                  class="px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:text-primary-600 hover:bg-surface-50 transition-all cursor-pointer">
                 {{ item.label }}
               </a>
@@ -34,16 +31,17 @@ import { filter } from 'rxjs/operators';
 
             <div class="relative ml-2" (mouseenter)="openDropdown('servicios')" (mouseleave)="closeDropdownWithDelay()">
               <button class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all cursor-pointer"
-                      [class.text-primary-600]="activeDropdown() === 'servicios'">
+                      [class.text-primary-600]="activeDropdown() === 'servicios'"
+                      aria-haspopup="true"
+                      [attr.aria-expanded]="activeDropdown() === 'servicios'">
                 Servizos
-                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="activeDropdown() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <svg class="w-4 h-4 transition-transform" aria-hidden="true" [class.rotate-180]="activeDropdown() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
               </button>
               @if (activeDropdown() === 'servicios') {
                 <div class="absolute right-0 pt-2 w-56 z-[60] animate-in fade-in zoom-in-95 duration-150">
                   <div class="bg-white border border-surface-100 rounded-xl shadow-xl py-2">
                     @for (sub of serviciosItems; track sub.path) {
-                      <a (click)="navigateTo(sub.path)"
-                         [class.text-primary-600]="currentPath() === sub.path"
+                      <a [routerLink]="sub.path" routerLinkActive="text-primary-600 bg-primary-50" (click)="forceClose()"
                          class="block px-4 py-2.5 text-sm text-surface-600 hover:bg-primary-50 hover:text-primary-600 transition-colors cursor-pointer">
                         {{ sub.label }}
                       </a>
@@ -55,16 +53,17 @@ import { filter } from 'rxjs/operators';
 
             <div class="relative ml-2" (mouseenter)="openDropdown('anpa')" (mouseleave)="closeDropdownWithDelay()">
               <button class="flex items-center gap-1 px-4 py-2 rounded-lg text-sm font-medium text-surface-600 hover:bg-surface-50 transition-all cursor-pointer"
-                      [class.text-primary-600]="activeDropdown() === 'anpa'">
+                      [class.text-primary-600]="activeDropdown() === 'anpa'"
+                      aria-haspopup="true"
+                      [attr.aria-expanded]="activeDropdown() === 'anpa'">
                 Sobre o ANPA
-                <svg class="w-4 h-4 transition-transform" [class.rotate-180]="activeDropdown() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+                <svg class="w-4 h-4 transition-transform" aria-hidden="true" [class.rotate-180]="activeDropdown() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
               </button>
               @if (activeDropdown() === 'anpa') {
                 <div class="absolute right-0 pt-2 w-56 z-[60] animate-in fade-in zoom-in-95 duration-150">
                   <div class="bg-white border border-surface-100 rounded-xl shadow-xl py-2">
                     @for (sub of anpaItems; track sub.path) {
-                      <a (click)="navigateTo(sub.path)"
-                         [class.text-primary-600]="currentPath() === sub.path"
+                      <a [routerLink]="sub.path" routerLinkActive="text-primary-600 bg-primary-50" (click)="forceClose()"
                          class="block px-4 py-2.5 text-sm text-surface-600 hover:bg-primary-50 hover:text-primary-600 transition-colors cursor-pointer">
                         {{ sub.label }}
                       </a>
@@ -74,19 +73,22 @@ import { filter } from 'rxjs/operators';
               }
             </div>
 
-            <button (click)="navigateTo('/faite-socio')"
+            <a routerLink="/faite-socio" (click)="forceClose()"
                class="ml-4 px-5 py-2.5 bg-[rgb(72,159,67)] text-white text-sm font-black rounded-full hover:bg-opacity-90 hover:shadow-lg hover:-translate-y-0.5 transition-all flex items-center gap-2 cursor-pointer shadow-sm">
-              <span>🤝</span> Faite socio/a
-            </button>
+              <span aria-hidden="true">🤝</span> Faite socio/a
+            </a>
 
             <a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener noreferrer"
                class="ml-2 px-5 py-2.5 bg-surface-900 text-white text-sm font-bold rounded-full hover:bg-primary-600 transition-all flex items-center gap-2 cursor-pointer">
-              Blog <svg class="w-3.5 h-3.5 opacity-60" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
+              Blog <svg class="w-3.5 h-3.5 opacity-60" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3"></path></svg>
             </a>
           </div>
 
-          <button (click)="isMobileMenuOpen.set(!isMobileMenuOpen())" class="lg:hidden p-2 text-surface-600 cursor-pointer">
-             <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <button (click)="isMobileMenuOpen.set(!isMobileMenuOpen())"
+                  class="lg:hidden p-2 text-surface-600 cursor-pointer"
+                  [attr.aria-label]="isMobileMenuOpen() ? 'Pechar menú de navegación' : 'Abrir menú de navegación'"
+                  [attr.aria-expanded]="isMobileMenuOpen()">
+             <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                <path [class.hidden]="isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16m-7 6h7"></path>
                <path [class.hidden]="!isMobileMenuOpen()" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
              </svg>
@@ -97,14 +99,13 @@ import { filter } from 'rxjs/operators';
       @if (isMobileMenuOpen()) {
         <div class="lg:hidden bg-white border-t border-surface-100 px-4 py-6 space-y-1 shadow-inner overflow-y-auto max-h-[80vh]">
 
-          <button (click)="navigateTo('/faite-socio')"
+          <a routerLink="/faite-socio" (click)="forceClose()"
              class="w-full mb-6 py-4 bg-[rgb(72,159,67)] text-white text-center font-black rounded-2xl shadow-lg flex items-center justify-center gap-3">
-             <span>🤝</span> FAITE SOCIO/A AGORA
-          </button>
+             <span aria-hidden="true">🤝</span> FAITE SOCIO/A AGORA
+          </a>
 
           @for (item of mainItems; track item.path) {
-            <a (click)="navigateTo(item.path)"
-               [class.text-primary-600]="currentPath() === item.path"
+            <a [routerLink]="item.path" routerLinkActive="text-primary-600" (click)="forceClose()"
                class="block py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors">
               {{item.label}}
             </a>
@@ -112,14 +113,16 @@ import { filter } from 'rxjs/operators';
 
           <div class="border-t border-surface-50 pt-2">
             <button (click)="toggleMobileGroup('servicios')"
-                    class="w-full flex justify-between items-center py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors">
+                    class="w-full flex justify-between items-center py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors"
+                    aria-haspopup="true"
+                    [attr.aria-expanded]="mobileGroupOpen() === 'servicios'">
               Servizos
-              <svg class="w-5 h-5 transition-transform" [class.rotate-180]="mobileGroupOpen() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg class="w-5 h-5 transition-transform" aria-hidden="true" [class.rotate-180]="mobileGroupOpen() === 'servicios'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             @if (mobileGroupOpen() === 'servicios') {
               <div class="bg-surface-50 rounded-xl mx-2 mb-2 overflow-hidden animate-in slide-in-from-top-2 duration-200">
                 @for (sub of serviciosItems; track sub.path) {
-                  <a (click)="navigateTo(sub.path)"
+                  <a [routerLink]="sub.path" (click)="forceClose()"
                      class="block py-3 px-8 text-base text-surface-600 cursor-pointer border-b border-white last:border-0">
                     {{ sub.label }}
                   </a>
@@ -130,14 +133,16 @@ import { filter } from 'rxjs/operators';
 
           <div>
             <button (click)="toggleMobileGroup('anpa')"
-                    class="w-full flex justify-between items-center py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors">
+                    class="w-full flex justify-between items-center py-3 px-4 text-lg font-medium text-surface-700 cursor-pointer hover:bg-surface-50 rounded-xl transition-colors"
+                    aria-haspopup="true"
+                    [attr.aria-expanded]="mobileGroupOpen() === 'anpa'">
               Sobre o ANPA
-              <svg class="w-5 h-5 transition-transform" [class.rotate-180]="mobileGroupOpen() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
+              <svg class="w-5 h-5 transition-transform" aria-hidden="true" [class.rotate-180]="mobileGroupOpen() === 'anpa'" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path></svg>
             </button>
             @if (mobileGroupOpen() === 'anpa') {
               <div class="bg-surface-50 rounded-xl mx-2 mb-2 overflow-hidden animate-in slide-in-from-top-2 duration-200">
                 @for (sub of anpaItems; track sub.path) {
-                  <a (click)="navigateTo(sub.path)"
+                  <a [routerLink]="sub.path" (click)="forceClose()"
                      class="block py-3 px-8 text-base text-surface-600 cursor-pointer border-b border-white last:border-0">
                     {{ sub.label }}
                   </a>
@@ -154,21 +159,10 @@ import { filter } from 'rxjs/operators';
   `
 })
 export class NavbarComponent {
-  private router = inject(Router);
-
-  currentPath = signal(this.router.url);
   activeDropdown = signal<string | null>(null);
   mobileGroupOpen = signal<string | null>(null);
   isMobileMenuOpen = signal(false);
   private closeTimeout: any;
-
-  constructor() {
-    this.router.events.pipe(
-      filter(event => event instanceof NavigationEnd)
-    ).subscribe(() => {
-      this.currentPath.set(this.router.url);
-    });
-  }
 
   mainItems = [
     { label: 'Labor ANPA', path: '/labor-anpa' },
@@ -189,11 +183,6 @@ export class NavbarComponent {
     { label: 'Asambleas', path: '/asambleas' },
     { label: 'Contacto', path: '/contacto' },
   ];
-
-  navigateTo(path: string) {
-    this.forceClose();
-    this.router.navigate([path]);
-  }
 
   openDropdown(name: string) {
     if (this.closeTimeout) clearTimeout(this.closeTimeout);
