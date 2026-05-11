@@ -10,6 +10,7 @@ export async function fetchColaboradores(): Promise<Colaborador[]> {
     discount,
     discountValue,
     discountCondition,
+    "imagePath": image.asset->path,
     "imageUrl": image.asset->url,
     addressUrl,
     webSite

@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteMeta } from '@analogjs/router';
@@ -16,7 +16,7 @@ export const routeMeta: RouteMeta = {
 @Component({
   selector: 'app-iniciativas-page',
   standalone: true,
-  imports: [PageComponent, CommonModule],
+  imports: [PageComponent, CommonModule, NgOptimizedImage],
   template: `
     <app-page-component [title]="title" category="Proxectos Reais"
       subTitle="Accións concretas que desenvolvemos para apoiar o crecemento e formación do alumnado do CEIP Gregorio Sanz.">
@@ -28,9 +28,11 @@ export const routeMeta: RouteMeta = {
             <div class="bg-white rounded-3xl border border-surface-100 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group">
 
               <div class="h-48 overflow-hidden flex items-center justify-center relative">
-                @if (item.tipoCabecera === 'image' && item.imageUrl) {
-                  <img [src]="item.imageUrl" [alt]="item.titulo"
-                       class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                @if (item.tipoCabecera === 'image' && item.imagePath) {
+                  <img [ngSrc]="item.imagePath" [alt]="item.titulo"
+                       fill
+                       class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                       sizes="(max-width: 768px) 100vw, 50vw">
                   <div class="absolute inset-0 bg-black/5 group-hover:bg-transparent transition-colors"></div>
                 } @else {
                   <div class="w-full h-full flex items-center justify-center text-6xl shadow-inner transition-colors duration-500"

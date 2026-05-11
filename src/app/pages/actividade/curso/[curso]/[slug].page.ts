@@ -68,9 +68,11 @@ export const routeMeta = {
               <div class="flex flex-wrap items-center gap-8">
                 @if (act.subvencion.logos && act.subvencion.logos.length > 0) {
                   @for (logo of act.subvencion.logos; track $index) {
-                    <div class="h-16 flex items-center">
-                      <!-- Aquí asumo que pasas la URL del logo ya procesada o usas un pipe -->
-                      <img [src]="logo" [alt]="act.subvencion.titulo" class="h-full w-auto object-contain grayscale hover:grayscale-0 transition-all">
+                    <div class="relative h-16 w-32">
+                      <img [ngSrc]="logo" [alt]="act.subvencion.titulo"
+                           fill
+                           class="object-contain grayscale hover:grayscale-0 transition-all"
+                           sizes="128px">
                     </div>
                   }
                 }
@@ -96,9 +98,11 @@ export const routeMeta = {
               </h3>
               <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                 @for (foto of act.galeria; track $index) {
-                  <div class="h-80 rounded-3xl overflow-hidden shadow-lg group cursor-pointer">
-                    <img [src]="foto"
+                  <div class="relative h-80 rounded-3xl overflow-hidden shadow-lg group cursor-pointer">
+                    <img [ngSrc]="foto"
+                         fill
                          class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                          alt="Imaxe da galería">
                   </div>
                 }

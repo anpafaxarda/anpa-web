@@ -1,7 +1,7 @@
 export interface Subvencion {
   titulo: string;
   entidadeEmisora?: string;
-  logos?: any[];
+  logos?: string[];
   textoLegal?: string;
 }
 

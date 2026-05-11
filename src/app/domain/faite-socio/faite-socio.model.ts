@@ -7,6 +7,7 @@ export interface FaiteSocioFeature {
 export interface TutorialStep {
   title: string;
   description: string;
+  imagePath: string;
   imageUrl: string;
   isRegistration: boolean;
 }

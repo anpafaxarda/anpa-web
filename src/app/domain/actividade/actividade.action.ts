@@ -30,11 +30,11 @@ export async function fetchActividadeBySlug(slug: string): Promise<Actividade> {
     "subvencion": subvencion-> {
       titulo,
       entidadeEmisora,
-      logos,
+      "logos": logos[].asset->path,
       textoLegal
     },
     contidoLongo,
-    "galeria": galeria[].asset->url
+    "galeria": galeria[].asset->path
   }`;
   return await sanityClient.fetch(query, { slug });
 }

@@ -1,6 +1,6 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
 import { PageComponent } from '../shared/components/page.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute } from '@angular/router';
 import { RouteMeta } from '@analogjs/router';
@@ -24,7 +24,7 @@ export const routeMeta: RouteMeta = {
 @Component({
   selector: 'app-labor-anpa-page',
   standalone: true,
-  imports: [PageComponent, CommonModule],
+  imports: [PageComponent, CommonModule, NgOptimizedImage],
   template: `
     <app-page-component
       [category]="laborAnpaPageTexts().badge"
@@ -86,8 +86,11 @@ export const routeMeta: RouteMeta = {
 
                 <!-- Miniatura ou Icona á esquerda (Estilo horizontal) -->
                 <div class="w-full md:w-40 h-32 shrink-0 rounded-2xl overflow-hidden bg-surface-50 relative">
-                  @if (item.tipoCabecera === 'image' && item.imageUrl) {
-                    <img [src]="item.imageUrl" [alt]="item.titulo" class="w-full h-full object-cover">
+                  @if (item.tipoCabecera === 'image' && item.imagePath) {
+                    <img [ngSrc]="item.imagePath" [alt]="item.titulo"
+                         fill
+                         class="w-full h-full object-cover"
+                         sizes="(max-width: 768px) 100vw, 160px">
                   } @else {
                     <div class="w-full h-full flex items-center justify-center text-4xl" [style.backgroundColor]="item.corFondo || '#f8fafc'">
                       {{ item.emoji || '✨' }}
