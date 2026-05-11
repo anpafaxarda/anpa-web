@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Actividad } from '../domain/extraescolares/extraescolares.model';
 import { PageComponent } from '../shared/components/page.component';
 import { fetchExtraescolares } from '../domain/extraescolares/extraescolares.action';
@@ -18,7 +18,7 @@ export const routeMeta = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PortableTextPipe, PageComponent],
+  imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage],
   template: `
     <app-page-component
         [category]="'Labor do ANPA'"
@@ -48,8 +48,11 @@ export const routeMeta = {
             @for (actividad of actividades(); track actividad.name) {
               <div class="bg-white rounded-[2.5rem] shadow-xl border border-surface-100 overflow-hidden flex flex-col md:flex-row group transition-all duration-500 hover:border-primary-200">
                 <div class="md:w-1/3 relative h-56 md:h-auto bg-surface-100 overflow-hidden">
-                  @if (actividad.imageUrl) {
-                    <img [src]="actividad.imageUrl" [alt]="actividad.name" class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110">
+                  @if (actividad.imagePath) {
+                    <img [ngSrc]="actividad.imagePath" [alt]="actividad.name"
+                         fill
+                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+                         sizes="(max-width: 768px) 100vw, 33vw">
                   }
                   <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 

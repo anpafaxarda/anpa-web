@@ -9,6 +9,7 @@ export async function fetchActividades(): Promise<Actividade[]> {
     curso,
     data,
     resumo,
+    "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
     organizador,
     porcentaxeSubvencion,
@@ -22,17 +23,18 @@ export async function fetchActividadeBySlug(slug: string): Promise<Actividade> {
     "slug": slug.current,
     curso,
     data,
+    "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
     organizador,
     porcentaxeSubvencion,
     "subvencion": subvencion-> {
       titulo,
       entidadeEmisora,
-      logos,
+      "logos": logos[].asset->path,
       textoLegal
     },
     contidoLongo,
-    "galeria": galeria[].asset->url
+    "galeria": galeria[].asset->path
   }`;
   return await sanityClient.fetch(query, { slug });
 }
@@ -51,6 +53,7 @@ export async function fetchActividadesByCurso(curso: string): Promise<Actividade
     curso,
     data,
     resumo,
+    "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
     rol
   }`;

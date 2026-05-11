@@ -1,5 +1,5 @@
 import { Component, computed, inject, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { PageComponent } from '../shared/components/page.component';
 import { fetchFaiteSocioData } from '../domain/faite-socio/faite-socio.action';
@@ -19,7 +19,7 @@ export const routeMeta = {
 @Component({
   selector: 'app-faite-socio-page',
   standalone: true,
-  imports: [CommonModule, PageComponent],
+  imports: [CommonModule, PageComponent, NgOptimizedImage],
   template: `
     @let data = socioData();
 
@@ -180,7 +180,10 @@ export const routeMeta = {
       <div class="flex flex-col items-center group">
         <div class="relative mx-auto border-surface-900 bg-surface-900 border-[8px] rounded-[2rem] h-[520px] w-[250px] shadow-2xl mb-8 overflow-hidden">
           <div class="absolute top-0 left-1/2 -translate-x-1/2 w-24 h-6 bg-surface-900 z-20 rounded-b-2xl mt-0"></div>
-          <img [src]="step.imageUrl" class="h-full w-full object-cover transition-transform duration-1000" [alt]="step.title">
+          <img [ngSrc]="step.imagePath" [alt]="step.title"
+               fill
+               class="h-full w-full object-cover transition-transform duration-1000"
+               sizes="250px">
           <div class="absolute bottom-4 right-4 w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
             {{ index }}
           </div>

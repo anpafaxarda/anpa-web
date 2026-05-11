@@ -6,6 +6,7 @@ export interface Colaborador {
   discount: string;
   discountValue?: number;
   discountCondition: string;
+  imagePath?: string;
   imageUrl: string;
   addressUrl: string;
   webSite: string;

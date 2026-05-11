@@ -1,5 +1,6 @@
 export interface Actividad {
   name: string;
+  imagePath?: string;
   imageUrl?: string;
   price: string;
   memberPrice: string;

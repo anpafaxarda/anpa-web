@@ -58,14 +58,14 @@ export const routeMeta = {
                       <span class="px-3 py-1 bg-primary-50 text-primary-600 text-[10px] font-black uppercase tracking-wider rounded-lg">
                         {{ asamblea.tipo || 'Asemblea' }}
                       </span>
-                      <span class="text-surface-400 text-sm font-medium italic">
+                      <span class="text-surface-600 text-sm font-medium italic">
                         {{ asamblea.fecha | date:'dd/MM/yyyy' }}
                       </span>
                     </div>
                     <h4 class="text-xl font-black text-surface-900 group-hover:text-primary-600 transition-colors">
                       {{ asamblea.titulo }}
                     </h4>
-                    <p class="text-surface-500 text-sm flex items-center gap-1">
+                    <p class="text-surface-600 text-sm flex items-center gap-1">
                       📍 {{ asamblea.lugar || 'Biblioteca do Centro' }}
                     </p>
                   </div>
@@ -81,7 +81,7 @@ export const routeMeta = {
 
                 @if (asamblea.ordenDia && asamblea.ordenDia.length > 0) {
                   <div class="mt-6 pt-6 border-t border-dashed border-surface-100 text-left">
-                    <p class="text-[10px] font-black uppercase tracking-widest text-surface-400 mb-3">Orde do día:</p>
+                    <p class="text-[10px] font-black uppercase tracking-widest text-surface-600 mb-3">Orde do día:</p>
                     <ul class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2">
                       @for (item of asamblea.ordenDia; track item) {
                         <li class="text-sm text-surface-600 flex items-start gap-2">
@@ -142,8 +142,8 @@ export const routeMeta = {
               </div>
             </div>
 
-            <button (click)="isModalOpen.set(false)" class="absolute top-4 right-4 p-2 text-surface-400 hover:text-surface-900 transition-colors cursor-pointer">
-              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
+            <button (click)="isModalOpen.set(false)" aria-label="Pechar diálogo" class="absolute top-4 right-4 p-2 text-surface-400 hover:text-surface-900 transition-colors cursor-pointer">
+              <svg class="w-6 h-6" aria-hidden="true" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>
             </button>
           </div>
         </div>

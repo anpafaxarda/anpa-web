@@ -1,12 +1,12 @@
-import { Component, computed, inject } from '@angular/core';
-import { Router } from '@angular/router';
+import { Component, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { RouterLink } from '@angular/router';
 import { GlobalDataService } from '../services/global-data.service';
 
 @Component({
   selector: 'app-footer',
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   template: `
     <footer class="bg-surface-900 text-white pt-16 pb-8">
       <div class="container mx-auto px-4">
@@ -41,9 +41,9 @@ import { GlobalDataService } from '../services/global-data.service';
           <div>
             <h4 class="font-bold text-lg mb-6 text-primary-400">Servizos</h4>
             <ul class="space-y-3 text-surface-400 text-sm">
-              <li><a (click)="navigateTo('/extraescolares')" class="hover:text-white transition-colors cursor-pointer block">Extraescolares</a></li>
-              <li><a (click)="navigateTo('/bus-escolar')" class="hover:text-white transition-colors cursor-pointer block">Bus Escolar</a></li>
-              <li><a (click)="navigateTo('/bos-dias-tardes')" class="hover:text-white transition-colors cursor-pointer block">Bos días e Tardes</a></li>
+              <li><a routerLink="/extraescolares" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Extraescolares</a></li>
+              <li><a routerLink="/bus-escolar" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Bus Escolar</a></li>
+              <li><a routerLink="/bos-dias-tardes" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Bos días e Tardes</a></li>
               <li><a href="https://afaxarda.wordpress.com/" target="_blank" rel="noopener" class="hover:text-white transition-colors cursor-pointer block">Blog do ANPA ↗</a></li>
             </ul>
           </div>
@@ -51,14 +51,14 @@ import { GlobalDataService } from '../services/global-data.service';
           <div>
             <h4 class="font-bold text-lg mb-6 text-primary-400">O ANPA</h4>
             <ul class="space-y-3 text-surface-400 text-sm">
-              <li><a (click)="navigateTo('/labor-anpa')" class="hover:text-white transition-colors cursor-pointer block">O noso labor</a></li>
-              <li><a (click)="navigateTo('/actividade')" class="hover:text-white transition-colors cursor-pointer block">Actividades</a></li>
-              <li><a (click)="navigateTo('/colaboradores')" class="hover:text-white transition-colors cursor-pointer block">Colaboradores</a></li>
-              <li><a (click)="navigateTo('/beneficios')" class="hover:text-white transition-colors cursor-pointer block">Beneficios Socios</a></li>
-              <li><a (click)="navigateTo('/directiva')" class="hover:text-white transition-colors cursor-pointer block">Xunta Directiva</a></li>
-              <li><a (click)="navigateTo('/estatutos')" class="hover:text-white transition-colors cursor-pointer block">Estatutos</a></li>
-              <li><a (click)="navigateTo('/asambleas')" class="hover:text-white transition-colors cursor-pointer block">Asembleas</a></li>
-              <li><a (click)="navigateTo('/contacto')" class="hover:text-white transition-colors cursor-pointer block">Contacto</a></li>
+              <li><a routerLink="/labor-anpa" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">O noso labor</a></li>
+              <li><a routerLink="/actividade" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Actividades</a></li>
+              <li><a routerLink="/colaboradores" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Colaboradores</a></li>
+              <li><a routerLink="/beneficios" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Beneficios Socios</a></li>
+              <li><a routerLink="/directiva" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Xunta Directiva</a></li>
+              <li><a routerLink="/estatutos" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Estatutos</a></li>
+              <li><a routerLink="/asambleas" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Asembleas</a></li>
+              <li><a routerLink="/contacto" (click)="scrollToTop()" class="hover:text-white transition-colors cursor-pointer block">Contacto</a></li>
             </ul>
           </div>
 
@@ -74,10 +74,10 @@ import { GlobalDataService } from '../services/global-data.service';
             </p>
 
             <div class="flex flex-col gap-2 pt-4 border-t border-surface-800 text-xs text-surface-500">
-              <a (click)="navigateTo('/faite-socio')" class="hover:underline cursor-pointer py-1">Faite Socio</a>
-              <a (click)="navigateTo('/aviso-legal')" class="hover:underline cursor-pointer py-1">Aviso Legal</a>
-              <a (click)="navigateTo('/privacidad')" class="hover:underline cursor-pointer py-1">Privacidade</a>
-              <a (click)="navigateTo('/politica-cookies')" class="hover:underline cursor-pointer py-1">Política de Cookies</a>
+              <a routerLink="/faite-socio" (click)="scrollToTop()" class="hover:underline cursor-pointer py-1">Faite Socio</a>
+              <a routerLink="/aviso-legal" (click)="scrollToTop()" class="hover:underline cursor-pointer py-1">Aviso Legal</a>
+              <a routerLink="/privacidad" (click)="scrollToTop()" class="hover:underline cursor-pointer py-1">Privacidade</a>
+              <a routerLink="/politica-cookies" (click)="scrollToTop()" class="hover:underline cursor-pointer py-1">Política de Cookies</a>
             </div>
           </div>
 
@@ -93,17 +93,13 @@ import { GlobalDataService } from '../services/global-data.service';
   `
 })
 export class FooterComponent {
-  private router = inject(Router);
-
   private globalDataService = inject(GlobalDataService);
 
   readonly generalData = this.globalDataService.generalData;
   readonly contacto = this.globalDataService.contacto;
 
-  navigateTo(path: string) {
-    this.router.navigate([path]).then(() => {
-      window.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+  scrollToTop() {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   }
 
   buildPhoneNumberToDisplay(): string {

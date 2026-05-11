@@ -4,7 +4,8 @@ import { Actividad } from './extraescolares.model';
 export async function fetchExtraescolares(): Promise<Actividad[]> {
   return await sanityClient.fetch(`*[_type == "extraescolar"] | order(horaInicio asc) {
       name,
-      "imageUrl": image.asset->url + "?w=800&auto=format",
+      "imagePath": image.asset->path,
+      "imageUrl": image.asset->url,
       price,
       memberPrice,
       discountTag,

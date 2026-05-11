@@ -1,6 +1,6 @@
 import { Component, inject, computed } from '@angular/core';
 import { ActivatedRoute, Router, ResolveFn, RouterLink } from '@angular/router';
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { PageComponent } from '../../../shared/components/page.component';
 import { fetchActividadesByCurso, fetchCursosDisponibles } from '../../../domain/actividade/actividade.action';
 import { SeoService } from '../../../core/services/seo.service';
@@ -22,7 +22,7 @@ export const routeMeta = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, RouterLink, PageComponent],
+  imports: [CommonModule, RouterLink, PageComponent, NgOptimizedImage],
   template: `
     <app-page-component
       category="Arquivo"
@@ -46,14 +46,20 @@ export const routeMeta = {
 
       <!-- GRID DE ACTIVIDADES -->
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @for (act of actividades(); track act.id) {
+        @for (act of actividades(); track act.id; let i = $index) {
           <div class="group">
             <div class="h-full bg-white rounded-[2.5rem] overflow-hidden border border-surface-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col">
 
               <!-- IMAXE E BADGES -->
               <div class="relative h-64 overflow-hidden">
-                @if (act.imaxeUrl) {
-                  <img [src]="act.imaxeUrl" [alt]="act.titulo" class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110">
+                @if (act.imaxePath) {
+                  <img
+                    [ngSrc]="act.imaxePath"
+                    [alt]="act.titulo"
+                    fill
+                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    [priority]="i < 3">
                 } @else {
                   <div class="w-full h-full bg-surface-100 flex items-center justify-center text-surface-400 font-bold italic text-sm">Sen imaxe</div>
                 }

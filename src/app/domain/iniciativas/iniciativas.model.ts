@@ -2,6 +2,7 @@ export interface Iniciativa {
   titulo: string;
   tipoCabecera: 'emoji' | 'image';
   emoji?: string;
+  imagePath?: string;
   imageUrl?: string;
   corFondo?: string;
   descripcion: string;

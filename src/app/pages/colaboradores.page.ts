@@ -1,4 +1,4 @@
-import { CommonModule } from '@angular/common';
+import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Component, computed, inject } from '@angular/core';
 import { Colaborador } from '../domain/colaboradores/colaborador.model';
 import { PageComponent } from '../shared/components/page.component';
@@ -19,7 +19,7 @@ export const routeMeta = {
 @Component({
   selector: 'app-colaboradores-page',
   standalone: true,
-  imports: [CommonModule, PageComponent],
+  imports: [CommonModule, PageComponent, NgOptimizedImage],
   template: `
     <app-page-component
       [category]="'Vantaxes para socios'"
@@ -31,11 +31,13 @@ export const routeMeta = {
           <div class="bg-white rounded-2xl shadow-xl shadow-surface-200/60 border border-surface-100 overflow-hidden flex flex-col group">
 
             <div class="relative h-48 bg-surface-100 flex items-center justify-center">
-              @if (item.imageUrl) {
+              @if (item.imagePath) {
                 <img
-                  [src]="item.imageUrl"
+                  [ngSrc]="item.imagePath"
                   [alt]="item.name"
+                  fill
                   class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700"
+                  sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                 >
               } @else {
                 <div class="text-surface-300 text-4xl font-bold uppercase">{{ item.name.substring(0,2) }}</div>
