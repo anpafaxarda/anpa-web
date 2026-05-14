@@ -1,6 +1,7 @@
 import { Component, inject, computed, OnInit } from '@angular/core';
 import { RouterLink, ActivatedRoute, ResolveFn } from '@angular/router';
-import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { CommonModule } from '@angular/common';
+import { ActividadeCardComponent } from '../shared/components/actividade-card.component';
 import { SeoService } from '../core/services/seo.service';
 import { Actividade } from '../domain/actividade/actividade.model';
 import { fetchActividades } from '../domain/actividade/actividade.action';
@@ -25,7 +26,7 @@ export const routeMeta = {
 @Component({
   selector: 'app-home-page',
   standalone: true,
-  imports: [RouterLink, CommonModule, NgOptimizedImage],
+  imports: [RouterLink, CommonModule, ActividadeCardComponent],
   template: `
     <!-- HEADER HERO (Manteño igual) -->
     <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
@@ -93,56 +94,13 @@ export const routeMeta = {
 
         <div class="flex md:grid md:grid-cols-3 gap-8 overflow-x-auto pb-10 md:pb-0 snap-x snap-mandatory no-scrollbar -mx-4 px-4 md:mx-0 md:px-0">
           @for (act of actividadesFiltradas(); track act.id; let i = $index) {
-            <div class="min-w-[85vw] md:min-w-0 snap-center group">
-              <div class="h-full bg-white rounded-[2.5rem] overflow-hidden border border-surface-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col">
-
-                <div class="relative h-72 overflow-hidden">
-                  @if (act.imaxePath) {
-                    <img
-                    [ngSrc]="act.imaxePath"
-                    [alt]="act.titulo"
-                    fill
-                    class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                    sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 33vw"
-                    [priority]="i < 3">
-                  }
-
-                  <div class="absolute top-6 left-6 flex flex-col gap-2 items-start">
-                    <div class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-surface-900 shadow-sm">
-                      {{ act.data }}
-                    </div>
-
-                  @if (act.organizador) {
-                    <div class="bg-cyan-800 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
-                      {{ act.organizador }}
-                    </div>
-                  }
-
-                  <!-- Badge de Subvención (MANTENIDO EN VERDE/PRIMARY) -->
-                  @if (act.porcentaxeSubvencion) {
-                    <div class="bg-primary-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
-                      {{ act.porcentaxeSubvencion }}% Subvencionado
-                    </div>
-                  }
-                  </div>
-                </div>
-
-                <div class="p-8 flex-grow flex flex-col">
-                  <h4 class="text-2xl font-bold text-surface-900 mb-3 group-hover:text-primary-600 transition-colors duration-300">{{ act.titulo }}</h4>
-                  <p class="text-surface-500 leading-relaxed mb-8 line-clamp-3 italic font-medium">
-                    "{{ act.resumo }}"
-                  </p>
-
-                  <div class="mt-auto pt-6 border-t border-surface-50">
-                    <a [routerLink]="['/actividade/curso/', act.curso, act.slug]" class="inline-flex items-center gap-2 text-xs font-black text-primary-600 uppercase tracking-[0.15em] group/btn">
-                      Ler máis
-                      <svg class="w-4 h-4 transition-transform group-hover/btn:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/>
-                      </svg>
-                    </a>
-                  </div>
-                </div>
-              </div>
+            <div class="min-w-[85vw] md:min-w-0 snap-center">
+              <app-actividade-card
+                [actividade]="act"
+                [priority]="i < 3"
+                [showDate]="true"
+                imageHeight="h-72"
+                sizes="(max-width: 768px) 85vw, (max-width: 1200px) 50vw, 33vw" />
             </div>
           }
         </div>
