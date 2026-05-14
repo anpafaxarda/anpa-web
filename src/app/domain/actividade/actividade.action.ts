@@ -13,6 +13,7 @@ export async function fetchActividades(): Promise<Actividade[]> {
     "imaxeUrl": imaxePortada.asset->url,
     organizador,
     porcentaxeSubvencion,
+    nivelEducativo,
   }`;
   return await sanityClient.fetch(query);
 }
@@ -27,6 +28,7 @@ export async function fetchActividadeBySlug(slug: string): Promise<Actividade> {
     "imaxeUrl": imaxePortada.asset->url,
     organizador,
     porcentaxeSubvencion,
+    nivelEducativo,
     "subvencion": subvencion-> {
       titulo,
       entidadeEmisora,
@@ -55,7 +57,9 @@ export async function fetchActividadesByCurso(curso: string): Promise<Actividade
     resumo,
     "imaxePath": imaxePortada.asset->path,
     "imaxeUrl": imaxePortada.asset->url,
-    rol
+    organizador,
+    porcentaxeSubvencion,
+    nivelEducativo,
   }`;
   return await sanityClient.fetch(query, { curso });
 }

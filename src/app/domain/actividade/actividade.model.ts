@@ -16,6 +16,7 @@ export interface Actividade {
   imaxeUrl: string;
   organizador: string;
   porcentaxeSubvencion?: number;
+  nivelEducativo?: string[];
   subvencion?: Subvencion;
 
   // Para a páxina de detalle (opcional se fas un fetch aparte)

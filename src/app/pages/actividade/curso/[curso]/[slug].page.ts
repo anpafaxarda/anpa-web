@@ -1,8 +1,8 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
-
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { PortableTextPipe } from '../../../../shared/pipes/portable-text.pipe';
+import { GalicianDatePipe } from '../../../../shared/pipes/galician-date.pipe';
 import { PageComponent } from '../../../../shared/components/page.component';
 import { ImageGalleryComponent } from '../../../../shared/components/image-gallery.component';
 import { Actividade } from '../../../../domain/actividade/actividade.model';
@@ -23,13 +23,13 @@ export const routeMeta = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage, ImageGalleryComponent],
+  imports: [CommonModule, PortableTextPipe, GalicianDatePipe, PageComponent, NgOptimizedImage, ImageGalleryComponent],
   template: `
     @if (actividade(); as act) {
       <app-page-component
         [category]="act.curso"
         [title]="act.titulo"
-        [subTitle]="act.data"
+        [subTitle]="act.data | galicianDate"
       >
         <div class="max-w-4xl mx-auto">
 
@@ -44,6 +44,13 @@ export const routeMeta = {
               <span class="px-4 py-1.5 bg-primary-100 text-primary-700 text-xs font-black uppercase tracking-widest rounded-full border border-primary-200">
                 Subvencionado ao {{ act.porcentaxeSubvencion }}%
               </span>
+            }
+            @if (act.nivelEducativo && act.nivelEducativo.length > 0) {
+              @for (nivel of act.nivelEducativo; track nivel) {
+                <span class="px-4 py-1.5 bg-orange-100 text-orange-900 text-xs font-black uppercase tracking-widest rounded-full border border-orange-300">
+                  Curso: {{ nivel }}
+                </span>
+              }
             }
           </div>
 
