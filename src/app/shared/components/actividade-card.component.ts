@@ -28,20 +28,25 @@ import { Actividade } from '../../domain/actividade/actividade.model';
           </div>
         }
 
-        <div class="absolute top-6 left-6 flex flex-col gap-2 items-start">
+        <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 items-end">
           @if (showDate) {
-            <div class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-surface-900 shadow-sm">
+            <div class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest text-surface-900 shadow-sm">
               {{ actividade.data | galicianDate }}
             </div>
           }
           @if (actividade.organizador) {
-            <div class="bg-cyan-800 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
-              ORGANIZA: {{ actividade.organizador }}
+            <div class="bg-cyan-100/90 backdrop-blur-md text-cyan-800 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm border border-cyan-300">
+              Organiza: {{ actividade.organizador }}
             </div>
           }
           @if (actividade.porcentaxeSubvencion) {
-            <div class="bg-primary-600 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
+            <div class="bg-primary-100/90 backdrop-blur-md text-primary-700 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm border border-primary-300">
               {{ actividade.porcentaxeSubvencion }}% Subvencionado
+            </div>
+          }
+          @if (actividade.nivelEducativo && actividade.nivelEducativo.length > 0) {
+            <div class="bg-orange-100/90 backdrop-blur-md text-orange-900 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm border border-orange-300">
+              Curso: {{ actividade.nivelEducativo.join(' · ') }}
             </div>
           }
         </div>

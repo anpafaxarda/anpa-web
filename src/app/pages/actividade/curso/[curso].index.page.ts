@@ -50,7 +50,8 @@ export const routeMeta = {
         @for (act of actividades(); track act.id; let i = $index) {
           <app-actividade-card
             [actividade]="act"
-            [priority]="i < 3" />
+            [priority]="i < 3"
+            [showDate]="true" />
         }
       </div>
     </app-page-component>

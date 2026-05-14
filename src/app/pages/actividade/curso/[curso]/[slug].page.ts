@@ -45,6 +45,13 @@ export const routeMeta = {
                 Subvencionado ao {{ act.porcentaxeSubvencion }}%
               </span>
             }
+            @if (act.nivelEducativo && act.nivelEducativo.length > 0) {
+              @for (nivel of act.nivelEducativo; track nivel) {
+                <span class="px-4 py-1.5 bg-orange-100 text-orange-900 text-xs font-black uppercase tracking-widest rounded-full border border-orange-300">
+                  Curso: {{ nivel }}
+                </span>
+              }
+            }
           </div>
 
           <!-- Imaxe Principal -->
