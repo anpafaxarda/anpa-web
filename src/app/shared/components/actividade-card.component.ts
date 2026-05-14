@@ -35,7 +35,7 @@ import { Actividade } from '../../domain/actividade/actividade.model';
           }
           @if (actividade.organizador) {
             <div class="bg-cyan-800 text-white px-3 py-1 rounded-lg text-[9px] font-black uppercase tracking-tighter shadow-lg border border-white/10">
-              {{ actividade.organizador }}
+              ORGANIZA: {{ actividade.organizador }}
             </div>
           }
           @if (actividade.porcentaxeSubvencion) {

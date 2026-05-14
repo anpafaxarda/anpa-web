@@ -46,7 +46,15 @@ export class SeoService {
     this.metaService.updateTag({ property: 'og:image:secure_url', content: imagePath });
     this.metaService.updateTag({ property: 'og:image:width', content: '800' });
     this.metaService.updateTag({ property: 'og:image:height', content: '533' });
-    this.metaService.updateTag({ property: 'og:image:type', content: 'image/jpeg' });
+    this.metaService.updateTag({ property: 'og:image:type', content: this.getImageMimeType(imagePath) });
+  }
+
+  private getImageMimeType(imageUrl: string): string {
+    const url = imageUrl.split('?')[0].toLowerCase();
+    if (url.endsWith('.png')) return 'image/png';
+    if (url.endsWith('.webp')) return 'image/webp';
+    if (url.endsWith('.gif')) return 'image/gif';
+    return 'image/jpeg';
   }
 
 private setMetaTwitter(fullTitle: string, description: string, imagePath: string): void {
