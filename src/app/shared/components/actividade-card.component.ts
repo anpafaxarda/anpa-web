@@ -1,12 +1,13 @@
 import { Component, Input } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+import { GalicianDatePipe } from '../pipes/galician-date.pipe';
 import { Actividade } from '../../domain/actividade/actividade.model';
 
 @Component({
   selector: 'app-actividade-card',
   standalone: true,
-  imports: [CommonModule, RouterLink, NgOptimizedImage],
+  imports: [CommonModule, RouterLink, NgOptimizedImage, GalicianDatePipe],
   template: `
     <a [routerLink]="['/actividade/curso/', actividade.curso, actividade.slug]"
        class="group h-full bg-white rounded-[2.5rem] overflow-hidden border border-surface-100 transition-all duration-500 hover:shadow-2xl hover:-translate-y-2 flex flex-col">
@@ -30,7 +31,7 @@ import { Actividade } from '../../domain/actividade/actividade.model';
         <div class="absolute top-6 left-6 flex flex-col gap-2 items-start">
           @if (showDate) {
             <div class="bg-white/90 backdrop-blur-md px-4 py-1.5 rounded-full text-[10px] font-black uppercase tracking-widest text-surface-900 shadow-sm">
-              {{ actividade.data }}
+              {{ actividade.data | galicianDate }}
             </div>
           }
           @if (actividade.organizador) {
