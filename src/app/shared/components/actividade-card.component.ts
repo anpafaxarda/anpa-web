@@ -28,12 +28,17 @@ import { Actividade } from '../../domain/actividade/actividade.model';
           </div>
         }
 
-        <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 items-end">
-          @if (showDate) {
+        <!-- Fecha arriba -->
+        @if (showDate) {
+          <div class="absolute top-4 left-4">
             <div class="bg-white/90 backdrop-blur-md px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest text-surface-900 shadow-sm">
               {{ actividade.data | galicianDate }}
             </div>
-          }
+          </div>
+        }
+
+        <!-- Resto de badges abajo -->
+        <div class="absolute bottom-4 left-4 right-4 flex flex-wrap gap-2 items-end">
           @if (actividade.organizador) {
             <div class="bg-cyan-100/90 backdrop-blur-md text-cyan-800 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm border border-cyan-300">
               Organiza: {{ actividade.organizador }}
@@ -76,5 +81,5 @@ export class ActividadeCardComponent {
   @Input() priority = false;
   @Input() showDate = false;
   @Input() imageHeight = 'h-64';
-  @Input() sizes = '(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw';
+  @Input() sizes = '(max-width: 640px) 85vw, (max-width: 1024px) 45vw, 30vw';
 }
