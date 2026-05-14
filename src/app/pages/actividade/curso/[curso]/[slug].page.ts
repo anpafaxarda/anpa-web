@@ -51,8 +51,9 @@ export const routeMeta = {
               [ngSrc]="act.imaxePath"
               [alt]="act.titulo"
               fill
+              priority
               class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+              sizes="(max-width: 768px) 100vw, 70vw">
           </div>
 
           <!-- Contido do Artigo -->
@@ -68,11 +69,11 @@ export const routeMeta = {
               <div class="flex flex-wrap items-center gap-8">
                 @if (act.subvencion.logos && act.subvencion.logos.length > 0) {
                   @for (logo of act.subvencion.logos; track $index) {
-                    <div class="relative h-16 w-32">
-                      <img [ngSrc]="logo" [alt]="act.subvencion.titulo"
-                           fill
-                           class="object-contain grayscale hover:grayscale-0 transition-all"
-                           sizes="128px">
+                    <div class="h-16 w-32 flex items-center">
+                      <img [src]="'https://cdn.sanity.io/' + logo + '?w=128&auto=format'"
+                           [alt]="act.subvencion.titulo"
+                           loading="lazy"
+                           class="object-contain grayscale hover:grayscale-0 transition-all max-h-16 w-auto">
                     </div>
                   }
                 }
@@ -146,12 +147,15 @@ export const routeMeta = {
                 }
 
                 <!-- Imaxe -->
-                <div class="relative max-w-5xl max-h-[85vh] w-full h-full mx-16 flex items-center justify-center"
+                <div class="max-w-5xl max-h-[85vh] w-full h-full mx-16 flex items-center justify-center"
                      (click)="$event.stopPropagation()">
-                  <img [ngSrc]="act.galeria[lightboxIndex()!]"
-                       fill
-                       class="object-contain"
-                       sizes="100vw"
+                  @if (lightboxLoading()) {
+                    <div class="w-10 h-10 border-4 border-white/20 border-t-white rounded-full animate-spin"></div>
+                  }
+                  <img [src]="sanityUrl(act.galeria[lightboxIndex()!])"
+                       (load)="lightboxLoading.set(false)"
+                       [class.hidden]="lightboxLoading()"
+                       class="max-w-full max-h-[85vh] object-contain"
                        alt="Imaxe da galería">
                 </div>
 
@@ -188,6 +192,7 @@ export default class ActividadeDetailPage {
 
   readonly actividade = computed(() => this.route.snapshot.data['actividade'] as Actividade);
   readonly lightboxIndex = signal<number | null>(null);
+  readonly lightboxLoading = signal(false);
 
   @HostListener('document:keydown', ['$event'])
   onKeydown(event: KeyboardEvent) {
@@ -198,8 +203,25 @@ export default class ActividadeDetailPage {
     if (event.key === 'ArrowLeft' && this.lightboxIndex()! > 0) this.prevImage();
   }
 
+  sanityUrl(path: string): string {
+    return `https://cdn.sanity.io/${path}?w=1200&auto=format`;
+  }
+
+  private preloadAdjacent(index: number) {
+    if (!isPlatformBrowser(this.platformId)) return;
+    const galeria = this.actividade()?.galeria ?? [];
+    [index - 1, index + 1].forEach(i => {
+      if (i >= 0 && i < galeria.length) {
+        const img = new Image();
+        img.src = this.sanityUrl(galeria[i]);
+      }
+    });
+  }
+
   openLightbox(index: number) {
+    this.lightboxLoading.set(true);
     this.lightboxIndex.set(index);
+    this.preloadAdjacent(index);
     if (isPlatformBrowser(this.platformId)) document.body.style.overflow = 'hidden';
   }
 
@@ -209,11 +231,17 @@ export default class ActividadeDetailPage {
   }
 
   nextImage() {
-    this.lightboxIndex.update(i => i !== null ? i + 1 : null);
+    const next = this.lightboxIndex()! + 1;
+    this.lightboxLoading.set(true);
+    this.lightboxIndex.set(next);
+    this.preloadAdjacent(next);
   }
 
   prevImage() {
-    this.lightboxIndex.update(i => i !== null ? i - 1 : null);
+    const prev = this.lightboxIndex()! - 1;
+    this.lightboxLoading.set(true);
+    this.lightboxIndex.set(prev);
+    this.preloadAdjacent(prev);
   }
 
   ngOnInit() {
