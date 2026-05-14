@@ -1,8 +1,10 @@
 import { Component, inject, computed } from '@angular/core';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
+
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { PortableTextPipe } from '../../../../shared/pipes/portable-text.pipe';
 import { PageComponent } from '../../../../shared/components/page.component';
+import { ImageGalleryComponent } from '../../../../shared/components/image-gallery.component';
 import { Actividade } from '../../../../domain/actividade/actividade.model';
 import { fetchActividadeBySlug } from '../../../../domain/actividade/actividade.action';
 import { SeoService } from '../../../../core/services/seo.service';
@@ -21,7 +23,7 @@ export const routeMeta = {
 
 @Component({
   standalone: true,
-  imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage],
+  imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage, ImageGalleryComponent],
   template: `
     @if (actividade(); as act) {
       <app-page-component
@@ -51,8 +53,9 @@ export const routeMeta = {
               [ngSrc]="act.imaxePath"
               [alt]="act.titulo"
               fill
+              priority
               class="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
-              sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw">
+              sizes="(max-width: 768px) 100vw, 70vw">
           </div>
 
           <!-- Contido do Artigo -->
@@ -68,11 +71,11 @@ export const routeMeta = {
               <div class="flex flex-wrap items-center gap-8">
                 @if (act.subvencion.logos && act.subvencion.logos.length > 0) {
                   @for (logo of act.subvencion.logos; track $index) {
-                    <div class="relative h-16 w-32">
-                      <img [ngSrc]="logo" [alt]="act.subvencion.titulo"
-                           fill
-                           class="object-contain grayscale hover:grayscale-0 transition-all"
-                           sizes="128px">
+                    <div class="h-16 w-32 flex items-center">
+                      <img [src]="'https://cdn.sanity.io/' + logo + '?w=128&auto=format'"
+                           [alt]="act.subvencion.titulo"
+                           loading="lazy"
+                           class="object-contain grayscale hover:grayscale-0 transition-all max-h-16 w-auto">
                     </div>
                   }
                 }
@@ -91,24 +94,7 @@ export const routeMeta = {
           }
 
           <!-- Galería de fotos -->
-          @if (act.galeria && act.galeria.length > 0) {
-            <div class="border-t border-surface-100 pt-16">
-              <h3 class="text-3xl font-black text-surface-900 mb-10 text-center uppercase tracking-tighter">
-                Galería de imaxes
-              </h3>
-              <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                @for (foto of act.galeria; track $index) {
-                  <div class="relative h-80 rounded-3xl overflow-hidden shadow-lg group cursor-pointer">
-                    <img [ngSrc]="foto"
-                         fill
-                         class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
-                         sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                         alt="Imaxe da galería">
-                  </div>
-                }
-              </div>
-            </div>
-          }
+          <app-image-gallery [images]="act.galeria ?? []" />
         </div>
       </app-page-component>
     } @else {
@@ -130,13 +116,8 @@ export default class ActividadeDetailPage {
 
   ngOnInit() {
     const act = this.actividade();
-
     if (act) {
-      this.seo.setPageMeta(
-        act.titulo,
-        act.resumo,
-        act.imaxeUrl
-      );
+      this.seo.setPageMeta(act.titulo, act.resumo, act.imaxeUrl);
     }
   }
 }
