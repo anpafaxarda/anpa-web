@@ -34,7 +34,7 @@ export const routeMeta = {
         <div class="max-w-4xl mx-auto">
 
           <!-- Badges de información (Resumen rápido) -->
-          <div class="flex flex-wrap gap-3 mb-8 justify-center">
+          <div class="flex flex-wrap gap-3 mb-8 justify-center mt-2">
             @if (act.organizador) {
               <span class="px-4 py-1.5 bg-cyan-100 text-cyan-800 text-xs font-black uppercase tracking-widest rounded-full border border-cyan-800">
                 Organiza: {{ act.organizador }}
