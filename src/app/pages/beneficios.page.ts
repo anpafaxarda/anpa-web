@@ -5,6 +5,7 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { fetchBeneficiosPage } from '../domain/beneficios/beneficios.action';
 import { BeneficiosCompleto } from '../domain/beneficios/beneficios.model';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const beneficiosResolver: ResolveFn<BeneficiosCompleto> = () => {
   return fetchBeneficiosPage();
@@ -21,7 +22,7 @@ export const routeMeta = {
   standalone: true,
   imports: [PageComponent, CommonModule],
   template: `
-    <app-page-component [title]="title" category="Socio">
+    <app-page-component [title]="header()?.title || title" [category]="header()?.badge || 'Socio'" [subTitle]="header()?.subtitle || ''">
       <div class="container mx-auto px-4 -mt-10 space-y-12">
 
         <div class="grid grid-cols-1 gap-6">
@@ -93,6 +94,8 @@ export default class BeneficiosPage implements OnInit {
   title = 'Beneficios';
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.beneficios);
 
   private readonly data = computed(() => this.route.snapshot.data['beneficiosData'] as BeneficiosCompleto);
 

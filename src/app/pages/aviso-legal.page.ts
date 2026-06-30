@@ -5,6 +5,7 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, Router, ResolveFn } from '@angular/router';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { fetchAvisoLegal } from '../domain/aviso-legal/aviso-legal.action';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const avisoLegalResolver: ResolveFn<any> = () => fetchAvisoLegal();
 
@@ -17,7 +18,7 @@ export const routeMeta = {
   standalone: true,
   imports: [PageComponent, CommonModule, PortableTextPipe],
   template: `
-    <app-page-component [title]="this.title" category="Legal">
+    <app-page-component [title]="header()?.title || this.title" [category]="header()?.badge || 'Legal'" [subTitle]="header()?.subtitle || ''">
       <div class="container mx-auto px-4 -mt-10 mb-20">
         <div class="bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-surface-100 max-w-4xl mx-auto prose prose-slate">
 
@@ -49,6 +50,8 @@ export default class AvisoLegalPage {
   private seo = inject(SeoService);
   private router = inject(Router);
   private route = inject(ActivatedRoute);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.avisoLegal);
 
   readonly data = computed(() => this.route.snapshot.data['legalData'] || {});
 

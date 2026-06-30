@@ -5,6 +5,7 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { fetchBusEscolar } from "../domain/bus/bus.action";
 import { Bus, Parada } from '../domain/bus/bus.model';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const busEscolarResolver: ResolveFn<Bus> = () => fetchBusEscolar();
 export const routeMeta = { resolve: { busData: busEscolarResolver } };
@@ -15,9 +16,9 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
   imports: [PageComponent, CommonModule],
   template: `
     <app-page-component
-      [category]="'Servizos'"
-      [title]="'Transporte Escolar'"
-      [subTitle]="'Rutas, horarios e tarifas para o presente curso escolar.'"
+      [category]="header()?.badge || 'Servizos'"
+      [title]="header()?.title || 'Transporte Escolar'"
+      [subTitle]="header()?.subtitle || 'Rutas, horarios e tarifas para o presente curso escolar.'"
     >
       <div class="max-w-6xl mx-auto px-4">
 
@@ -189,6 +190,8 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
   `,
 })
 export default class BusPage implements OnInit {
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.busEscolar);
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
 

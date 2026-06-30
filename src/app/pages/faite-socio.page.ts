@@ -5,6 +5,7 @@ import { PageComponent } from '../shared/components/page.component';
 import { fetchFaiteSocioData } from '../domain/faite-socio/faite-socio.action';
 import { FaiteSocioData } from '../domain/faite-socio/faite-socio.model';
 import { SeoService } from '../core/services/seo.service';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const faiteSocioResolver: ResolveFn<any> = () => {
   return fetchFaiteSocioData();
@@ -24,9 +25,9 @@ export const routeMeta = {
     @let data = socioData();
 
     <app-page-component
-      [category]="'Asóciate'"
-      [title]="data.title"
-      [subTitle]="data.subtitle"
+      [category]="header()?.badge || 'Asóciate'"
+      [title]="header()?.title || data.title"
+      [subTitle]="header()?.subtitle || data.subtitle"
     >
       <div class="max-w-6xl mx-auto px-6">
 
@@ -183,7 +184,7 @@ export const routeMeta = {
           <img [ngSrc]="step.imagePath" [alt]="step.title"
                fill
                class="h-full w-full object-cover transition-transform duration-1000"
-               sizes="250px">
+               sizes="(max-width: 768px) 100vw, 25vw">
           <div class="absolute bottom-4 right-4 w-10 h-10 bg-primary-600 rounded-2xl flex items-center justify-center text-white font-black text-xl shadow-lg">
             {{ index }}
           </div>
@@ -199,6 +200,8 @@ export const routeMeta = {
 export default class FaiteSocioPage implements OnInit {
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.faiteSocio);
 
   readonly socioData = computed(() => this.route.snapshot.data['faiteSocioData'] as FaiteSocioData);
 

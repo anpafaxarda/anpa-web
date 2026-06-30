@@ -3,8 +3,9 @@ import { Component, computed, inject } from '@angular/core';
 import { Colaborador } from '../domain/colaboradores/colaborador.model';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
-import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
-import { fetchColaboradores } from "../domain/colaboradores/colaboradores.action"; // Acción directa
+import { ActivatedRoute, ResolveFn } from '@angular/router';
+import { fetchColaboradores } from "../domain/colaboradores/colaboradores.action";
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const colaboradoresResolver: ResolveFn<any> = () => {
   return fetchColaboradores();
@@ -22,9 +23,9 @@ export const routeMeta = {
   imports: [CommonModule, PageComponent, NgOptimizedImage],
   template: `
     <app-page-component
-      [category]="'Vantaxes para socios'"
-      [title]="'Comercios colaboradores'"
-      [subTitle]="'Presenta o teu carné de socio do ANPA A Faxarda e desfruta destes beneficios en Ribadeo.'"
+      [category]="header()?.badge || 'Vantaxes para socios'"
+      [title]="header()?.title || title"
+      [subTitle]="header()?.subtitle || 'Presenta o teu carné de socio do ANPA A Faxarda e desfruta destes beneficios en Ribadeo.'"
     >
       <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         @for (item of colaboradores(); track item.name) {
@@ -84,7 +85,9 @@ export const routeMeta = {
   `,
 })
 export default class ColaboradoresPage {
-  title = 'Comercios colaboradores'
+  title = 'Comercios colaboradores';
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.colaboradores);
 
   private route = inject(ActivatedRoute);
 

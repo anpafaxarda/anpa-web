@@ -5,6 +5,7 @@ import { Actividad } from '../domain/extraescolares/extraescolares.model';
 import { PageComponent } from '../shared/components/page.component';
 import { fetchExtraescolares } from '../domain/extraescolares/extraescolares.action';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const extraescolaresResolver: ResolveFn<any> = () => {
   return fetchExtraescolares();
@@ -21,9 +22,9 @@ export const routeMeta = {
   imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage],
   template: `
     <app-page-component
-        [category]="'Labor do ANPA'"
-        [title]="'Actividades Extraescolares'"
-        [subTitle]="'Organizadas polo ANPA A Faxarda en colaboración co colexio CEIP Gregorio Sanz.'"
+        [category]="header()?.badge || 'Labor do ANPA'"
+        [title]="header()?.title || 'Actividades Extraescolares'"
+        [subTitle]="header()?.subtitle || 'Organizadas polo ANPA A Faxarda en colaboración co colexio CEIP Gregorio Sanz.'"
     >
 
       <div class="flex justify-center mb-10">
@@ -200,6 +201,8 @@ export const routeMeta = {
 export default class ExtraescolaresPage {
   private route = inject(ActivatedRoute);
   private cdr = inject(ChangeDetectorRef);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.extraescolares);
 
   readonly actividades = computed(() => this.route.snapshot.data['extraescolaresData'] as Actividad[] ?? []);
   view = signal<'cards' | 'calendar'>('cards');

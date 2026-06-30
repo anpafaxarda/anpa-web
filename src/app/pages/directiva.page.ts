@@ -3,8 +3,9 @@ import { CommonModule } from '@angular/common';
 import { Member } from '../domain/directiva/member.model';
 import { PageComponent } from '../shared/components/page.component';
 import { SeoService } from '../core/services/seo.service';
-import { ActivatedRoute, ResolveFn } from '@angular/router'; // Importamos lo necesario
-import { fetchMembers } from "../domain/directiva/members.action"; // Acción directa
+import { ActivatedRoute, ResolveFn } from '@angular/router';
+import { fetchMembers } from "../domain/directiva/members.action";
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const directivaResolver: ResolveFn<any> = () => {
   return fetchMembers();
@@ -22,9 +23,9 @@ export const routeMeta = {
   imports: [CommonModule, PageComponent],
   template: `
     <app-page-component
-      [category]="'O noso equipo'"
-      [title]="title"
-      [subTitle]="'Nais e pais voluntarios que dedicamos o noso tempo para mellorar o centro.'"
+      [category]="header()?.badge || 'O noso equipo'"
+      [title]="header()?.title || title"
+      [subTitle]="header()?.subtitle || 'Nais e pais voluntarios que dedicamos o noso tempo para mellorar o centro.'"
     >
       <div class="max-w-5xl mx-auto">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
@@ -76,6 +77,8 @@ export default class XuntaDirectivaPage {
   title = 'A Xunta Directiva';
 
   private route = inject(ActivatedRoute);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.directiva);
 
   readonly directiva = computed(() => this.route.snapshot.data['directivaData'] as Member[] ?? []);
 

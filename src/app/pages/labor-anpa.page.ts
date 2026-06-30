@@ -90,7 +90,7 @@ export const routeMeta: RouteMeta = {
                     <img [ngSrc]="item.imagePath" [alt]="item.titulo"
                          fill
                          class="w-full h-full object-cover"
-                         sizes="(max-width: 768px) 100vw, 160px">
+                         sizes="(max-width: 768px) 100vw, 15vw">
                   } @else {
                     <div class="w-full h-full flex items-center justify-center text-4xl" [style.backgroundColor]="item.corFondo || '#f8fafc'">
                       {{ item.emoji || '✨' }}

@@ -5,6 +5,7 @@ import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { PageComponent } from '../shared/components/page.component';
 import { EstatutosData } from '../domain/estatutos/estatutos.model';
 import { fetchEstatutos } from '../domain/estatutos/estatutos.action';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const estatutosResolver: ResolveFn<EstatutosData> = () => fetchEstatutos();
 
@@ -19,9 +20,9 @@ export const routeMeta = {
   imports: [CommonModule, PortableTextPipe, PageComponent],
   template: `
     <app-page-component
-        [category]="'Transparencia'"
-        [title]="'Estatutos da Asociación'"
-        [subTitle]="'Consulta o marco normativo que rexe o funcionamento do ANPA A Faxarda do CEIP Gregorio Sanz.'"
+        [category]="header()?.badge || 'Transparencia'"
+        [title]="header()?.title || 'Estatutos da Asociación'"
+        [subTitle]="header()?.subtitle || 'Consulta o marco normativo que rexe o funcionamento do ANPA A Faxarda do CEIP Gregorio Sanz.'"
     >
       <div class="max-w-4xl mx-auto px-4 md:px-0">
 
@@ -117,6 +118,8 @@ export const routeMeta = {
 })
 export default class EstatutosPage {
   private route = inject(ActivatedRoute);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.estatutos);
 
   readonly data = computed(() => this.route.snapshot.data['estatutosData'] as EstatutosData);
 }
