@@ -5,6 +5,7 @@ import { SeoService } from '../core/services/seo.service';
 import { ActivatedRoute, ResolveFn, RouterModule } from '@angular/router';
 import { fetchAsambleas } from "../domain/asambleas/asamblea.action";
 import { Asamblea } from '../domain/asambleas/asamblea.model';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const asambleasResolver: ResolveFn<any> = () => {
   return fetchAsambleas();
@@ -22,9 +23,9 @@ export const routeMeta = {
   imports: [PageComponent, CommonModule, RouterModule],
   template: `
     <app-page-component
-      [category]="'Transparencia'"
-      [title]="title"
-      [subTitle]="'Consulta as convocatorias e decisións tomadas nas nosas asembleas.'"
+      [category]="header()?.badge || 'Transparencia'"
+      [title]="header()?.title || title"
+      [subTitle]="header()?.subtitle || 'Consulta as convocatorias e decisións tomadas nas nosas asembleas.'"
     >
       <div class="max-w-5xl mx-auto px-4">
 
@@ -155,6 +156,8 @@ export default class AsambleasPage {
   title = 'Asembleas e Transparencia';
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.asambleas);
 
   readonly asambleas = computed(() => this.route.snapshot.data['asambleasData'] as Asamblea[] ?? []);
 

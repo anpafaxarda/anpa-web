@@ -2,12 +2,15 @@ import { Component, computed, inject, signal, ChangeDetectorRef } from '@angular
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Actividad } from '../domain/extraescolares/extraescolares.model';
+import { ExtraescolaresInscripcion } from '../domain/extraescolares/extraescolares-inscripcion.model';
 import { PageComponent } from '../shared/components/page.component';
 import { fetchExtraescolares } from '../domain/extraescolares/extraescolares.action';
+import { fetchExtraescolaresInscripcion } from '../domain/extraescolares/extraescolares-inscripcion.action';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const extraescolaresResolver: ResolveFn<any> = () => {
-  return fetchExtraescolares();
+  return Promise.all([fetchExtraescolares(), fetchExtraescolaresInscripcion()]);
 }
 
 export const routeMeta = {
@@ -21,10 +24,122 @@ export const routeMeta = {
   imports: [CommonModule, PortableTextPipe, PageComponent, NgOptimizedImage],
   template: `
     <app-page-component
-        [category]="'Labor do ANPA'"
-        [title]="'Actividades Extraescolares'"
-        [subTitle]="'Organizadas polo ANPA A Faxarda en colaboración co colexio CEIP Gregorio Sanz.'"
+        [category]="header()?.badge || 'Labor do ANPA'"
+        [title]="header()?.title || 'Actividades Extraescolares'"
+        [subTitle]="header()?.subtitle || 'Organizadas polo ANPA A Faxarda en colaboración co colexio CEIP Gregorio Sanz.'"
     >
+
+      @if (inscripcion()) {
+        @if (mostrarInscripcion()) {
+          <!-- INSCRIPCIÓN ABERTA -->
+          <div class="bg-white rounded-[2.5rem] shadow-xl border border-surface-100 overflow-hidden mb-10">
+            <div class="p-8 md:p-10">
+              <div class="flex flex-col sm:flex-row items-center gap-6 mb-8 text-center sm:text-left">
+                <div class="w-16 h-16 rounded-2xl bg-primary-50 flex items-center justify-center flex-shrink-0 shadow-sm">
+                  <svg class="w-8 h-8 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"/>
+                  </svg>
+                </div>
+                <div>
+                  <h3 class="text-2xl font-black text-surface-900 leading-tight">{{ inscripcion()!.titulo || 'Inscrición aberta' }}</h3>
+                  @if (inscripcion()!.subtitulo) {
+                    <p class="text-surface-500 font-medium mt-1">{{ inscripcion()!.subtitulo }}</p>
+                  }
+                </div>
+              </div>
+
+              <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+
+                @if (inscripcion()?.urlAbacoIOS || inscripcion()?.urlAbacoAndroid) {
+                  <div class="bg-white rounded-[2rem] border border-surface-100 shadow-sm p-6 flex flex-col gap-5">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-white rounded-xl shadow border border-surface-100 flex-shrink-0">
+                        <img src="/assets/abaco-logo.webp" alt="Ábaco" class="w-full h-full object-contain">
+                      </div>
+                      <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-primary-600">{{ inscripcion()!.etiquetaAbaco }}</p>
+                        <h4 class="text-lg font-black text-surface-900 leading-tight">{{ inscripcion()!.tituloAbaco || 'App Ábaco Familias' }}</h4>
+                      </div>
+                    </div>
+                    @if (inscripcion()?.abacoDescripcion) {
+                      <p class="text-surface-500 text-sm leading-relaxed">{{ inscripcion()!.abacoDescripcion }}</p>
+                    }
+                    <div class="flex gap-2 mt-auto">
+                      @if (inscripcion()?.urlAbacoIOS) {
+                        <a [href]="inscripcion()!.urlAbacoIOS" target="_blank"
+                           class="flex-1 bg-black text-white px-3 py-2.5 rounded-xl flex items-center gap-2 hover:bg-surface-800 transition-all shadow-md border border-surface-700">
+                          <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 384 512" fill="currentColor"><path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 59 126.7 107.2 125.2 25.2-.6 43-17.9 75.8-17.9 31.8 0 48.3 17.9 76.4 17.9 48.6-.7 90.4-82.5 102.6-119.3-65.2-30.7-61.7-90-61.7-91.9zm-56.6-164.2c27.3-32.4 24.8-61.9 24-72.5-24.1 1.4-52 16.4-67.9 34.9-17.5 19.8-27.8 44.3-25.6 71.9 26.1 2 49.9-11.4 69.5-34.3z"/></svg>
+                          <div class="text-left leading-tight font-sans">
+                            <p class="text-[8px] font-medium uppercase leading-none mb-0.5 text-surface-400">Download on the</p>
+                            <p class="text-sm font-semibold leading-none">App Store</p>
+                          </div>
+                        </a>
+                      }
+                      @if (inscripcion()?.urlAbacoAndroid) {
+                        <a [href]="inscripcion()!.urlAbacoAndroid" target="_blank"
+                           class="flex-1 bg-black text-white px-3 py-2.5 rounded-xl flex items-center gap-2 hover:bg-surface-800 transition-all shadow-md border border-surface-700">
+                          <svg class="w-5 h-5 flex-shrink-0" viewBox="0 0 512 512" fill="currentColor"><path d="M325.3 234.3L104.6 13l280.8 161.2-60.1 60.1zM47 0C34 6.8 25.3 19.2 25.3 35.3v441.3c0 16.1 8.7 28.5 21.7 35.3l256.6-256L47 0zm425.2 225.6l-58.9-34.1-65.7 64.5 65.7 64.5 58.9-34.1c18-10.3 18-27.3 0-37.7zM104.6 499l280.8-161.2-60.1-60.1L104.6 499z"/></svg>
+                          <div class="text-left leading-tight font-sans">
+                            <p class="text-[8px] font-medium uppercase leading-none mb-0.5 text-surface-400">Get it on</p>
+                            <p class="text-sm font-semibold leading-none">Google Play</p>
+                          </div>
+                        </a>
+                      }
+                    </div>
+                  </div>
+                }
+
+                @if (inscripcion()?.formularioArchivoUrl || inscripcion()?.formularioEnlace) {
+                  <div class="bg-white rounded-[2rem] border border-surface-100 shadow-sm p-6 flex flex-col gap-5">
+                    <div class="flex items-center gap-4">
+                      <div class="w-12 h-12 bg-primary-50 rounded-xl flex items-center justify-center flex-shrink-0">
+                        <svg class="w-6 h-6 text-primary-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+                        </svg>
+                      </div>
+                      <div>
+                        <p class="text-[10px] font-black uppercase tracking-widest text-primary-600">{{ inscripcion()!.etiquetaFormulario }}</p>
+                        <h4 class="text-lg font-black text-surface-900 leading-tight">{{ inscripcion()!.tituloFormulario || 'Formulario' }}</h4>
+                      </div>
+                    </div>
+                    @if (inscripcion()?.formularioDescripcion) {
+                      <p class="text-surface-500 text-sm leading-relaxed">{{ inscripcion()!.formularioDescripcion }}</p>
+                    }
+                    <div class="mt-auto">
+                      <a [href]="inscripcion()!.formularioArchivoUrl || inscripcion()!.formularioEnlace" target="_blank"
+                         class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-xl flex items-center gap-3 transition-all shadow-md">
+                        <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                        </svg>
+                        <div class="text-left leading-tight font-sans">
+                          <p class="text-base font-semibold leading-none">{{ inscripcion()!.textoBotonFormulario }}</p>
+                        </div>
+                      </a>
+                    </div>
+                  </div>
+                }
+
+              </div>
+            </div>
+          </div>
+
+        } @else if (inscripcion()?.mensaxeCerrada) {
+          <!-- FALLBACK INSCRIPCIÓN PECHADA -->
+          <div class="bg-white rounded-[2.5rem] shadow-xl border border-surface-100 overflow-hidden mb-10">
+            <div class="p-8 md:p-10 flex flex-col sm:flex-row items-center gap-6 text-center sm:text-left">
+              <div class="w-16 h-16 rounded-2xl bg-surface-100 flex items-center justify-center flex-shrink-0">
+                <svg class="w-8 h-8 text-surface-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                </svg>
+              </div>
+              <div>
+                <h3 class="text-xl font-black text-surface-700 leading-tight mb-1">{{ inscripcion()!.tituloCerrada }}</h3>
+                <p class="text-surface-500 font-medium">{{ inscripcion()!.mensaxeCerrada }}</p>
+              </div>
+            </div>
+          </div>
+        }
+      }
 
       <div class="flex justify-center mb-10">
         <div class="inline-flex p-1 bg-surface-100 rounded-2xl shadow-inner relative">
@@ -200,8 +315,15 @@ export const routeMeta = {
 export default class ExtraescolaresPage {
   private route = inject(ActivatedRoute);
   private cdr = inject(ChangeDetectorRef);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.extraescolares);
 
-  readonly actividades = computed(() => this.route.snapshot.data['extraescolaresData'] as Actividad[] ?? []);
+  readonly actividades = computed(() => (this.route.snapshot.data['extraescolaresData']?.[0] ?? []) as Actividad[]);
+  readonly inscripcion = computed(() => this.route.snapshot.data['extraescolaresData']?.[1] as ExtraescolaresInscripcion | null);
+  readonly mostrarInscripcion = computed(() => {
+    const i = this.inscripcion();
+    return i?.inscripcionActiva && (!!i?.urlAbacoIOS || !!i?.urlAbacoAndroid || !!i?.formularioArchivoUrl || !!i?.formularioEnlace);
+  });
   view = signal<'cards' | 'calendar'>('cards');
   expandedCards: Record<string, boolean> = {};
 

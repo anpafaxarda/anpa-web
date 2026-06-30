@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { ActivatedRoute, ResolveFn } from '@angular/router';
 import { fetchContacto } from '../domain/contacto/contacto.action';
 import { SeoService } from '../core/services/seo.service';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const contactoResolver: ResolveFn<any> = () => {
   return fetchContacto();
@@ -21,9 +22,9 @@ export const routeMeta = {
   imports: [PageComponent, CommonModule],
   template: `
     <app-page-component
-      [category]="'Axuda'"
-      [title]="title"
-      [subTitle]="'Estamos aquí para escoitarte. Ponte en contacto con nós por calquera das nosas vías.'"
+      [category]="header()?.badge || 'Axuda'"
+      [title]="header()?.title || title"
+      [subTitle]="header()?.subtitle || 'Estamos aquí para escoitarte. Ponte en contacto con nós por calquera das nosas vías.'"
     >
       @let data = contacto();
 
@@ -179,9 +180,11 @@ export const routeMeta = {
   `
 })
 export default class ContactoPage implements OnInit {
-  title = 'Contacta con nós'
+  title = 'Contacta con nós';
   private route = inject(ActivatedRoute);
   private seo = inject(SeoService);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.contacto);
 
   readonly contacto = computed(() => this.route.snapshot.data['contactoData'] ?? {
     telefono: '',

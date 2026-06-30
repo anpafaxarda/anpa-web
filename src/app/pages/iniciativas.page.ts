@@ -6,6 +6,7 @@ import { ActivatedRoute } from '@angular/router';
 import { RouteMeta } from '@analogjs/router';
 import { fetchIniciativas } from '../domain/iniciativas/iniciativas.action';
 import { Iniciativa } from '../domain/iniciativas/iniciativas.model';
+import { GlobalDataService } from '../shared/services/global-data.service';
 
 export const iniciativasResolver = () => fetchIniciativas();
 
@@ -18,8 +19,8 @@ export const routeMeta: RouteMeta = {
   standalone: true,
   imports: [PageComponent, CommonModule, NgOptimizedImage],
   template: `
-    <app-page-component [title]="title" category="Proxectos Reais"
-      subTitle="Accións concretas que desenvolvemos para apoiar o crecemento e formación do alumnado do CEIP Gregorio Sanz.">
+    <app-page-component [title]="header()?.title || title" [category]="header()?.badge || 'Proxectos Reais'"
+      [subTitle]="header()?.subtitle || 'Accións concretas que desenvolvemos para apoiar o crecemento e formación do alumnado do CEIP Gregorio Sanz.'">
 
       <div class="max-w-5xl mx-auto px-4">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-16">
@@ -81,6 +82,8 @@ export default class IniciativasPage implements OnInit {
   title = 'Iniciativas';
   private seo = inject(SeoService);
   private route = inject(ActivatedRoute);
+  private globalData = inject(GlobalDataService);
+  readonly header = computed(() => this.globalData.pageHeaders()?.iniciativas);
 
   readonly iniciativas = computed<Iniciativa[]>(() =>
     this.route.snapshot.data['iniciativasData'] ?? []
