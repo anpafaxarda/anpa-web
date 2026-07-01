@@ -1,0 +1,21 @@
+{
+  "name": "ANPA A Faxarda",
+  "short_name": "ANPA Faxarda",
+  "description": "Web oficial do ANPA A Faxarda. Información para familias, beneficios en comercios locais e últimas noticias da asociación no CEIP Gregorio Sanz.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#489f43",
+  "icons": [
+    {
+      "src": "/assets/icons/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "/assets/icons/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
