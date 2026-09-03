@@ -32,8 +32,10 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                <div class="p-2 space-y-2">
                  <div class="flex justify-between items-center p-5 rounded-[1.8rem] bg-surface-50 border border-surface-100">
                     <div class="flex flex-col">
-                      <span class="text-[10px] font-black uppercase text-surface-400 tracking-widest">Prezo Base</span>
-                      <span class="font-bold text-surface-900">Non Socios</span>
+                      <span class="text-[10px] font-black uppercase text-surface-400 tracking-widest">Prezo</span>
+                      @if (t.prezoSocio) {
+                        <span class="font-bold text-surface-900">Non Socios</span>
+                      }
                     </div>
                     <span class="text-2xl font-black text-surface-900">{{ t.prezoOrdinario }}€/mes</span>
                  </div>
