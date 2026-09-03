@@ -38,16 +38,20 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
                     <span class="text-2xl font-black text-surface-900">{{ t.prezoOrdinario }}€/mes</span>
                  </div>
 
-                 <div class="flex justify-between items-center p-5 rounded-[1.8rem] bg-primary-600 text-white shadow-lg shadow-primary-200">
-                    <div class="flex flex-col">
-                      <span class="text-[10px] font-black uppercase text-primary-200 tracking-widest leading-none mb-1">Cota Bonificada</span>
-                      <span class="font-bold">Socios ANPA</span>
-                    </div>
-                    <div class="flex flex-col items-end">
-                      <span class="text-2xl font-black">{{ t.prezoSocio }}€/mes</span>
-                      <span class="text-[10px] font-black bg-white/20 px-2 py-0.5 rounded-full mt-1">Aforra un {{ t.desconto }}</span>
-                    </div>
-                 </div>
+                 @if (t.prezoSocio) {
+                   <div class="flex justify-between items-center p-5 rounded-[1.8rem] bg-primary-600 text-white shadow-lg shadow-primary-200">
+                      <div class="flex flex-col">
+                        <span class="text-[10px] font-black uppercase text-primary-200 tracking-widest leading-none mb-1">Cota Bonificada</span>
+                        <span class="font-bold">Socios ANPA</span>
+                      </div>
+                      <div class="flex flex-col items-end">
+                        <span class="text-2xl font-black">{{ t.prezoSocio }}€/mes</span>
+                        @if (t.desconto) {
+                          <span class="text-[10px] font-black bg-white/20 px-2 py-0.5 rounded-full mt-1">Aforra un {{ t.desconto }}</span>
+                        }
+                      </div>
+                   </div>
+                 }
                </div>
             </div>
           }

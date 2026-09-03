@@ -248,7 +248,9 @@ export const routeMeta = {
                           <h4 class="text-base font-bold text-surface-900 leading-tight">{{ act.name }}</h4>
                           <div class="flex flex-wrap gap-x-3 mt-1">
                              <p class="text-[9px] text-surface-400 font-bold uppercase">Ord: {{ act.price }}</p>
-                             <p class="text-[9px] text-primary-600 font-black uppercase">Socio: {{ act.memberPrice }}</p>
+                             @if (act.memberPrice) {
+                               <p class="text-[9px] text-primary-600 font-black uppercase">Socio: {{ act.memberPrice }}</p>
+                             }
                           </div>
                         </div>
                       </div>
@@ -283,9 +285,11 @@ export const routeMeta = {
                               [style.color]="colorMap()[act.name].text">
                             {{ act.name }}
                           </h4>
-                          <p class="text-[10px] font-bold opacity-80" [style.color]="colorMap()[act.name].text">
-                            Socio: {{ act.memberPrice }}
-                          </p>
+                          @if (act.memberPrice) {
+                            <p class="text-[10px] font-bold opacity-80" [style.color]="colorMap()[act.name].text">
+                              Socio: {{ act.memberPrice }}
+                            </p>
+                          }
                         </div>
                       }
                       @if (getActividadesOrdenadas(dia).length === 0) {

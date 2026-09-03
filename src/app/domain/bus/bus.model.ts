@@ -1,8 +1,8 @@
 export interface TarifaEscalada {
   concepto: string;
-  prezoSocio: number;
+  prezoSocio?: number;
   prezoOrdinario: number;
-  desconto: string; // Nuevo
+  desconto?: string; // Nuevo
 }
 
 export interface Parada {
