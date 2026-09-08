@@ -1,4 +1,5 @@
-import { Component, inject, computed } from '@angular/core';
+import { Component, inject, computed, effect } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, Router, ResolveFn } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { PageComponent } from '../../../shared/components/page.component';
@@ -7,14 +8,16 @@ import { fetchActividadesByCurso, fetchCursosDisponibles } from '../../../domain
 import { SeoService } from '../../../core/services/seo.service';
 import { Actividade } from '../../../domain/actividade/actividade.model';
 
-export const actividadesCursoResolver: ResolveFn<{actividades: Actividade[], cursos: string[]}> = async (route) => {
+export const actividadesCursoResolver: ResolveFn<{actividades: Actividade[], cursos: string[], cursoFinal: string}> = async (route) => {
   const curso = route.paramMap.get('curso');
   const cursos = await fetchCursosDisponibles();
 
-  const cursoFinal = curso || cursos[0];
+  // Se o curso pedido (ex: calculado pola data de hoxe) aínda non ten actividades,
+  // caemos ao curso máis recente que si teña contido (cursos xa vén ordenado desc).
+  const cursoFinal = (curso && cursos.includes(curso)) ? curso : cursos[0];
   const actividades = await fetchActividadesByCurso(cursoFinal);
 
-  return { actividades, cursos };
+  return { actividades, cursos, cursoFinal };
 };
 
 export const routeMeta = {
@@ -46,14 +49,20 @@ export const routeMeta = {
       </div>
 
       <!-- GRID DE ACTIVIDADES -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-        @for (act of actividades(); track act.id; let i = $index) {
-          <app-actividade-card
-            [actividade]="act"
-            [priority]="i < 3"
-            [showDate]="true" />
-        }
-      </div>
+      @if (actividades().length) {
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          @for (act of actividades(); track act.id; let i = $index) {
+            <app-actividade-card
+              [actividade]="act"
+              [priority]="i < 3"
+              [showDate]="true" />
+          }
+        </div>
+      } @else {
+        <div class="text-center py-20 text-surface-400 italic font-medium">
+          Aínda non hai actividades rexistradas para o curso {{ cursoActual() }}.
+        </div>
+      }
     </app-page-component>
   `
 })
@@ -62,17 +71,27 @@ export default class ActividadesCursoPage {
   private router = inject(Router);
   private seo = inject(SeoService);
 
-  data = computed(() => this.route.snapshot.data['data']);
+  // route.data (non route.snapshot.data) reacciona aínda que se reutilice o compoñente
+  // ao navegar entre cursos coa mesma ruta (ex: cambiar de curso no selector)
+  private routeData = toSignal(this.route.data, { initialValue: this.route.snapshot.data });
+  data = computed(() => this.routeData()['data']);
   actividades = computed(() => this.data().actividades as Actividade[]);
   cursos = computed(() => this.data().cursos);
-  cursoActual = computed(() => this.route.snapshot.paramMap.get('curso') || this.cursos()[0]);
+  cursoActual = computed(() => this.data().cursoFinal);
 
-  ngOnInit() {
-    const curso = this.cursoActual();
-    this.seo.setPageMeta(
-      `Actividades Curso ${curso}`,
-      `Consulta todas as iniciativas e actividades do ANPA A Faxarda para o curso escolar ${curso}.`
-    );
+  constructor() {
+    effect(() => {
+      const curso = this.cursoActual();
+      this.seo.setPageMeta(
+        `Actividades Curso ${curso}`,
+        `Consulta todas as iniciativas e actividades do ANPA A Faxarda para o curso escolar ${curso}.`
+      );
+
+      // Se caemos a un curso distinto do pedido na URL (por non ter aínda actividades), reflectímolo na URL
+      if (this.route.snapshot.paramMap.get('curso') !== curso) {
+        this.router.navigate(['/actividade/curso', curso], { replaceUrl: true });
+      }
+    });
   }
 
   navegarAoCurso(event: Event) {

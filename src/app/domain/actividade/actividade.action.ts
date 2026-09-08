@@ -42,9 +42,21 @@ export async function fetchActividadeBySlug(slug: string): Promise<Actividade> {
 }
 
 export async function fetchCursosDisponibles(): Promise<string[]> {
-  const query = `*[_type == "actividade"] | order(curso desc).curso`;
-  const cursos = await sanityClient.fetch<string[]>(query);
-  return [...new Set(cursos)]; // Eliminamos duplicados
+  const query = `{
+    "cursosConActividades": *[_type == "actividade"].curso,
+    "cursoActual": *[_type == "configuracionActividades"][0].cursoActual
+  }`;
+  const { cursosConActividades, cursoActual } = await sanityClient.fetch<{ cursosConActividades: string[]; cursoActual: string | null }>(query);
+
+  const cursos = new Set(cursosConActividades || []);
+  if (cursoActual) cursos.add(cursoActual);
+
+  return [...cursos].sort((a, b) => b.localeCompare(a));
+}
+
+export async function fetchCursoActualConfigurado(): Promise<string | null> {
+  const query = `*[_type == "configuracionActividades"][0].cursoActual`;
+  return await sanityClient.fetch<string | null>(query);
 }
 
 export async function fetchActividadesByCurso(curso: string): Promise<Actividade[]> {
