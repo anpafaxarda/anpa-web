@@ -44,14 +44,6 @@ export const routeMeta = {
                 <span class="text-2xl font-black text-primary-600 font-mono">{{ item.prezo }}€<small class="text-xs text-surface-400">/mes</small></span>
               </div>
             }
-
-            <div class="bg-primary-50 p-5 rounded-2xl border-2 border-primary-100 flex flex-col justify-center text-center shadow-sm">
-               <span class="text-primary-700 font-black text-xs uppercase mb-1 leading-none tracking-tight">Día Solto</span>
-               <div class="flex justify-around items-baseline px-2 mt-1">
-                 <span class="text-xl font-black text-primary-800 font-mono">{{ data().config.prezosSoltos.hora }}€<small class="text-[10px]">/h</small></span>
-                 <span class="text-xl font-black text-primary-800 font-mono">{{ data().config.prezosSoltos.mediaHora }}€<small class="text-[10px]">/media hora</small></span>
-               </div>
-            </div>
           </div>
         </div>
 
@@ -71,6 +63,26 @@ export const routeMeta = {
           </div>
         </div>
 
+        <div class="space-y-6">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">🕐</span>
+            <h3 class="text-2xl font-black text-surface-900">Día Solto</h3>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div class="bg-white p-6 rounded-3xl border-2 border-surface-100 flex flex-col items-center text-center group hover:border-primary-200 transition-colors shadow-sm">
+              <span class="text-surface-500 text-[10px] font-black uppercase mb-2 tracking-widest">Por hora</span>
+              <span class="text-3xl font-black text-surface-900 font-mono">{{ data().config.prezosSoltos.hora }}€</span>
+            </div>
+            <div class="bg-white p-6 rounded-3xl border-2 border-surface-100 flex flex-col items-center text-center group hover:border-primary-200 transition-colors shadow-sm">
+              <span class="text-surface-500 text-[10px] font-black uppercase mb-2 tracking-widest">Por media hora</span>
+              <span class="text-3xl font-black text-surface-900 font-mono">{{ data().config.prezosSoltos.mediaHora }}€</span>
+            </div>
+          </div>
+
+          <p class="text-surface-500 text-sm">Válido tanto para Bos Días coma para Boas Tardes.</p>
+        </div>
+
         <div class="bg-amber-50 border-2 border-amber-100 rounded-[2.5rem] p-8 md:p-10 relative overflow-hidden">
           <div class="relative z-10 flex flex-col lg:flex-row gap-8 items-center">
             <div class="lg:w-1/3 text-center lg:text-left">
@@ -87,17 +99,71 @@ export const routeMeta = {
               }
             </div>
           </div>
+          <p class="relative z-10 mt-6 text-xs text-amber-800/70 font-semibold">Descontos acumulables só para socios/as ao corrente de pagamento.</p>
           <div class="absolute -right-10 -top-10 text-9xl opacity-10 select-none rotate-12">💎</div>
         </div>
 
+        @if (data().intro.condicionsPagamento?.length || data().intro.bonoAxuda) {
+          <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-surface-100 space-y-8">
+            <div class="flex items-center gap-3">
+              <span class="text-3xl">⚖️</span>
+              <h3 class="text-2xl font-black text-surface-900">Condicións do servizo</h3>
+            </div>
+
+            @if (data().intro.condicionsPagamento?.length) {
+              <div>
+                <h4 class="text-sm font-black uppercase tracking-widest text-surface-400 mb-4">Condicións e pagamento</h4>
+                <ul class="space-y-3">
+                  @for (condicion of data().intro.condicionsPagamento; track condicion) {
+                    <li class="flex items-start gap-3 text-surface-600 leading-relaxed">
+                      <span class="text-primary-500 font-black mt-0.5">•</span>
+                      <span>{{ condicion }}</span>
+                    </li>
+                  }
+                </ul>
+              </div>
+            }
+
+            @if (data().intro.bonoAxuda) {
+              <div class="bg-primary-50 border border-primary-100 rounded-2xl p-6 flex gap-4 items-start">
+                <span class="text-2xl">🎗️</span>
+                <div>
+                  <h4 class="font-black text-primary-800 mb-1">Bono-Axuda</h4>
+                  <p class="text-primary-900/80 text-sm leading-relaxed">{{ data().intro.bonoAxuda }}</p>
+                </div>
+              </div>
+            }
+          </div>
+        }
+
+        @if (data().intro.entidadesColaboradoras?.length) {
+          <div class="text-center">
+            <h4 class="text-xs font-black uppercase tracking-widest text-surface-400 mb-6">Coa colaboración de</h4>
+            <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
+              @for (entidade of data().intro.entidadesColaboradoras; track entidade.nombre) {
+                <div class="flex flex-col items-center gap-2">
+                  <img [src]="entidade.logoUrl" [alt]="entidade.nombre" class="h-14 w-auto object-contain">
+                  <span class="text-xs font-bold text-surface-500">{{ entidade.nombre }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
         <div class="bg-primary-600 rounded-[2.5rem] p-10 text-white flex flex-col md:flex-row items-center justify-between gap-8 shadow-xl">
           <div class="max-w-md">
-            <h4 class="text-2xl font-black mb-2 leading-none text-white italic">Inscrición aberta</h4>
-            <p class="text-primary-100 opacity-90">Descarga o formulario de conciliación e envíao asinado ao correo do ANPA para reservar a túa praza.</p>
+            <h4 class="text-2xl font-black mb-2 leading-none text-white italic">{{ inscripcionAberta() ? 'Inscrición aberta' : 'Inscrición pechada' }}</h4>
+            <p class="text-primary-100 opacity-90">{{ data().intro.inscripcionTexto || 'Descarga o formulario de conciliación e envíao asinado ao correo do ANPA para reservar a túa praza.' }}</p>
           </div>
-          <a (click)="navigateToContacto()" class="w-full md:w-auto px-10 py-4 bg-white text-primary-600 rounded-full font-black hover:scale-105 transition-transform shadow-lg cursor-pointer text-center uppercase tracking-tight">
-            Solicitar praza
-          </a>
+          @if (data().intro.inscripcionArchivoUrl) {
+            <a [href]="data().intro.inscripcionArchivoUrl" target="_blank" rel="noopener" download class="w-full md:w-auto px-10 py-4 bg-white text-primary-600 rounded-full font-black hover:scale-105 transition-transform shadow-lg cursor-pointer text-center uppercase tracking-tight">
+              Descargar folla de inscrición
+            </a>
+          } @else {
+            <a (click)="navigateToContacto()" class="w-full md:w-auto px-10 py-4 bg-white text-primary-600 rounded-full font-black hover:scale-105 transition-transform shadow-lg cursor-pointer text-center uppercase tracking-tight">
+              Solicitar praza
+            </a>
+          }
         </div>
 
       </div>
@@ -111,6 +177,12 @@ export default class BosDiasTardesPage implements OnInit {
 
   // Usamos el tipado fuerte aquí
   readonly data = computed(() => this.route.snapshot.data['conciliacionData'] as BosDiasTardesResponse);
+
+  // Pechado en xullo (6) e agosto (7); aberto o resto do curso (setembro a xuño)
+  readonly inscripcionAberta = computed(() => {
+    const mes = new Date().getMonth();
+    return mes !== 6 && mes !== 7;
+  });
 
   ngOnInit() {
     this.seo.setPageMeta(

@@ -7,6 +7,8 @@ import { Actividade } from '../domain/actividade/actividade.model';
 import { fetchActividades } from '../domain/actividade/actividade.action';
 import { fetchGeneralData } from '../domain/general-data/general-data.action';
 import { GeneralData } from '../domain/general-data/general-data.model';
+import { fetchAvisoImportante } from '../domain/aviso-importante/aviso-importante.action';
+import { AvisoImportante } from '../domain/aviso-importante/aviso-importante.model';
 
 export const actividadesHomeResolver: ResolveFn<Actividade[]> = () => {
   return fetchActividades();
@@ -16,10 +18,15 @@ export const generalDataResolver: ResolveFn<any> = () => {
   return fetchGeneralData();
 }
 
+export const avisoImportanteResolver: ResolveFn<AvisoImportante | null> = () => {
+  return fetchAvisoImportante();
+}
+
 export const routeMeta = {
   resolve: {
     actividadesData: actividadesHomeResolver,
-    generalData: generalDataResolver
+    generalData: generalDataResolver,
+    avisoImportante: avisoImportanteResolver
   }
 };
 
@@ -29,7 +36,7 @@ export const routeMeta = {
   imports: [RouterLink, CommonModule, ActividadeCardComponent],
   template: `
     <!-- HEADER HERO (Manteño igual) -->
-    <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
+    <header class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900 py-28">
       <div class="absolute inset-0 z-0">
         <img
           src="assets/colegio-image-bg.webp"
@@ -44,6 +51,23 @@ export const routeMeta = {
       </div>
 
       <div class="relative z-10 container mx-auto px-4 text-center">
+        @if (importantMessage(); as msg) {
+          <div class="flex flex-col items-center gap-1 w-fit max-w-xl mx-auto mb-6 px-5 py-3 text-center rounded-2xl bg-amber-400/10 border border-amber-400/30 backdrop-blur-sm animate-fade-in-down">
+            <p class="flex items-center gap-2 text-sm font-bold text-amber-300">
+              <span class="flex-shrink-0 w-5 h-5 rounded-full bg-amber-400 flex items-center justify-center text-surface-900 text-xs font-black">!</span>
+              {{ msg.titulo }}
+            </p>
+            <p class="text-sm text-amber-100 leading-snug">
+              {{ msg.texto }}
+              @if (msg.enlaceUrl) {
+                <a [href]="msg.enlaceUrl" target="_blank" rel="noopener" class="font-bold text-white underline decoration-amber-400/60 hover:opacity-80 whitespace-nowrap">
+                  {{ msg.enlaceTexto }} →
+                </a>
+              }
+            </p>
+          </div>
+        }
+
         <span class="inline-block px-4 py-1.5 mb-6 text-sm font-semibold tracking-wider text-primary-400 uppercase bg-primary-400/10 rounded-full border border-primary-400/20 animate-fade-in-down">
           {{ generalData().mainBadge }}
         </span>
@@ -140,6 +164,8 @@ export default class IndexPage implements OnInit {
   readonly cursoActual = this.getCursoEscolarActual();
 
   readonly generalData = computed(() => this.route.snapshot.data['generalData'] as GeneralData);
+
+  readonly importantMessage = computed(() => this.route.snapshot.data['avisoImportante'] as AvisoImportante | null);
 
   readonly actividadesFiltradas = computed(() => {
     const todas = this.route.snapshot.data['actividadesData'] as Actividade[] ?? [];

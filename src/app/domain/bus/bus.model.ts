@@ -18,7 +18,13 @@ export interface RutaBus {
   paradas: Parada[];
 }
 
+export interface EntidadColaboradora {
+  nombre: string;
+  logoUrl: string;
+}
+
 export interface Bus {
   rutas: RutaBus[];
   tarifas: TarifaEscalada[];
+  entidadesColaboradoras: EntidadColaboradora[];
 }

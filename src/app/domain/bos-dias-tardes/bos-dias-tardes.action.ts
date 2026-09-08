@@ -15,6 +15,14 @@ export async function fetchConciliacionData(): Promise<BosDiasTardesResponse> {
           etiqueta,
           valor
         }
+      },
+      condicionsPagamento,
+      bonoAxuda,
+      inscripcionTexto,
+      "inscripcionArchivoUrl": inscripcionArchivo.asset->url,
+      entidadesColaboradoras[]{
+        nombre,
+        "logoUrl": logo.asset->url
       }
     },
     "config": *[_type == "bosDiasTardesConfig"][0]{
@@ -25,5 +33,5 @@ export async function fetchConciliacionData(): Promise<BosDiasTardesResponse> {
     }
   }`;
 
-  return await sanityClient.fetch(query);
+  return await sanityClient.fetch<BosDiasTardesResponse>(query);
 }

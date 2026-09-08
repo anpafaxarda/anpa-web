@@ -191,6 +191,20 @@ export const routeMeta = { resolve: { busData: busEscolarResolver } };
           </div>
         </div>
 
+        @if (entidadesColaboradoras().length) {
+          <div class="text-center mb-20">
+            <h4 class="text-xs font-black uppercase tracking-widest text-surface-400 mb-6">Coa colaboración de</h4>
+            <div class="flex flex-wrap justify-center items-center gap-x-12 gap-y-6">
+              @for (entidade of entidadesColaboradoras(); track entidade.nombre) {
+                <div class="flex flex-col items-center gap-2">
+                  <img [src]="entidade.logoUrl" [alt]="entidade.nombre" class="h-14 w-auto object-contain">
+                  <span class="text-xs font-bold text-surface-500">{{ entidade.nombre }}</span>
+                </div>
+              }
+            </div>
+          </div>
+        }
+
       </div>
     </app-page-component>
   `,
@@ -204,6 +218,7 @@ export default class BusPage implements OnInit {
   private readonly busData = this.route.snapshot.data['busData'] as Bus;
   readonly rutas = computed(() => this.busData?.rutas || []);
   readonly tarifas = computed(() => this.busData?.tarifas || []);
+  readonly entidadesColaboradoras = computed(() => this.busData?.entidadesColaboradoras || []);
 
   ngOnInit() {
     this.seo.setPageMeta('Transporte Escolar', 'Rutas e tarifas de bus do CEIP Gregorio Sanz.');
