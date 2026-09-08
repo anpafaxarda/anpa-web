@@ -1,4 +1,4 @@
-import { Component, computed, Input, OnInit } from '@angular/core';
+import { Component, Input, OnChanges } from '@angular/core';
 
 @Component({
   selector: 'app-page-component',
@@ -28,7 +28,7 @@ import { Component, computed, Input, OnInit } from '@angular/core';
     </main>
   `
 })
-export class PageComponent implements OnInit {
+export class PageComponent implements OnChanges {
   @Input() title!: string;
   @Input() subTitle: string = '';
   @Input() category: string = '';
@@ -37,7 +37,7 @@ export class PageComponent implements OnInit {
   firstString!: string;
   secondString!: string;
 
-  ngOnInit(): void {
+  ngOnChanges(): void {
     const fullTitle = this.title;
     const words = fullTitle.split(' ');
     if (words.length > 1) {
