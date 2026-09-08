@@ -5,7 +5,11 @@ export async function fetchBusEscolar(): Promise<Bus> {
   const query = `{
     "rutas": *[_type == "rutaBus"] | order(nombreRuta asc),
     "tarifaDoc": *[_type == "busPrice"][0] {
-      tarifas
+      tarifas,
+      entidadesColaboradoras[]{
+        nombre,
+        "logoUrl": logo.asset->url
+      }
     }
   }`;
 
@@ -13,6 +17,7 @@ export async function fetchBusEscolar(): Promise<Bus> {
 
   return {
     rutas: rutas || [],
-    tarifas: tarifaDoc?.tarifas || []
+    tarifas: tarifaDoc?.tarifas || [],
+    entidadesColaboradoras: tarifaDoc?.entidadesColaboradoras || []
   };
 }

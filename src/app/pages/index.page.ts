@@ -36,7 +36,7 @@ export const routeMeta = {
   imports: [RouterLink, CommonModule, ActividadeCardComponent],
   template: `
     <!-- HEADER HERO (Manteño igual) -->
-    <header class="relative h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900">
+    <header class="relative min-h-[85vh] flex items-center justify-center overflow-hidden bg-surface-900 py-28">
       <div class="absolute inset-0 z-0">
         <img
           src="assets/colegio-image-bg.webp"
@@ -60,7 +60,7 @@ export const routeMeta = {
             <p class="text-sm text-amber-100 leading-snug">
               {{ msg.texto }}
               @if (msg.enlaceUrl) {
-                <a [href]="msg.enlaceUrl" target="_blank" rel="noopener" class="font-bold underline decoration-amber-400/60 hover:text-white whitespace-nowrap">
+                <a [href]="msg.enlaceUrl" target="_blank" rel="noopener" class="font-bold text-white underline decoration-amber-400/60 hover:opacity-80 whitespace-nowrap">
                   {{ msg.enlaceTexto }} →
                 </a>
               }

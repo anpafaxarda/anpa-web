@@ -12,6 +12,8 @@ export const fetchFaiteSocioData = async () => {
       cuotaGeneralPlus,
       inicioBonificacion,
       finBonificacion,
+      fechaAperturaInscricion,
+      notaPagamentoCota,
       urlAppWeb,
       urlIOS,
       urlAndroid,

@@ -23,6 +23,8 @@ export interface FaiteSocioData {
   // Fechas (vienen como string ISO desde Sanity)
   inicioBonificacion: string;
   finBonificacion: string;
+  fechaAperturaInscricion?: string;
+  notaPagamentoCota?: string;
   // Enlaces
   urlAppWeb: string;
   urlIOS: string;

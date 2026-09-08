@@ -10,6 +10,11 @@ export interface ConciliacionPlan {
   detalles: ConciliacionDetalle[];
 }
 
+export interface EntidadColaboradora {
+  nombre: string;
+  logoUrl: string;
+}
+
 export interface IntroData {
   title: string;
   category: string;
@@ -18,6 +23,11 @@ export interface IntroData {
     texto: string;
   };
   plans: ConciliacionPlan[];
+  condicionsPagamento: string[];
+  bonoAxuda: string;
+  inscripcionTexto: string;
+  inscripcionArchivoUrl?: string;
+  entidadesColaboradoras: EntidadColaboradora[];
 }
 
 export interface TramosTemprano {

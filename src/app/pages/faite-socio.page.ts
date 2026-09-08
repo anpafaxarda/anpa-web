@@ -31,11 +31,36 @@ export const routeMeta = {
     >
       <div class="max-w-6xl mx-auto px-6">
 
+        @if (data.fechaAperturaInscricion) {
+          <div class="flex justify-center mb-10">
+            @if (inscripcionAberta()) {
+              <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-primary-600 text-white font-black text-sm uppercase tracking-wide shadow-lg shadow-primary-600/30">
+                <span class="flex h-2 w-2">
+                  <span class="animate-ping absolute inline-flex h-2 w-2 rounded-full bg-white opacity-75"></span>
+                  <span class="relative inline-flex rounded-full h-2 w-2 bg-white"></span>
+                </span>
+                Inscrición aberta dende o {{ formatDate(data.fechaAperturaInscricion) }}
+              </span>
+            } @else {
+              <span class="inline-flex items-center gap-2 px-5 py-2 rounded-full bg-surface-100 border border-surface-200 text-surface-500 font-black text-sm uppercase tracking-wide">
+                🔒 A inscrición abrirá o {{ formatDate(data.fechaAperturaInscricion) }}
+              </span>
+            }
+          </div>
+        }
+
         <!-- SECCIÓN COTAS (Sin cambios) -->
         <div class="bg-white rounded-[3rem] border border-surface-100 shadow-2xl p-8 md:p-12 mb-16">
           <div class="text-center mb-10">
             <h3 class="text-3xl font-black text-surface-900 mb-2 tracking-tighter">Cotas por Curso Escolar</h3>
             <p class="text-surface-500 font-medium italic">* O sistema detecta automaticamente o tramo vixente segundo a data de hoxe.</p>
+          </div>
+
+          <div class="mb-10 bg-amber-50 border border-amber-100 rounded-2xl p-6 flex gap-4 items-start">
+            <span class="text-2xl">⚠️</span>
+            <p class="text-amber-900 text-sm leading-relaxed">
+              {{ data.notaPagamentoCota || 'Para figurar como socio/a non abonda con rexistrarte na app: tamén hai que formalizar o pagamento da cota, que se habilita a partir do primeiro día de clase.' }}
+            </p>
           </div>
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
@@ -214,6 +239,12 @@ export default class FaiteSocioPage implements OnInit {
   readonly usageSteps = computed(() =>
     this.socioData()?.tutorialSteps?.filter(s => !s.isRegistration) || []
   );
+
+  readonly inscripcionAberta = computed(() => {
+    const data = this.socioData();
+    if (!data?.fechaAperturaInscricion) return false;
+    return new Date() >= new Date(data.fechaAperturaInscricion);
+  });
 
   readonly isBonificado = computed(() => {
     const data = this.socioData();
