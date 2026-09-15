@@ -7,6 +7,7 @@ export async function fetchExtraescolaresInscripcion(): Promise<ExtraescolaresIn
       inscripcionActiva,
       titulo,
       subtitulo,
+      abacoDisponible,
       etiquetaAbaco,
       tituloAbaco,
       abacoDescripcion,
@@ -18,6 +19,10 @@ export async function fetchExtraescolaresInscripcion(): Promise<ExtraescolaresIn
       textoBotonFormulario,
       "formularioArchivoUrl": formularioArchivo.asset->url,
       formularioEnlace,
+      prazoInicio,
+      prazoFin,
+      condicionsServizo,
+      informacionAdicional,
       tituloCerrada,
       mensaxeCerrada
     }
