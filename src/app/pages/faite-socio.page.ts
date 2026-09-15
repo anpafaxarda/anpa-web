@@ -56,12 +56,40 @@ export const routeMeta = {
             <p class="text-surface-500 font-medium italic">* O sistema detecta automaticamente o tramo vixente segundo a data de hoxe.</p>
           </div>
 
-          <div class="mb-10 bg-amber-50 border border-amber-100 rounded-2xl p-6 flex gap-4 items-start">
-            <span class="text-2xl">⚠️</span>
-            <p class="text-amber-900 text-sm leading-relaxed">
-              {{ data.notaPagamentoCota || 'Para figurar como socio/a non abonda con rexistrarte na app: tamén hai que formalizar o pagamento da cota, que se habilita a partir do primeiro día de clase.' }}
-            </p>
-          </div>
+          @if (data.procesoAlta?.pasos?.length) {
+            <div class="mb-10 bg-amber-50 border border-amber-100 rounded-3xl p-6 md:p-8">
+              <div class="flex gap-4 items-start mb-6">
+                <span class="text-2xl flex-shrink-0">⚠️</span>
+                <div>
+                  <h4 class="font-black text-amber-900 text-lg leading-tight mb-1">{{ data.procesoAlta!.titulo || 'Como darse de alta na ANPA' }}</h4>
+                  @if (data.procesoAlta!.introducion) {
+                    <p class="text-amber-900/80 text-sm leading-relaxed">{{ data.procesoAlta!.introducion }}</p>
+                  }
+                </div>
+              </div>
+              <div class="space-y-5">
+                @for (paso of data.procesoAlta!.pasos!; track paso.titulo; let i = $index) {
+                  <div class="flex gap-4 items-start">
+                    <span class="flex-shrink-0 w-7 h-7 rounded-full bg-amber-400 text-amber-950 font-black text-sm flex items-center justify-center">{{ i + 1 }}</span>
+                    <div>
+                      <h5 class="font-black text-amber-900 text-sm mb-1">{{ paso.titulo }}</h5>
+                      <p class="text-amber-900/80 text-sm leading-relaxed whitespace-pre-line">{{ paso.descricion }}</p>
+                      @if (paso.notaAdicional) {
+                        <p class="text-amber-800/70 text-xs italic leading-relaxed mt-2 whitespace-pre-line">{{ paso.notaAdicional }}</p>
+                      }
+                    </div>
+                  </div>
+                }
+              </div>
+            </div>
+          } @else {
+            <div class="mb-10 bg-amber-50 border border-amber-100 rounded-2xl p-6 flex gap-4 items-start">
+              <span class="text-2xl">⚠️</span>
+              <p class="text-amber-900 text-sm leading-relaxed">
+                Para figurar como socio/a non abonda con rexistrarte na app: tamén hai que formalizar o pagamento da cota, que se habilita a partir do primeiro día de clase.
+              </p>
+            </div>
+          }
 
           <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             <div [ngClass]="{
