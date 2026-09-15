@@ -13,7 +13,11 @@ export const fetchFaiteSocioData = async () => {
       inicioBonificacion,
       finBonificacion,
       fechaAperturaInscricion,
-      notaPagamentoCota,
+      procesoAlta{
+        titulo,
+        introducion,
+        pasos[]{ titulo, descricion, notaAdicional }
+      },
       urlAppWeb,
       urlIOS,
       urlAndroid,

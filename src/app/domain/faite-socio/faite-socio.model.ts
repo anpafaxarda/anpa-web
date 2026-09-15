@@ -12,6 +12,18 @@ export interface TutorialStep {
   isRegistration: boolean;
 }
 
+export interface PasoAlta {
+  titulo: string;
+  descricion: string;
+  notaAdicional?: string;
+}
+
+export interface ProcesoAlta {
+  titulo?: string;
+  introducion?: string;
+  pasos?: PasoAlta[];
+}
+
 export interface FaiteSocioData {
   title: string;
   subtitle: string;
@@ -24,7 +36,7 @@ export interface FaiteSocioData {
   inicioBonificacion: string;
   finBonificacion: string;
   fechaAperturaInscricion?: string;
-  notaPagamentoCota?: string;
+  procesoAlta?: ProcesoAlta;
   // Enlaces
   urlAppWeb: string;
   urlIOS: string;
