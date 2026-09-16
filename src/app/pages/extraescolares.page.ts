@@ -45,19 +45,29 @@ export const routeMeta = {
                   @if (inscripcion()!.subtitulo) {
                     <p class="text-surface-500 font-medium mt-1">{{ inscripcion()!.subtitulo }}</p>
                   }
+                  @if (prazoInicio() || prazoFin()) {
+                    <p class="text-primary-600 font-black text-sm mt-2 uppercase tracking-wide">
+                      Prazo: {{ prazoInicio() | date:'dd/MM/yyyy' }}
+                      @if (prazoFin()) {
+                        — {{ prazoFin() | date:'dd/MM/yyyy' }} ás {{ prazoFin() | date:'HH:mm' }}h
+                      }
+                    </p>
+                  }
                 </div>
               </div>
 
               <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
 
-                @if (inscripcion()?.urlAbacoIOS || inscripcion()?.urlAbacoAndroid) {
+                @if (inscripcion()?.abacoDisponible && (inscripcion()?.urlAbacoIOS || inscripcion()?.urlAbacoAndroid)) {
                   <div class="bg-white rounded-[2rem] border border-surface-100 shadow-sm p-6 flex flex-col gap-5">
                     <div class="flex items-center gap-4">
                       <div class="w-12 h-12 bg-white rounded-xl shadow border border-surface-100 flex-shrink-0">
                         <img src="/assets/abaco-logo.webp" alt="Ábaco" class="w-full h-full object-contain">
                       </div>
                       <div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-primary-600">{{ inscripcion()!.etiquetaAbaco }}</p>
+                        @if (inscripcion()?.etiquetaAbaco) {
+                          <p class="text-[10px] font-black uppercase tracking-widest text-primary-600">{{ inscripcion()!.etiquetaAbaco }}</p>
+                        }
                         <h4 class="text-lg font-black text-surface-900 leading-tight">{{ inscripcion()!.tituloAbaco || 'App Ábaco Familias' }}</h4>
                       </div>
                     </div>
@@ -98,7 +108,9 @@ export const routeMeta = {
                         </svg>
                       </div>
                       <div>
-                        <p class="text-[10px] font-black uppercase tracking-widest text-primary-600">{{ inscripcion()!.etiquetaFormulario }}</p>
+                        @if (inscripcion()?.etiquetaFormulario) {
+                          <p class="text-[10px] font-black uppercase tracking-widest text-primary-600">{{ inscripcion()!.etiquetaFormulario }}</p>
+                        }
                         <h4 class="text-lg font-black text-surface-900 leading-tight">{{ inscripcion()!.tituloFormulario || 'Formulario' }}</h4>
                       </div>
                     </div>
@@ -109,7 +121,7 @@ export const routeMeta = {
                       <a [href]="inscripcion()!.formularioArchivoUrl || inscripcion()!.formularioEnlace" target="_blank"
                          class="bg-primary-600 hover:bg-primary-700 text-white px-4 py-2.5 rounded-xl flex items-center gap-3 transition-all shadow-md">
                         <svg class="w-6 h-6 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3M3 17V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z"/>
+                          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
                         </svg>
                         <div class="text-left leading-tight font-sans">
                           <p class="text-base font-semibold leading-none">{{ inscripcion()!.textoBotonFormulario }}</p>
@@ -139,6 +151,26 @@ export const routeMeta = {
             </div>
           </div>
         }
+      }
+
+      @if (informacionAdicional() || condicionDestacada()) {
+        <div class="bg-white rounded-[2.5rem] shadow-xl border border-surface-100 overflow-hidden mb-10 p-8 md:p-10 space-y-6">
+          @if (informacionAdicional()) {
+            <div class="bg-primary-50 border border-primary-100 rounded-2xl p-6 flex gap-4 items-start">
+              <span class="text-2xl">ℹ️</span>
+              <div>
+                <h4 class="font-black text-primary-800 mb-1">Información adicional</h4>
+                <p class="text-primary-900/80 text-sm leading-relaxed whitespace-pre-line">{{ informacionAdicional() }}</p>
+              </div>
+            </div>
+          }
+          @if (condicionDestacada()) {
+            <div class="bg-amber-50 border border-amber-100 rounded-2xl p-6 flex gap-4 items-start">
+              <span class="text-2xl">⚠️</span>
+              <p class="text-amber-900/80 text-sm leading-relaxed">{{ condicionDestacada() }}</p>
+            </div>
+          }
+        </div>
       }
 
       <div class="flex justify-center mb-10">
@@ -171,6 +203,15 @@ export const routeMeta = {
                   }
                   <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent"></div>
 
+                  @if (actividad.esNova) {
+                    <div class="absolute top-4 left-0 -rotate-6 z-20">
+                      <span class="bg-amber-400 text-xs text-amber-950 px-4 py-1.5 rounded-lg font-black uppercase shadow-xl border border-white/40 whitespace-nowrap flex items-center gap-1.5">
+                        <span class="w-1.5 h-1.5 bg-amber-950 rounded-full animate-pulse"></span>
+                        Nova este curso
+                      </span>
+                    </div>
+                  }
+
                   <div class="absolute bottom-4 left-5 right-0 text-white pr-5">
                     <div class="text-[10px] font-black uppercase tracking-widest opacity-80">Duración</div>
                     <div class="text-sm font-bold leading-tight break-words">
@@ -194,6 +235,13 @@ export const routeMeta = {
                       </button>
                     }
                   </div>
+
+                  @if (actividad.observacions; as observacions) {
+                    <div class="bg-amber-50 border border-amber-100 rounded-xl px-4 py-3 mb-6 flex gap-2 items-start">
+                      <span class="text-sm flex-shrink-0">⚠️</span>
+                      <p class="text-amber-900/80 text-xs leading-relaxed">{{ observacions }}</p>
+                    </div>
+                  }
 
                   <div class="mt-auto pt-6 border-t border-surface-100 flex flex-wrap gap-y-6">
                     <div class="w-full sm:w-1/2 flex flex-col justify-end pr-2">
@@ -245,7 +293,12 @@ export const routeMeta = {
                           </p>
                         </div>
                         <div class="flex-grow">
-                          <h4 class="text-base font-bold text-surface-900 leading-tight">{{ act.name }}</h4>
+                          <h4 class="text-base font-bold text-surface-900 leading-tight">
+                            {{ act.name }}
+                            @if (act.observacions; as observacions) {
+                              <span class="text-amber-500" [title]="observacions">⚠️</span>
+                            }
+                          </h4>
                           <div class="flex flex-wrap gap-x-3 mt-1">
                              <p class="text-[9px] text-surface-400 font-bold uppercase">Ord: {{ act.price }}</p>
                              @if (act.memberPrice) {
@@ -284,6 +337,9 @@ export const routeMeta = {
                           <h4 class="text-sm font-black leading-tight uppercase mb-1 break-words overflow-wrap-anywhere"
                               [style.color]="colorMap()[act.name].text">
                             {{ act.name }}
+                            @if (act.observacions; as observacions) {
+                              <span [title]="observacions">⚠️</span>
+                            }
                           </h4>
                           @if (act.memberPrice) {
                             <p class="text-[10px] font-bold opacity-80" [style.color]="colorMap()[act.name].text">
@@ -305,10 +361,67 @@ export const routeMeta = {
           </div>
         }
       </div>
+
+      @if (condicionsRestantes()?.length) {
+        <div class="bg-white p-8 md:p-10 rounded-3xl shadow-sm border border-surface-100 space-y-8 mt-10">
+          <div class="flex items-center gap-3">
+            <span class="text-3xl">⚖️</span>
+            <h3 class="text-2xl font-black text-surface-900">Condicións do servizo</h3>
+          </div>
+
+          <div>
+            <h4 class="text-sm font-black uppercase tracking-widest text-surface-400 mb-4">Condicións e pagamento</h4>
+            <ul class="space-y-3">
+              @for (condicion of condicionsRestantes(); track condicion) {
+                <li class="flex items-start gap-3 text-surface-600 leading-relaxed">
+                  <span class="text-primary-500 font-black mt-0.5">•</span>
+                  <span>{{ condicion }}</span>
+                </li>
+              }
+            </ul>
+          </div>
+        </div>
+      }
     </app-page-component>
   `,
   styles: [`
     .portable-text ::ng-deep p { margin-bottom: 0.5rem; }
+    .portable-text ::ng-deep h1,
+    .portable-text ::ng-deep h2,
+    .portable-text ::ng-deep h3 {
+      font-weight: 900;
+      color: #0f172a;
+      font-size: 1rem;
+      margin-top: 0.75rem;
+      margin-bottom: 0.25rem;
+      line-height: 1.3;
+    }
+    .portable-text ::ng-deep h4,
+    .portable-text ::ng-deep h5,
+    .portable-text ::ng-deep h6 {
+      font-weight: 900;
+      color: var(--color-primary-600);
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      margin-top: 0.75rem;
+      margin-bottom: 0.25rem;
+    }
+    .portable-text ::ng-deep ul,
+    .portable-text ::ng-deep ol {
+      margin: 0 0 0.5rem 0;
+      padding-left: 1.25rem;
+    }
+    .portable-text ::ng-deep ul { list-style: disc; }
+    .portable-text ::ng-deep ol { list-style: decimal; }
+    .portable-text ::ng-deep li { margin-bottom: 0.25rem; }
+    .portable-text ::ng-deep blockquote {
+      border-left: 3px solid var(--color-primary-400);
+      padding-left: 0.75rem;
+      margin: 0.5rem 0;
+      font-style: italic;
+      color: #475569;
+    }
     .bg-grid-lines-vertical { background-image: radial-gradient(#f1f5f9 1px, transparent 1px); background-size: 20px 20px; }
     .animate-slide-in-left { animation: slideInLeft 0.5s ease-out; }
     .animate-slide-in-right { animation: slideInRight 0.5s ease-out; }
@@ -324,10 +437,21 @@ export default class ExtraescolaresPage {
 
   readonly actividades = computed(() => (this.route.snapshot.data['extraescolaresData']?.[0] ?? []) as Actividad[]);
   readonly inscripcion = computed(() => this.route.snapshot.data['extraescolaresData']?.[1] as ExtraescolaresInscripcion | null);
+
   readonly mostrarInscripcion = computed(() => {
     const i = this.inscripcion();
-    return i?.inscripcionActiva && (!!i?.urlAbacoIOS || !!i?.urlAbacoAndroid || !!i?.formularioArchivoUrl || !!i?.formularioEnlace);
+    const abacoOk = !!i?.abacoDisponible && (!!i?.urlAbacoIOS || !!i?.urlAbacoAndroid);
+    return i?.inscripcionActiva && (abacoOk || !!i?.formularioArchivoUrl || !!i?.formularioEnlace);
   });
+
+  readonly prazoInicio = computed(() => this.inscripcion()?.prazoInicio);
+  readonly prazoFin = computed(() => this.inscripcion()?.prazoFin);
+  readonly condicionsServizo = computed(() => this.inscripcion()?.condicionsServizo);
+  readonly informacionAdicional = computed(() => this.inscripcion()?.informacionAdicional);
+  // A primeira condición destácase xunto á inscrición; o resto móstranse en "Condicións do servizo".
+  readonly condicionDestacada = computed(() => this.condicionsServizo()?.[0]);
+  readonly condicionsRestantes = computed(() => this.condicionsServizo()?.slice(1));
+
   view = signal<'cards' | 'calendar'>('cards');
   expandedCards: Record<string, boolean> = {};
 

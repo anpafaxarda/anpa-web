@@ -1,5 +1,6 @@
 export interface Actividad {
   name: string;
+  esNova?: boolean;
   imagePath?: string;
   imageUrl?: string;
   price: string;
@@ -8,6 +9,7 @@ export interface Actividad {
   classDuration: string;
   enrollmentPeriod: string;
   coursePeriod: string;
+  observacions?: string;
   description?: any[];
   diaSemana: 'Luns' | 'Martes' | 'Mércores' | 'Xoves' | 'Venres';
   horaInicio: string;
