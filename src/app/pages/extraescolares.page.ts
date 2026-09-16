@@ -1,4 +1,4 @@
-import { Component, computed, inject, signal, ChangeDetectorRef, isDevMode } from '@angular/core';
+import { Component, computed, inject, signal, ChangeDetectorRef } from '@angular/core';
 import { PortableTextPipe } from '../shared/pipes/portable-text.pipe';
 import { CommonModule, NgOptimizedImage } from '@angular/common';
 import { Actividad } from '../domain/extraescolares/extraescolares.model';
@@ -437,12 +437,8 @@ export default class ExtraescolaresPage {
 
   readonly actividades = computed(() => (this.route.snapshot.data['extraescolaresData']?.[0] ?? []) as Actividad[]);
   readonly inscripcion = computed(() => this.route.snapshot.data['extraescolaresData']?.[1] as ExtraescolaresInscripcion | null);
-  // Preview local: visita /extraescolares?previewInscripcion=1 para ver a sección de inscrición aberta
-  // sen depender de "inscripcionActiva" en Sanity. Só funciona en modo desenvolvemento (non en produción).
-  private readonly previewInscripcionAberta = isDevMode() && this.route.snapshot.queryParamMap.get('previewInscripcion') === '1';
 
   readonly mostrarInscripcion = computed(() => {
-    if (this.previewInscripcionAberta) return true;
     const i = this.inscripcion();
     const abacoOk = !!i?.abacoDisponible && (!!i?.urlAbacoIOS || !!i?.urlAbacoAndroid);
     return i?.inscripcionActiva && (abacoOk || !!i?.formularioArchivoUrl || !!i?.formularioEnlace);
