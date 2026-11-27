@@ -51,7 +51,7 @@ import { Actividade } from '../../domain/actividade/actividade.model';
           }
           @if (actividade.nivelEducativo && actividade.nivelEducativo.length > 0) {
             <div class="bg-orange-100/90 backdrop-blur-md text-orange-900 px-3 py-1 rounded-full text-[9px] font-black uppercase tracking-widest shadow-sm border border-orange-300">
-              Curso: {{ actividade.nivelEducativo.join(' · ') }}
+              Dirixida a: {{ actividade.nivelEducativo.join(' · ') }}
             </div>
           }
         </div>
